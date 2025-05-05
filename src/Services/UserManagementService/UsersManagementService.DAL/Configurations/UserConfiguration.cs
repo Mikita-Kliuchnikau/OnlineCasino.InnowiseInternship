@@ -9,9 +9,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         builder.HasKey(user => user.Id);
 
-        builder.HasIndex(user => user.Id)
-            .IsUnique();
-
         builder.HasMany(user => user.Images)
             .WithOne(image => image.User)
             .HasForeignKey(image => image.UserId); 

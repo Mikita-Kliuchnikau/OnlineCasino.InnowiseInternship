@@ -10,9 +10,6 @@ public class ImageConfiguration : IEntityTypeConfiguration<ImageEntity>
     {
         builder.HasKey(i => i.Id);
 
-        builder.HasIndex(user => user.Id)
-            .IsUnique();
-
         builder.Property(i => i.Id).IsRequired();
         builder.Property(i => i.UserId).IsRequired();
     }
