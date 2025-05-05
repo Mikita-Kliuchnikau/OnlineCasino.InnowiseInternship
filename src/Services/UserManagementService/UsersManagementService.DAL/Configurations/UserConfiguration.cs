@@ -12,9 +12,9 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.HasIndex(user => user.Id)
             .IsUnique();
 
-        builder.HasOne(user => user.Image)
-            .WithOne()
-            .HasForeignKey<ImageEntity>(image => image.UserId); 
+        builder.HasMany(user => user.Images)
+            .WithOne(image => image.User)
+            .HasForeignKey(image => image.UserId); 
 
         builder.Property(user => user.Id).IsRequired();
         builder.Property(user => user.AuthId).IsRequired();

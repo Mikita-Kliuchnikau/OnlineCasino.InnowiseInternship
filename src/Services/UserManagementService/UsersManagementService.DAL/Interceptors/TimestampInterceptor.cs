@@ -8,7 +8,7 @@ public class TimestampInterceptor : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
-        foreach (var entry in eventData.Context.ChangeTracker.Entries<IHaveTimestamps>())
+        foreach (var entry in eventData.Context.ChangeTracker.Entries<IHasTimestamps>())
         {
             if (entry.State == EntityState.Added)
             {
@@ -22,7 +22,7 @@ public class TimestampInterceptor : SaveChangesInterceptor
         InterceptionResult<int> result, 
         CancellationToken cancellationToken)
     {
-        foreach (var entry in eventData.Context.ChangeTracker.Entries<IHaveTimestamps>())
+        foreach (var entry in eventData.Context.ChangeTracker.Entries<IHasTimestamps>())
         {
             if (entry.State == EntityState.Added)
             {

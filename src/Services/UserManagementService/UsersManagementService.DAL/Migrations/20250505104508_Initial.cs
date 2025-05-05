@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -42,7 +41,8 @@ namespace UsersManagementService.DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ImagesUrl = table.Column<List<string>>(type: "text[]", nullable: false)
+                    ImagesUrl = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -58,8 +58,7 @@ namespace UsersManagementService.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Images_UserId",
                 table: "Images",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
         }
 
         /// <inheritdoc />

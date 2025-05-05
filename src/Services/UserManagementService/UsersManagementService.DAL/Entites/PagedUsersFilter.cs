@@ -1,6 +1,6 @@
 ﻿namespace UsersManagementService.DAL.Entites;
 
-public class PagedUsersRequest
+public class PagedUsersFilter
 {
     public int PageSize { get; set; }
 

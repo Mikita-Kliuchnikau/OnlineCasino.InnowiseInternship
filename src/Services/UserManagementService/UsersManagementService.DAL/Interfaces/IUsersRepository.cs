@@ -8,7 +8,7 @@ public interface IUsersRepository
 
     Task<List<UserEntity>> GetAllAsync(CancellationToken cancellationToken);
 
-    Task<PagedUsersResponse> GetPageAsync(PagedUsersRequest pagedUsersRequest, CancellationToken cancellationToken);
+    Task<PagedUsersProjection> GetPagedAsync(PagedUsersFilter pagedUsersFilter, CancellationToken cancellationToken);
 
     Task<UserEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 

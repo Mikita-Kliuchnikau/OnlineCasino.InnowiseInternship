@@ -2,7 +2,7 @@
 
 namespace UsersManagementService.DAL.Entites;
 
-public class UserEntity : IHaveTimestamps
+public class UserEntity : IHasTimestamps
 {
     public Guid Id { get; set; }
     public Guid AuthId { get; set; }
@@ -19,13 +19,13 @@ public class UserEntity : IHaveTimestamps
     public DateOnly? BirthDate { get; set; }
     public string? PassportNumber { get; set; }
     public string? IdentificationNumber { get; set; }
-    public ImageEntity? Image { get; set; }
+    public List<ImageEntity> Images { get; set; } = [];
 }
 
 // Will be moved to smth like "Common"
 public enum VerificationStatus
 {
-    Pending = 0,
-    Verifies = 1,
-    UnVerified = 2,
+    UnVerified = 0,
+    Pending = 1,
+    Verified = 2,
 };

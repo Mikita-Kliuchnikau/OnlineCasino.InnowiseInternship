@@ -12,20 +12,20 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddDAL(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString(nameof(UsersDbContext))
-            ?? throw new InvalidOperationException("Connection string nameof \"UsersDbContext\" not found.");
+        var connectionString = configuration.GetConnectionString("UsersDbContext");
 
         services.AddDbContext<UsersDbContext>(options =>
         {
             options.UseNpgsql(connectionString, sqlServerActions =>
             {
-                sqlServerActions.EnableRetryOnFailure(3);
+                int MaxRetryCount = Convert.ToInt32(configuration.GetSection("DatabaseOptions").GetRequiredSection("MaxRetryCount").Value);
+                sqlServerActions.EnableRetryOnFailure(MaxRetryCount);
 
-                sqlServerActions.CommandTimeout(5);
+                int CommandTimeout = Convert.ToInt32(configuration.GetSection("DatabaseOptions").GetRequiredSection("CommandTimeout").Value);
+                sqlServerActions.CommandTimeout(CommandTimeout);
             });
             options.AddInterceptors(new TimestampInterceptor());
         });
-        services.AddScoped<IUsersDbContext, UsersDbContext>();
         services.AddScoped<IUsersRepository, UsersRepository>();
         return services;
     }

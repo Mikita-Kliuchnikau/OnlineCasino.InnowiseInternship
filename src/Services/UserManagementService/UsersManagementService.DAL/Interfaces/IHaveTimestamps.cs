@@ -1,6 +1,6 @@
 ﻿namespace UsersManagementService.DAL.Interfaces;
 
-public interface IHaveTimestamps
+public interface IHasTimestamps
 {
     DateTime CreatedAt { get; set; }
 }
