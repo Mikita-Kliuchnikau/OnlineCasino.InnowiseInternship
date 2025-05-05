@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
 using UsersManagementService.DAL.Context;
 using UsersManagementService.DAL.Entites;
 using UsersManagementService.DAL.Interfaces;
@@ -20,7 +20,7 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
     {
         await context.Users
                 .Where(user => user.Id == id)
-                .ExecuteDeleteAsync();
+                .ExecuteDeleteAsync(cancellationToken);
 
         return id;
     }
@@ -29,14 +29,16 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
     {
         return await context.Users
                 .AsNoTracking()
-                .ToListAsync();
+                .Include(u => u.Images)
+                .ToListAsync(cancellationToken);
     }
 
     public async Task<UserEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var user = await context.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(user => user.Id == id);
+                .Include(u => u.Images)
+                .FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
 
         return user;
     }
@@ -49,13 +51,13 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
             .AsNoTracking()
             .Skip((pagedUsersRequest.PageNumber - 1) * pagedUsersRequest.PageSize)
             .Take(pagedUsersRequest.PageSize)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return new PagedUsersProjection
         {
             PageNumber = pagedUsersRequest.PageNumber,
             TotalCount = context.Users.AsNoTracking().Count(),
-            Projection = users
+            Users = users
         };
     }
 
@@ -63,14 +65,14 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
     {
         var entity = await context.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(entity => entity.Id == user.Id);
+                .FirstOrDefaultAsync(entity => entity.Id == user.Id, cancellationToken);
 
         context.Users
             .Entry(entity)
             .CurrentValues
             .SetValues(user);
                 
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
 
         return user.Id;
     }

@@ -12,16 +12,29 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddDAL(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("UsersDbContext");
+        const string ConfigurationConnectionString = "UsersDbContext";
+        const string ConfigurationDatabaseConnection = "DatabaseOptions";
+        const string ConfigurationRetryCountOnFilure = "MaxRetryCount";
+        const string ConfigurationCommandTimeout = "CommandTimeout";
+
+        var connectionString = configuration.GetConnectionString(ConfigurationConnectionString);
 
         services.AddDbContext<UsersDbContext>(options =>
         {
             options.UseNpgsql(connectionString, sqlServerActions =>
             {
-                int MaxRetryCount = Convert.ToInt32(configuration.GetSection("DatabaseOptions").GetRequiredSection("MaxRetryCount").Value);
+                var MaxRetryCount = Convert.ToInt32(configuration
+                    .GetSection(ConfigurationDatabaseConnection)
+                    .GetRequiredSection(ConfigurationRetryCountOnFilure)
+                    .Value);
+
                 sqlServerActions.EnableRetryOnFailure(MaxRetryCount);
 
-                int CommandTimeout = Convert.ToInt32(configuration.GetSection("DatabaseOptions").GetRequiredSection("CommandTimeout").Value);
+                var CommandTimeout = Convert.ToInt32(configuration
+                    .GetSection(ConfigurationDatabaseConnection)
+                    .GetRequiredSection(ConfigurationCommandTimeout)
+                    .Value);
+
                 sqlServerActions.CommandTimeout(CommandTimeout);
             });
             options.AddInterceptors(new TimestampInterceptor());

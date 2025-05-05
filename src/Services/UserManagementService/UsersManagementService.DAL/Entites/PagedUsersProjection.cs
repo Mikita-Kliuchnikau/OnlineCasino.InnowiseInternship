@@ -6,5 +6,5 @@ public class PagedUsersProjection
 
     public int TotalCount { get; set; }
 
-    public List<UserEntity> Projection { get; set; } = [];
+    public List<UserEntity> Users { get; set; } = [];
 }
