@@ -38,9 +38,10 @@ public static class DependencyInjection
                 sqlServerActions.CommandTimeout(CommandTimeout);
             });
             options.AddInterceptors(new TimestampInterceptor());
+            options.AddInterceptors(new SoftDeleteInterceptor());
         });
         services.AddScoped<IUsersRepository, UsersRepository>();
         return services;
     }
-}
+}                   
 

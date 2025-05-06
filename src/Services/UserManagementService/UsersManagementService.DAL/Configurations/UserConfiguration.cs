@@ -26,5 +26,7 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.BirthDate);
         builder.Property(user => user.PassportNumber).HasMaxLength(50);
         builder.Property(user => user.IdentificationNumber).HasMaxLength(50);
+
+        builder.HasQueryFilter(user => !user.IsDeleted);
     }
 }

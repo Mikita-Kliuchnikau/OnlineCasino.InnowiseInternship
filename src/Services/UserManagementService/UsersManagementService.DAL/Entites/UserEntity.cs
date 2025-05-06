@@ -2,7 +2,7 @@
 
 namespace UsersManagementService.DAL.Entites;
 
-public class UserEntity : IHasTimestamps
+public class UserEntity : IHasTimestamps, ISoftDeletable
 {
     public Guid Id { get; set; }
     public Guid AuthId { get; set; }
@@ -11,6 +11,7 @@ public class UserEntity : IHasTimestamps
     public decimal Balance { get; set; } = 0;
     public VerificationStatus VerificationStatus { get; set; } = VerificationStatus.UnVerified;
     public bool IsBanned { get; set; } = false;
+    public bool IsDeleted { get; set; } = false;
     public DateTime CreatedAt { get; set; }
     
     public string? FirstName { get; set; }

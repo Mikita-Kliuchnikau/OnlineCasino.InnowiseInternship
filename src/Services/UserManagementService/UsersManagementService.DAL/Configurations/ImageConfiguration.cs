@@ -12,5 +12,7 @@ public class ImageConfiguration : IEntityTypeConfiguration<ImageEntity>
 
         builder.Property(i => i.Id).IsRequired();
         builder.Property(i => i.UserId).IsRequired();
+
+        builder.HasQueryFilter(image => !image.IsDeleted);
     }
 }
