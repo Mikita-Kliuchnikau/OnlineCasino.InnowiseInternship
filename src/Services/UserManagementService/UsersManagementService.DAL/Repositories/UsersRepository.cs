@@ -73,10 +73,8 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user, 
         CancellationToken cancellationToken = default)
     {
-        var entity = await context.Users.FirstOrDefaultAsync(e => e.Id == user.Id, cancellationToken);
-
-        entity = user;
-                
+        context.Users.Update(user);
+        
         await context.SaveChangesAsync(cancellationToken);
 
         return user.Id;
