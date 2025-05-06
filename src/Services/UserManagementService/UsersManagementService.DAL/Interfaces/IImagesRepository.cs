@@ -2,7 +2,7 @@
 
 namespace UsersManagementService.DAL.Interfaces;
 
-public interface IImageRepository
+public interface IImagesRepository
 {
     Task<Guid> CreateAsync(ImageEntity user, CancellationToken cancellationToken);
 

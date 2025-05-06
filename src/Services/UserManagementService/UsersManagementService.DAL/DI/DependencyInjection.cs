@@ -41,6 +41,7 @@ public static class DependencyInjection
             options.AddInterceptors(new SoftDeleteInterceptor());
         });
         services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IImagesRepository, ImagesRepository>();
         return services;
     }
 }                   

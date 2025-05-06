@@ -5,7 +5,7 @@ using UsersManagementService.DAL.Interfaces;
 
 namespace UsersManagementService.DAL.Repositories;
 
-public class ImageRepository(UsersDbContext context) : IImageRepository
+public class ImagesRepository(UsersDbContext context) : IImagesRepository
 {
     public async Task<Guid> CreateAsync(
         ImageEntity image, 
