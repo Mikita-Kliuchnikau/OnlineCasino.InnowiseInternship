@@ -5,6 +5,8 @@ using UsersManagementService.DAL.Interfaces;
 using UsersManagementService.DAL.Interceptors;
 using UsersManagementService.DAL.Repositories;
 using UsersManagementService.DAL.Context;
+using UsersManagementService.DAL.Options;
+using Microsoft.Extensions.Options;
 
 namespace UsersManagementService.DAL.DI;
 
@@ -12,31 +14,17 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddDAL(this IServiceCollection services, IConfiguration configuration)
     {
-        const string ConfigurationConnectionString = "UsersDbContext";
-        const string ConfigurationDatabaseConnection = "DatabaseOptions";
-        const string ConfigurationRetryCountOnFilure = "MaxRetryCount";
-        const string ConfigurationCommandTimeout = "CommandTimeout";
+        services.ConfigureOptions<DatabaseOptionsSetup>();
 
-        var connectionString = configuration.GetConnectionString(ConfigurationConnectionString);
-
-        services.AddDbContext<UsersDbContext>(options =>
+        services.AddDbContext<UsersDbContext>((serviceProvider ,options) =>
         {
-            options.UseNpgsql(connectionString, sqlServerActions =>
+            var databaseOptions = serviceProvider.GetService<IOptions<DatabaseOptions>>()!.Value;
+            options.UseNpgsql(databaseOptions.ConnectionString, sqlServerActions =>
             {
-                var MaxRetryCount = Convert.ToInt32(configuration
-                    .GetSection(ConfigurationDatabaseConnection)
-                    .GetRequiredSection(ConfigurationRetryCountOnFilure)
-                    .Value);
-
-                sqlServerActions.EnableRetryOnFailure(MaxRetryCount);
-
-                var CommandTimeout = Convert.ToInt32(configuration
-                    .GetSection(ConfigurationDatabaseConnection)
-                    .GetRequiredSection(ConfigurationCommandTimeout)
-                    .Value);
-
-                sqlServerActions.CommandTimeout(CommandTimeout);
+                sqlServerActions.EnableRetryOnFailure(databaseOptions.MaxRetryCount);
+                sqlServerActions.CommandTimeout(databaseOptions.CommandTimeOut);
             });
+
             options.AddInterceptors(new TimestampInterceptor());
             options.AddInterceptors(new SoftDeleteInterceptor());
         });
