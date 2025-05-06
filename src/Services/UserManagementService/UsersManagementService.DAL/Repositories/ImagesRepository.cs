@@ -33,9 +33,7 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
         ImageEntity image, 
         CancellationToken cancellationToken)
     {
-        var entity = await context.Images.FirstOrDefaultAsync(e => e.Id == image.Id, cancellationToken);
-
-        entity = image;
+        context.Images.Update(image);
 
         await context.SaveChangesAsync(cancellationToken);
 

@@ -1,19 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using UsersManagementService.DAL.Constants;
 
 namespace UsersManagementService.DAL.Options;
 
 public class DatabaseOptionsSetup(IConfiguration configuration) 
     : IConfigureOptions<DatabaseOptions>
 {
-    private const string ConfigurationSectionName = "DatabaseOptions";
-
     public void Configure(DatabaseOptions options)
     {
-        var connectionString = configuration.GetConnectionString("UsersDatabase");
+        var connectionString = configuration
+            .GetConnectionString(DatabaseConstants.UsersDatabaseConnectionStringName);
          
         options.ConnectionString = connectionString;    
 
-        configuration.GetSection(ConfigurationSectionName).Bind(options);
+        configuration.GetSection(DatabaseConstants.ConfigurationSectionName).Bind(options);
     }
 }

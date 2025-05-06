@@ -12,7 +12,7 @@ using UsersManagementService.DAL.Context;
 namespace UsersManagementService.DAL.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20250505104508_Initial")]
+    [Migration("20250506115159_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -34,6 +34,9 @@ namespace UsersManagementService.DAL.Migrations
                     b.Property<string>("ImagesUrl")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
@@ -77,6 +80,9 @@ namespace UsersManagementService.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsBanned")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")

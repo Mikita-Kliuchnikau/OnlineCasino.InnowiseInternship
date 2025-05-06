@@ -22,6 +22,7 @@ namespace UsersManagementService.DAL.Migrations
                     Balance = table.Column<decimal>(type: "numeric", nullable: false),
                     VerificationStatus = table.Column<int>(type: "integer", nullable: false),
                     IsBanned = table.Column<bool>(type: "boolean", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     SecondName = table.Column<string>(type: "text", nullable: true),
@@ -42,7 +43,8 @@ namespace UsersManagementService.DAL.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     ImagesUrl = table.Column<string>(type: "text", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false)
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using UsersManagementService.DAL.Context;
 using UsersManagementService.DAL.Entites;
 using UsersManagementService.DAL.Interfaces;

@@ -32,6 +32,9 @@ namespace UsersManagementService.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -74,6 +77,9 @@ namespace UsersManagementService.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsBanned")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
