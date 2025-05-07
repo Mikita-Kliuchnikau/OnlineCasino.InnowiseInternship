@@ -42,4 +42,4 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"Mikita-Kliuchnikau_OnlineCasino.InnowiseInternship" /o:"mikita-kliuchnikau" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet restore
           dotnet build --configuration Release --no-restore
-          ./.sonar/scanner/dotnet-sonarscanne end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
