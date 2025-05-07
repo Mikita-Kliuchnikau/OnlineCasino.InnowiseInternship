@@ -13,6 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersManagementService.DAL"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersManagmentService.Presentation", "src\Services\UserManagementService\UsersManagmentService.Presentation\UsersManagmentService.Presentation.csproj", "{5A0771B2-FFC7-4F14-AD40-7B840AF89015}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{53A9ADAC-9860-4EAF-A831-5F04A57DCA61}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{572CBF5B-6901-420D-8FBE-A00B306C01CF}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +43,7 @@ Global
 		{FFADD9FC-94D4-4C6A-8CE7-1D6556D6B0EF} = {9535AAE0-E305-4D6B-ACF0-9AD107B6C57F}
 		{B6E025CD-6C1D-4417-A187-E610E8036B28} = {FFADD9FC-94D4-4C6A-8CE7-1D6556D6B0EF}
 		{5A0771B2-FFC7-4F14-AD40-7B840AF89015} = {FFADD9FC-94D4-4C6A-8CE7-1D6556D6B0EF}
+		{572CBF5B-6901-420D-8FBE-A00B306C01CF} = {53A9ADAC-9860-4EAF-A831-5F04A57DCA61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F84AEC56-6B41-4350-AF1D-FFC51E3BC36E}
