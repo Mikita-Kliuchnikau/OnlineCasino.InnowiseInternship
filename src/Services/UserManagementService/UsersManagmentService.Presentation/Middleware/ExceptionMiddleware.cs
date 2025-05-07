@@ -20,8 +20,6 @@ public class ExceptionMiddleware(RequestDelegate next)
 
     private async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-
-
         var (statusCode, message) = ex switch
         {
             _ => (HttpStatusCode.InternalServerError, ex.Message)
