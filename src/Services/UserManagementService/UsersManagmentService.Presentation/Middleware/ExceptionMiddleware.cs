@@ -31,7 +31,7 @@ public class ExceptionMiddleware(RequestDelegate next)
             Title = message,
         };
 
-        context.Response.ContentType = ExceptionConstants.ExceptionOptions;
+        context.Response.ContentType = MediaTypeConstants.Json;
         context.Response.StatusCode = (int)statusCode;
         
         await context.Response.WriteAsJsonAsync(details);
