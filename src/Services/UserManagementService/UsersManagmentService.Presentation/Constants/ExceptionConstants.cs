@@ -1,6 +1,6 @@
 ﻿namespace UsersManagmentService.Presentation.Constants;
 
-public static class ExceptionConstants
+public static class MediaTypeConstants
 {
-    public const string ExceptionOptions = "application/json";
+    public const string Json = "application/json";
 }
