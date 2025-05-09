@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Threading;
-using UsersManagementService.DAL.Interfaces;
+using UsersManagementService.DAL.Interfaces.Interceptors;
 
 namespace UsersManagementService.DAL.Interceptors;
 
@@ -29,7 +28,7 @@ public class TimestampInterceptor : SaveChangesInterceptor
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,
         InterceptionResult<int> result,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         if (eventData.Context is null)
         {

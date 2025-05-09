@@ -1,8 +1,9 @@
 using UsersManagmentService.Presentation.Middleware;
-using UsersManagementService.DAL.DI;
+using UsersManagementService.BLL.DI;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDAL(builder.Configuration);
+builder.Services.AddBLL(builder.Configuration);
 
 var app = builder.Build();
 

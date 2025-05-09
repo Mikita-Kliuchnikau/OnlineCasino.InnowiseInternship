@@ -1,15 +1,16 @@
-﻿using UsersManagementService.DAL.Interfaces;
+﻿using UsersManagementService.Common.Enums;
+using UsersManagementService.DAL.Interfaces.Interceptors;
 
-namespace UsersManagementService.DAL.Entites;
+namespace UsersManagementService.DAL.Entites.Core;
 
 public class UserEntity : IHasTimestamps, ISoftDeletable
 {
     public Guid Id { get; set; }
     public Guid AuthId { get; set; }
-    public string UserName { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public decimal Balance { get; set; } = 0;
-    public VerificationStatus VerificationStatus { get; set; } = VerificationStatus.UnVerified;
+    public VerificationStatusEnum VerificationStatus { get; set; } = VerificationStatusEnum.UnVerified;
     public bool IsBanned { get; set; } = false;
     public bool IsDeleted { get; set; } = false;
     public DateTime CreatedAt { get; set; }
@@ -22,11 +23,3 @@ public class UserEntity : IHasTimestamps, ISoftDeletable
     public string? IdentificationNumber { get; set; }
     public List<ImageEntity> Images { get; set; } = [];
 }
-
-// Will be moved to smth like "Common"
-public enum VerificationStatus
-{
-    UnVerified = 0,
-    Pending = 1,
-    Verified = 2,
-};

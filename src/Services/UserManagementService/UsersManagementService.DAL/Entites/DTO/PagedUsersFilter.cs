@@ -1,4 +1,4 @@
-﻿namespace UsersManagementService.DAL.Entites;
+﻿namespace UsersManagementService.DAL.Entites.DTO;
 
 public class PagedUsersFilter
 {

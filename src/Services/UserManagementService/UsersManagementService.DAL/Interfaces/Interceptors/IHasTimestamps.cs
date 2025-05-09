@@ -1,4 +1,4 @@
-﻿namespace UsersManagementService.DAL.Interfaces;
+﻿namespace UsersManagementService.DAL.Interfaces.Interceptors;
 
 public interface IHasTimestamps
 {

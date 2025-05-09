@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UsersManagementService.Common.Exceptions;
 using UsersManagementService.DAL.Context;
-using UsersManagementService.DAL.Entites;
-using UsersManagementService.DAL.Interfaces;
+using UsersManagementService.DAL.Entites.Core;
+using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.DAL.Repositories;
 
@@ -9,7 +10,7 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
 {
     public async Task<Guid> CreateAsync(
         ImageEntity image, 
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         await context.Images.AddAsync(image, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
@@ -19,10 +20,16 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
 
     public async Task<Guid> DeleteAsync(
         Guid id, 
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var image = await context.Images.FirstOrDefaultAsync(image => image.Id == id, cancellationToken);
-        context.Remove(image);
+
+        if (image == null)
+        {
+            throw new NotFoundException(nameof(image), id);
+        }
+        
+        context.Remove<ImageEntity>(image);
 
         await context.SaveChangesAsync(cancellationToken);
 
@@ -31,7 +38,7 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
 
     public async Task<Guid> UpdateAsync(
         ImageEntity image, 
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         context.Images.Update(image);
 

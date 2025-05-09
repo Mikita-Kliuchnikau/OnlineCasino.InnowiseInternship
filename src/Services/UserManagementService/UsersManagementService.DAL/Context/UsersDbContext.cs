@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using UsersManagementService.DAL.Entites;
+using UsersManagementService.DAL.Entites.Core;
 
 namespace UsersManagementService.DAL.Context;
 

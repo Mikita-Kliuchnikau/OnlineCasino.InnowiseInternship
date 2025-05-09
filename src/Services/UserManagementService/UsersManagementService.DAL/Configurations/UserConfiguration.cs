@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using UsersManagementService.DAL.Entites;
+using UsersManagementService.DAL.Entites.Core;
 namespace UsersManagementService.DAL.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
@@ -15,7 +15,7 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 
         builder.Property(user => user.Id).IsRequired();
         builder.Property(user => user.AuthId).IsRequired();
-        builder.Property(user => user.UserName).HasMaxLength(50).IsRequired();
+        builder.Property(user => user.Username).HasMaxLength(50).IsRequired();
         builder.Property(user => user.Email).HasMaxLength(100).IsRequired();
         builder.Property(user => user.Balance).IsRequired();
         builder.Property(user => user.VerificationStatus).IsRequired();

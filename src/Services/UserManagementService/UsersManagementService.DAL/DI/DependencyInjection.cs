@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using UsersManagementService.DAL.Interfaces;
 using UsersManagementService.DAL.Interceptors;
 using UsersManagementService.DAL.Repositories;
 using UsersManagementService.DAL.Context;
 using UsersManagementService.DAL.Options;
 using Microsoft.Extensions.Options;
+using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.DAL.DI;
 
@@ -32,5 +32,4 @@ public static class DependencyInjection
         services.AddScoped<IImagesRepository, ImagesRepository>();
         return services;
     }
-}                   
-
+}
