@@ -1,8 +1,9 @@
-﻿using UsersManagementService.BLL.Extensions.MappingExtensions;
-using UsersManagementService.BLL.Interfaces;
+﻿using Mapster;
+using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Models.Image.CreateImage;
 using UsersManagementService.BLL.Models.Image.DeleteImage;
 using UsersManagementService.BLL.Models.Image.UpdateImage;
+using UsersManagementService.DAL.Entites.Core;
 using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Services
@@ -11,7 +12,7 @@ namespace UsersManagementService.BLL.Services
     {
         public async Task<Guid> CreateImageAsync(CreateImageCommand user, CancellationToken cancellationToken = default)
         {
-            var imageEntity = user.ToImageEntity();
+            var imageEntity = user.Adapt<ImageEntity>();
             return await imagesRepository.CreateAsync(imageEntity, cancellationToken);
         }
 
@@ -22,7 +23,7 @@ namespace UsersManagementService.BLL.Services
 
         public async Task<Guid> UpdateImageAsync(UpdateImageCommand user, CancellationToken cancellationToken = default)
         {
-            var imageEntity = user.ToImageEntity();
+            var imageEntity = user.Adapt<ImageEntity>();
             return await imagesRepository.UpdateAsync(imageEntity, cancellationToken);
         }
     }

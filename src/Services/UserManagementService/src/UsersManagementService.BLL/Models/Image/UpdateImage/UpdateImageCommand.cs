@@ -1,5 +1,4 @@
-﻿using MediatR;
-using UsersManagementService.Common.Enums;
+﻿using UsersManagementService.Common.Enums;
 
 namespace UsersManagementService.BLL.Models.Image.UpdateImage;
 
@@ -8,4 +7,4 @@ public record UpdateImageCommand(
     Guid UserId, 
     string ImageUrl, 
     ImageType Type, 
-    bool IsDeleted) : IRequest<Guid> { }
+    bool IsDeleted);

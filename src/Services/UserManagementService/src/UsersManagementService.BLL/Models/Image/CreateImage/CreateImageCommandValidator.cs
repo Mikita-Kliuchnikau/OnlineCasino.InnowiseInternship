@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using UsersManagementService.BLL.Extensions.ValidatingExtentions;
+using UsersManagementService.BLL.Extensions;
 
 namespace UsersManagementService.BLL.Models.Image.CreateImage;
 
@@ -8,10 +8,10 @@ public class CreateImageCommandValidator : AbstractValidator<CreateImageCommand>
     public CreateImageCommandValidator()
     {
         RuleFor(u => u.Id)
-            .CommonIdRules();
+            .BaseIdRules();
         RuleFor(u => u.UserId)
-            .CommonIdRules();
+            .BaseIdRules();
         RuleFor(u => u.ImageUrl)
-            .CommonStringRules();
+            .BaseStringRules();
     }
 }

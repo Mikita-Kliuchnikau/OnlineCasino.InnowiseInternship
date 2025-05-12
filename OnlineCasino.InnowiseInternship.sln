@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersManagementService.DAL"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersManagmentService.Presentation", "src\Services\UserManagementService\src\UsersManagmentService.Presentation\UsersManagmentService.Presentation.csproj", "{0AE2B0FC-F642-8CBB-83FF-5A6FCB162432}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsersManagementService.BLL.UnitTests", "src\Services\UserManagementService\tests\UsersManagementService.BLL.UnitTests\UsersManagementService.BLL.UnitTests.csproj", "{107A8F45-0B1B-4F4B-9518-5AF225027FF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{0AE2B0FC-F642-8CBB-83FF-5A6FCB162432}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AE2B0FC-F642-8CBB-83FF-5A6FCB162432}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AE2B0FC-F642-8CBB-83FF-5A6FCB162432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{107A8F45-0B1B-4F4B-9518-5AF225027FF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{107A8F45-0B1B-4F4B-9518-5AF225027FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{107A8F45-0B1B-4F4B-9518-5AF225027FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{107A8F45-0B1B-4F4B-9518-5AF225027FF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{9DF2A7C4-24A3-9860-ABB9-001B473F288A} = {BF6FFEFE-7957-4F8C-B704-B84AF8C14CDB}
 		{E7E34BF5-4B6A-FC91-4BF0-80BB1A4882B7} = {BF6FFEFE-7957-4F8C-B704-B84AF8C14CDB}
 		{0AE2B0FC-F642-8CBB-83FF-5A6FCB162432} = {BF6FFEFE-7957-4F8C-B704-B84AF8C14CDB}
+		{107A8F45-0B1B-4F4B-9518-5AF225027FF2} = {09BDA8F8-EBAD-41F1-8B4E-966A61C34E0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F84AEC56-6B41-4350-AF1D-FFC51E3BC36E}

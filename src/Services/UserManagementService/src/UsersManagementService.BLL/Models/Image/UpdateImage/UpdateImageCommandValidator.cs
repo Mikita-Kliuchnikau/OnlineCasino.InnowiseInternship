@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
-using UsersManagementService.BLL.Constants;
-using UsersManagementService.BLL.Extensions.ValidatingExtentions;
+using UsersManagementService.BLL.Extensions;
 
 namespace UsersManagementService.BLL.Models.Image.UpdateImage;
 
@@ -9,10 +8,10 @@ public class UpdateImageCommandValidator : AbstractValidator<UpdateImageCommand>
     public UpdateImageCommandValidator()
     {
         RuleFor(u => u.Id)
-            .CommonIdRules();
+            .BaseIdRules();
         RuleFor(u => u.UserId)
-            .CommonIdRules();
+            .BaseIdRules();
         RuleFor(u => u.ImageUrl)
-            .CommonStringRules();
+            .BaseStringRules();
     }
 }
