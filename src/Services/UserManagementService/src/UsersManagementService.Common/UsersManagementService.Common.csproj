@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="../UsersManagementService.BLL/Resources/UserMessages.en-US.resx" />
+    <EmbeddedResource Include="../UsersManagementService.BLL/Resources/UserMessages.cs" />
+    <EmbeddedResource Include="../UsersManagementService.BLL/Resources/UserMessages.en-Us.resx" />
+    <EmbeddedResource Include="../UsersManagementService.BLL/Resources/UserMessages.ru-Ru.resx" />
   </ItemGroup>
 
 </Project>
