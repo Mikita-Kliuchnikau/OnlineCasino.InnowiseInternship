@@ -1,7 +1,6 @@
 ﻿using NSubstitute;
 using UsersManagementService.BLL.Models.User.CreateUser;
 using UsersManagementService.BLL.Models.User.DeleteUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
 using UsersManagementService.BLL.Models.User.GetUser;
 using UsersManagementService.BLL.Models.User.UpdateUser;
 using UsersManagementService.Common.Enums;
@@ -18,7 +17,7 @@ public static class UsersServiceTestEntities
         VerificationStatus: VerificationStatus.UnVerified, IsBanned: false, IsDeleted: false, FirstName: "user",
         SecondName: "user", LastName: "user", PassportNumber: "123456789", IdentificationNumber: "987654321");
     public static readonly GetUserQuery GetQuery = new(Guid.NewGuid());
-    public static readonly GetPagedUsersQuery GetPagedQuery = new(1, 10);
+    
 
     public static readonly IUsersRepository _usersRepositoryMock = Substitute.For<IUsersRepository>();
 }

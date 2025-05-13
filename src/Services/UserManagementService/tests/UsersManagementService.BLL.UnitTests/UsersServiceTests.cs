@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using UsersManagementService.BLL.Services;
+using UsersManagementService.Common.Exceptions;
 using UsersManagementService.DAL.Entites.Core;
 using static UsersManagementService.BLL.UnitTests.TestEntities.UsersServiceTestEntities;
 
@@ -105,5 +107,35 @@ public class UsersServiceTests
 
         //Assert
         result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetUserByIdAsync_CallsService_ReturnsUser()
+    {
+        //Arrange
+        _usersRepositoryMock.GetByIdAsync(Arg.Any<Guid>(), default)
+            .Returns(new UserEntity { Id = GetQuery.Id, AuthId = Guid.NewGuid() });
+
+        var service = new UsersService(_usersRepositoryMock);
+
+        //Act
+        var result = await service.GetUserByIdAsync(GetQuery, default);
+
+        //Assert
+        result.Id.Should().Be(GetQuery.Id);
+    }
+
+    [Fact]
+    public async Task GetUserByIdAsync_InvalidUser_CallsService_ThrowNotFoundException()
+    {
+        //Arrange
+        var invalidQuery = GetQuery with { Id = Guid.Empty };
+        var service = new UsersService(_usersRepositoryMock);
+
+        //Act
+        Func<Task> act = async () => await service.GetUserByIdAsync(invalidQuery, default);
+
+        //Assert
+        await act.Should().ThrowAsync<NotFoundException>();
     }
 }

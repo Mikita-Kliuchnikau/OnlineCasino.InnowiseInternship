@@ -7,7 +7,7 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.UnitTests.TestEntities;
 
-public static class ValidationTestImageEntities
+public static class ImageValidationTestEntities
 {
     public static readonly CreateImageCommand CreateCommand = new(Guid.NewGuid(), Guid.NewGuid(), "url.com", ImageType.Default);
     public static readonly DeleteImageCommand DeleteCommand = new(Guid.NewGuid());

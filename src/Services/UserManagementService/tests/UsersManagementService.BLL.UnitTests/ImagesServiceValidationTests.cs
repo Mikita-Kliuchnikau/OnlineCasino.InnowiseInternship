@@ -4,7 +4,7 @@ using NSubstitute;
 using UsersManagementService.BLL.Models.Image.CreateImage;
 using UsersManagementService.BLL.Models.Image.DeleteImage;
 using UsersManagementService.BLL.Models.Image.UpdateImage;
-using static UsersManagementService.BLL.UnitTests.TestEntities.ValidationTestImageEntities;
+using static UsersManagementService.BLL.UnitTests.TestEntities.ImageValidationTestEntities;
 
 namespace UsersManagementService.BLL.UnitTests;
 

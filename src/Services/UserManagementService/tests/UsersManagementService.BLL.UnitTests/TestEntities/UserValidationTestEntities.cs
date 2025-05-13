@@ -9,7 +9,7 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.UnitTests.TestEntities;
 
-public static class ValidationTestUserEntities
+public static class UserValidationTestEntities
 {
     public static readonly CreateUserCommand CreateCommand = new(Guid.NewGuid(), Guid.NewGuid(), "user", "User@email.com");
     public static readonly DeleteUserCommand DeleteCommand = new(Guid.NewGuid());
