@@ -10,20 +10,20 @@ namespace UsersManagementService.BLL.Services
 {
     public class ImagesService(IImagesRepository imagesRepository) : IImagesService
     {
-        public async Task<Guid> CreateImageAsync(CreateImageCommand user, CancellationToken cancellationToken = default)
+        public async Task<Guid> CreateImageAsync(CreateImageCommand image, CancellationToken cancellationToken = default)
         {
-            var imageEntity = user.Adapt<ImageEntity>();
+            var imageEntity = image.Adapt<ImageEntity>();
             return await imagesRepository.CreateAsync(imageEntity, cancellationToken);
         }
 
-        public async Task<Guid> DeleteImageAsync(DeleteImageCommand user, CancellationToken cancellationToken = default)
+        public async Task<Guid> DeleteImageAsync(DeleteImageCommand image, CancellationToken cancellationToken = default)
         {
-            return await imagesRepository.DeleteAsync(user.Id, cancellationToken);
+            return await imagesRepository.DeleteAsync(image.Id, cancellationToken);
         }
 
-        public async Task<Guid> UpdateImageAsync(UpdateImageCommand user, CancellationToken cancellationToken = default)
+        public async Task<Guid> UpdateImageAsync(UpdateImageCommand image, CancellationToken cancellationToken = default)
         {
-            var imageEntity = user.Adapt<ImageEntity>();
+            var imageEntity = image.Adapt<ImageEntity>();
             return await imagesRepository.UpdateAsync(imageEntity, cancellationToken);
         }
     }
