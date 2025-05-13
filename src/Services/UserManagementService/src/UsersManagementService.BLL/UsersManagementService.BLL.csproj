@@ -18,4 +18,19 @@
     <ProjectReference Include="..\UsersManagementService.DAL\UsersManagementService.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\UserMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>UserMessages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\UserMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

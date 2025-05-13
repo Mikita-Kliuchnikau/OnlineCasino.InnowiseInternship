@@ -30,8 +30,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="..\..\src\UsersManagementService.BLL\Resources\UserMessages.en-Us.resx" />
-    <EmbeddedResource Include="..\..\src\UsersManagementService.BLL\Resources\UserMessages.ru-Ru.resx" />
+    <EmbeddedResource Include="..\..\src\UsersManagementService.BLL\Resources\UserMessages.resx" />
   </ItemGroup>
 
   <ItemGroup>
