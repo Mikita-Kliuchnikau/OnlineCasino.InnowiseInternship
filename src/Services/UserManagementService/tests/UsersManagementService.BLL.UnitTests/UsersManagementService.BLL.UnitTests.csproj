@@ -28,6 +28,11 @@
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\src\UsersManagementService.BLL\Resources\UserMessages.en-Us.resx" />
+    <EmbeddedResource Include="..\..\src\UsersManagementService.BLL\Resources\UserMessages.ru-Ru.resx" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\UsersManagementService.BLL\UsersManagementService.BLL.csproj" />
