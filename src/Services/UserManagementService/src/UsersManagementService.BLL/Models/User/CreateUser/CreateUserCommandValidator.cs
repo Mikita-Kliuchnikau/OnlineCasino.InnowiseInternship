@@ -30,6 +30,6 @@ public class CreateUserCommandValidator : AbstractValidator <CreateUserCommand>
                 username: User.Username,
                 email: User.Email,
                 cancellationToken: CancellationToken);
-        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser));
+        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField));
     }
 }

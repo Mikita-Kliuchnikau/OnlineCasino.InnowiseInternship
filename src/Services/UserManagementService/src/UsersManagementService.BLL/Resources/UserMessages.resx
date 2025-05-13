@@ -98,4 +98,31 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+ 	<data name="ValidationImageDoesntExist" xml:space="preserve">
+    	<value>Image doesn't exist</value>
+  	</data>
+  	<data name="ValidationInvalidEmail" xml:space="preserve">
+    	<value>Invalid email format</value>
+  	</data>
+  	<data name="ValidationMaxLength" xml:space="preserve">
+    	<value>Length must be less than 50 characters</value>
+  	</data>
+  	<data name="ValidationNoIntegerNumber" xml:space="preserve">
+    	<value>Number must be integer</value>
+  	</data>
+  	<data name="ValidationNoPositiveNumber" xml:space="preserve">
+    	<value>Number must be positive</value>
+  	</data>
+  	<data name="ValidationNotUniqueUser" xml:space="preserve">
+    	<value>Not unique user</value>
+  	</data>
+  	<data name="ValidationRequiredField" xml:space="preserve">
+    	<value>Field is required</value>
+ 	</data>
+  	<data name="ValidationRequiredId" xml:space="preserve">
+    	<value>Id is required</value>
+ 	</data>
+  	<data name="ValidationUserDoesntExist" xml:space="preserve">
+    	<value>User doesn't exist</value>
+  	</data>
 </root>

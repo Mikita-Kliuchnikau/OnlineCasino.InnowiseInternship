@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace UsersManagementService.BLL.Resources {
+namespace UsersManagementService.BLL.Resources
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,45 +20,152 @@ namespace UsersManagementService.BLL.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class UserMessages {
-        
-        private static global::System.Resources.ResourceManager resourceMan;
-        
-        private static global::System.Globalization.CultureInfo resourceCulture;
-        
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal UserMessages() {
-        }
-        
-        /// <summary>
-        ///   Returns the cached ResourceManager instance used by this class.
-        /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UsersManagementService.BLL.Resources.UserMessages", typeof(UserMessages).Assembly);
-                    resourceMan = temp;
-                }
-                return resourceMan;
-            }
-        }
-        
-        /// <summary>
-        ///   Overrides the current thread's CurrentUICulture property for all
-        ///   resource lookups using this strongly typed resource class.
-        /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
-                return resourceCulture;
-            }
-            set {
-                resourceCulture = value;
-            }
-        }
+    //[global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    //[global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    public class UserMessages
+    {
+
+        //private static global::System.Resources.ResourceManager resourceMan;
+
+        //private static global::System.Globalization.CultureInfo resourceCulture;
+
+        //[global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        //internal UserMessages()
+        //{
+        //}
+
+        ///// <summary>
+        /////   Returns the cached ResourceManager instance used by this class.
+        ///// </summary>
+        //[global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        //public static global::System.Resources.ResourceManager ResourceManager
+        //{
+        //    get
+        //    {
+        //        if (object.ReferenceEquals(resourceMan, null))
+        //        {
+        //            global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("UsersManagementService.BLL.UnitTests.UserMessages", typeof(UserMessages).Assembly);
+        //            resourceMan = temp;
+        //        }
+        //        return resourceMan;
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Overrides the current thread's CurrentUICulture property for all
+        /////   resource lookups using this strongly typed resource class.
+        ///// </summary>
+        //[global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        //public static global::System.Globalization.CultureInfo Culture
+        //{
+        //    get
+        //    {
+        //        return resourceCulture;
+        //    }
+        //    set
+        //    {
+        //        resourceCulture = value;
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to Image doesn&apos;t exist.
+        ///// </summary>
+        //public static string ValidationImageDoesntExist
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationImageDoesntExist, resourceCulture);
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to Invalid email format.
+        ///// </summary>
+        //public static string ValidationInvalidEmail
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationInvalidEmail, resourceCulture);
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to Length must be less than 50 characters.
+        ///// </summary>
+        //public static string ValidationMaxLength
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationMaxLength, resourceCulture);
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to Number must be integer.
+        ///// </summary>
+        //public static string ValidationNoIntegerNumber
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationNoIntegerNumber, resourceCulture);
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to Number must be positive.
+        ///// </summary>
+        //public static string ValidationNoPositiveNumber
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationNoPositiveNumber, resourceCulture);
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to Not unique user.
+        ///// </summary>
+        //public static string ValidationNotUniqueUser
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationNotUniqueUser, resourceCulture);
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to Field is required.
+        ///// </summary>
+        //public static string ValidationRequiredField
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationRequiredField, resourceCulture);
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to Id is required.
+        ///// </summary>
+        //public static string ValidationRequiredId
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationRequiredId, resourceCulture);
+        //    }
+        //}
+
+        ///// <summary>
+        /////   Looks up a localized string similar to User doesn&apos;t exist.
+        ///// </summary>
+        //public static string ValidationUserDoesntExist
+        //{
+        //    get
+        //    {
+        //        return ResourceManager.GetString(UserKeys.ValidationUserDoesntExist, resourceCulture);
+        //    }
+        //}
     }
 }
