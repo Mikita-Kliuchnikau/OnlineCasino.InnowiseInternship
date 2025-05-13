@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="..\UsersManagementService.BLL\Resources\UserMessages.resx" />
+  </ItemGroup>
+
 </Project>
