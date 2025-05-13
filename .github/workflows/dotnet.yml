@@ -43,5 +43,5 @@ jobs:
           dotnet build --configuration Release
       - name: Test
         run: |
-          dotnet test --no-build --configuration Release --verbosity normal
+          dotnet test ${{ env.Solution_Name }} --no-build --configuration Release --verbosity normal
           .sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
