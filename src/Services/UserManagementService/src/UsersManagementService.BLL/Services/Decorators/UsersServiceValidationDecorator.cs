@@ -14,7 +14,7 @@ namespace UsersManagementService.BLL.Services.Decorators
         public async Task<Guid> CreateUserAsync(CreateUserCommand user, CancellationToken cancellationToken)
         {
             var createUserCommandValidator = usersValidator.CreateUserCommandValidator;
-            
+
             await createUserCommandValidator.ValidateAndThrowAsync(user, cancellationToken);
 
             return await usersService.CreateUserAsync(user, cancellationToken);

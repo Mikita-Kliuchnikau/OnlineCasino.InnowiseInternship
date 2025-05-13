@@ -20,7 +20,7 @@ public class CreateUserCommandValidator : AbstractValidator <CreateUserCommand>
             .BaseNamesRules();
         RuleFor(u => u.Email)
             .BaseEmailRules();
-        RuleFor(u => new { u.Id, u.AuthId, u.Username, u.Email })
+        RuleFor(u => u)
             .MustAsync(async (User, CancellationToken) =>
         {
             return await usersRepository

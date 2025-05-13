@@ -9,4 +9,6 @@ public interface IImagesRepository
     Task<Guid> UpdateAsync(ImageEntity image, CancellationToken cancellationToken);
 
     Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken);
+
+    Task<bool> DoesImageExistAsync(Guid id, CancellationToken cancellationToken);
 }
