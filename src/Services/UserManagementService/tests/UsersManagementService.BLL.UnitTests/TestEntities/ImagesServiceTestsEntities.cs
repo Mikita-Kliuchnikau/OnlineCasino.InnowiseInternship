@@ -13,5 +13,5 @@ public static class ImagesServiceTestsEntities
     public static readonly DeleteImageCommand DeleteCommand = new(Guid.NewGuid());
     public static readonly UpdateImageCommand UpdateCommand = new(Guid.NewGuid(), Guid.NewGuid(), "url.com", ImageType.Default, false);
 
-    public static IImagesRepository _imagesRepositoryMock = Substitute.For<IImagesRepository>();
+    public static readonly IImagesRepository _imagesRepositoryMock = Substitute.For<IImagesRepository>();
 }
