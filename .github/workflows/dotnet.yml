@@ -39,9 +39,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          .sonar/scanner/dotnet-sonarscanner begin /k:"Mikita-Kliuchnikau_OnlineCasino.InnowiseInternship" /o:"mikita-kliuchnikau" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+          .sonar/scanner/dotnet-sonarscanner begin /k:"Mikita-Kliuchnikau_OnlineCasino.InnowiseInternship" /o:"mikita-kliuchnikau" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build --configuration Release
       - name: Test
         run: |
-          dotnet test ${{ env.Solution_Name }} --no-build --configuration Release --verbosity normal
+          dotnet test --no-build --configuration Release --verbosity normal
           .sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
