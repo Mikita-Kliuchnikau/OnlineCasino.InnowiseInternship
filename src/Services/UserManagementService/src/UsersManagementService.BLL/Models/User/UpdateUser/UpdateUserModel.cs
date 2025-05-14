@@ -3,8 +3,7 @@ using UsersManagementService.DAL.Entites.Core;
 
 namespace UsersManagementService.BLL.Models.User.UpdateUser;
 
-// Can be divided into separate commands
-public record UpdateUserCommand(
+public record UpdateUserModel(
     Guid Id, 
     Guid AuthId,
     string Username,

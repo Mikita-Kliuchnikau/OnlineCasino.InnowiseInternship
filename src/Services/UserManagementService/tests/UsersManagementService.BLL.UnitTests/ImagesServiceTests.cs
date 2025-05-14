@@ -13,29 +13,29 @@ public class ImagesServiceTests
     {
         //Arrange
         _imagesRepositoryMock.CreateAsync(Arg.Any<ImageEntity>(), default)
-            .Returns(CreateCommand.Id);
+            .Returns(CreateModel.Id);
 
         var service = new ImagesService(_imagesRepositoryMock);
 
         //Act
-        var result = await service.CreateImageAsync(CreateCommand, default);
+        var result = await service.CreateImageAsync(CreateModel, default);
 
         //Assert
-        result.Should().Be(CreateCommand.Id);
+        result.Should().Be(CreateModel.Id);
     }
 
     [Fact]
     public async Task CreateImageAsync_InvalidImage_CallsService_ReturnsNull()
     {
         //Arrange
-        var invalidCommand = CreateCommand with { Id = Guid.Empty };
+        var invalidModel = CreateModel with { Id = Guid.Empty };
         _imagesRepositoryMock.CreateAsync(Arg.Any<ImageEntity>(), default)
-            .Returns(invalidCommand.Id);
+            .Returns(invalidModel.Id);
 
         var service = new ImagesService(_imagesRepositoryMock);
 
         //Act
-        var result = await service.CreateImageAsync(invalidCommand, default);
+        var result = await service.CreateImageAsync(invalidModel, default);
 
         //Assert
         result.Should().BeEmpty();
@@ -46,29 +46,29 @@ public class ImagesServiceTests
     {
         //Arrange
         _imagesRepositoryMock.DeleteAsync(Arg.Any<Guid>(), default)
-            .Returns(DeleteCommand.Id);
+            .Returns(DeleteModel);
 
         var service = new ImagesService(_imagesRepositoryMock);
 
         //Act
-        var result = await service.DeleteImageAsync(DeleteCommand, default);
+        var result = await service.DeleteImageAsync(DeleteModel, default);
 
         //Assert
-        result.Should().Be(DeleteCommand.Id);
+        result.Should().Be(DeleteModel);
     }
 
     [Fact]
     public async Task DeleteImageAsync_InvalidImage_CallsService_ReturnsNull()
     {
         //Arrange
-        var invalidCommand = DeleteCommand with { Id = Guid.Empty };
+        var invalidModel = Guid.Empty;
         _imagesRepositoryMock.DeleteAsync(Arg.Any<Guid>(), default)
-            .Returns(invalidCommand.Id);
+            .Returns(invalidModel);
 
         var service = new ImagesService(_imagesRepositoryMock);
 
         //Act
-        var result = await service.DeleteImageAsync(invalidCommand, default);
+        var result = await service.DeleteImageAsync(invalidModel, default);
 
         //Assert
         result.Should().BeEmpty();
@@ -79,29 +79,29 @@ public class ImagesServiceTests
     {
         //Arrange
         _imagesRepositoryMock.UpdateAsync(Arg.Any<ImageEntity>(), default)
-            .Returns(UpdateCommand.Id);
+            .Returns(UpdateModel.Id);
 
         var service = new ImagesService(_imagesRepositoryMock);
 
         //Act
-        var result = await service.UpdateImageAsync(UpdateCommand, default);
+        var result = await service.UpdateImageAsync(UpdateModel, default);
 
         //Assert
-        result.Should().Be(UpdateCommand.Id);
+        result.Should().Be(UpdateModel.Id);
     }
 
     [Fact]
     public async Task UpdateImageAsync_InvalidImage_CallsService_ReturnsNull()
     {
         //Arrange
-        var invalidCommand = UpdateCommand with { Id = Guid.Empty };
+        var invalidModel = UpdateModel with { Id = Guid.Empty };
         _imagesRepositoryMock.UpdateAsync(Arg.Any<ImageEntity>(), default)
-            .Returns(invalidCommand.Id);
+            .Returns(invalidModel.Id);
 
         var service = new ImagesService(_imagesRepositoryMock);
 
         //Act
-        var result = await service.UpdateImageAsync(invalidCommand, default);
+        var result = await service.UpdateImageAsync(invalidModel, default);
 
         //Assert
         result.Should().BeEmpty();

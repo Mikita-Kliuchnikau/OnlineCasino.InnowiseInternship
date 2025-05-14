@@ -4,11 +4,11 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Models.Image.DeleteImage;
 
-public class DeleteImageCommandValidator : AbstractValidator<DeleteImageCommand>
+public class DeleteImageValidator : AbstractValidator<Guid>
 {
-    public DeleteImageCommandValidator(IImagesRepository imagesRepository)
+    public DeleteImageValidator(IImagesRepository imagesRepository)
     {
-        RuleFor(u => u.Id)
+        RuleFor(u => u)
             .DoesImageExist(imagesRepository)
             .BaseIdRules();
     }

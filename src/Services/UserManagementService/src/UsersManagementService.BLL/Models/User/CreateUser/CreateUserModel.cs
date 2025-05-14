@@ -1,6 +1,6 @@
 ﻿namespace UsersManagementService.BLL.Models.User.CreateUser;
 
-public record CreateUserCommand(
+public record CreateUserModel(
     Guid Id, 
     Guid AuthId, 
     string Username, 

@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using UsersManagementService.BLL.Services;
+using UsersManagementService.Common.Exceptions;
 using UsersManagementService.DAL.Entites.Core;
 using static UsersManagementService.BLL.UnitTests.TestEntities.UsersServiceTestEntities;
 
@@ -13,29 +14,29 @@ public class UsersServiceTests
     {
         //Arrange
         _usersRepositoryMock.CreateAsync(Arg.Any<UserEntity>(), default)
-            .Returns(CreateCommand.Id);
+            .Returns(CreateModel.Id);
 
         var service = new UsersService(_usersRepositoryMock);
 
         //Act
-        var result = await service.CreateUserAsync(CreateCommand, default);
+        var result = await service.CreateUserAsync(CreateModel, default);
 
         //Assert
-        result.Should().Be(CreateCommand.Id);
+        result.Should().Be(CreateModel.Id);
     }
 
     [Fact]
     public async Task CreateUserAsync_InvalidUser_CallsService_ReturnsNull()
     {
         //Arrange
-        var invalidCommand = CreateCommand with { Id = Guid.Empty };
+        var invalidModel = CreateModel with { Id = Guid.Empty };
         _usersRepositoryMock.CreateAsync(Arg.Any<UserEntity>(), default)
-            .Returns(invalidCommand.Id);
+            .Returns(invalidModel.Id);
 
         var service = new UsersService(_usersRepositoryMock);
 
         //Act
-        var result = await service.CreateUserAsync(invalidCommand, default);
+        var result = await service.CreateUserAsync(invalidModel, default);
 
         //Assert
         result.Should().BeEmpty();
@@ -46,29 +47,29 @@ public class UsersServiceTests
     {
         //Arrange
         _usersRepositoryMock.DeleteAsync(Arg.Any<Guid>(), default)
-            .Returns(DeleteCommand.Id);
+            .Returns(DeleteModel);
 
         var service = new UsersService(_usersRepositoryMock);
 
         //Act
-        var result = await service.DeleteUserAsync(DeleteCommand, default);
+        var result = await service.DeleteUserAsync(DeleteModel, default);
 
         //Assert
-        result.Should().Be(DeleteCommand.Id);
+        result.Should().Be(DeleteModel);
     }
 
     [Fact]
     public async Task DeleteUserAsync_InvalidUser_CallsService_ReturnsNull()
     {
         //Arrange
-        var invalidCommand = DeleteCommand with { Id = Guid.Empty };
+        var invalidModel = Guid.Empty;
         _usersRepositoryMock.DeleteAsync(Arg.Any<Guid>(), default)
-            .Returns(invalidCommand.Id);
+            .Returns(invalidModel);
 
         var service = new UsersService(_usersRepositoryMock);
 
         //Act
-        var result = await service.DeleteUserAsync(invalidCommand, default);
+        var result = await service.DeleteUserAsync(invalidModel, default);
 
         //Assert
         result.Should().BeEmpty();
@@ -79,29 +80,29 @@ public class UsersServiceTests
     {
         //Arrange
         _usersRepositoryMock.UpdateAsync(Arg.Any<UserEntity>(), default)
-            .Returns(UpdateCommand.Id);
+            .Returns(UpdateModel.Id);
 
         var service = new UsersService(_usersRepositoryMock);
 
         //Act
-        var result = await service.UpdateUserAsync(UpdateCommand, default);
+        var result = await service.UpdateUserAsync(UpdateModel, default);
 
         //Assert
-        result.Should().Be(UpdateCommand.Id);
+        result.Should().Be(UpdateModel.Id);
     }
 
     [Fact]
     public async Task UpdateUserAsync_InvalidUser_CallsService_ReturnsNull()
     {
         //Arrange
-        var invalidCommand = UpdateCommand with { Id = Guid.Empty };
+        var invalidModel = UpdateModel with { Id = Guid.Empty };
         _usersRepositoryMock.UpdateAsync(Arg.Any<UserEntity>(), default)
-            .Returns(invalidCommand.Id);
+            .Returns(invalidModel.Id);
 
         var service = new UsersService(_usersRepositoryMock);
 
         //Act
-        var result = await service.UpdateUserAsync(invalidCommand, default);
+        var result = await service.UpdateUserAsync(invalidModel, default);
 
         //Assert
         result.Should().BeEmpty();
@@ -112,7 +113,7 @@ public class UsersServiceTests
     {
         //Arrange
         _usersRepositoryMock.GetByIdAsync(Arg.Any<Guid>(), default)
-            .Returns(new UserEntity { Id = GetQuery.Id, AuthId = Guid.NewGuid() });
+            .Returns(new UserEntity { Id = GetQuery, AuthId = Guid.NewGuid() });
 
         var service = new UsersService(_usersRepositoryMock);
 
@@ -120,20 +121,20 @@ public class UsersServiceTests
         var result = await service.GetUserByIdAsync(GetQuery, default);
 
         //Assert
-        result.Id.Should().Be(GetQuery.Id);
+        result.Id.Should().Be(GetQuery);
     }
 
-    //[Fact]
-    //public async Task GetUserByIdAsync_InvalidUser_CallsService_ThrowNotFoundException()
-    //{
-    //    //Arrange
-    //    var invalidQuery = GetQuery with { Id = Guid.Empty };
-    //    var service = new UsersService(_usersRepositoryMock);
+    [Fact]
+    public async Task GetUserByIdAsync_InvalidUser_CallsService_ThrowNotFoundException()
+    {
+        //Arrange
+        var invalidQuery = Guid.Empty;
+        var service = new UsersService(_usersRepositoryMock);
 
-    //    //Act
-    //    Func<Task> act = async () => await service.GetUserByIdAsync(invalidQuery, default);
+        //Act
+        Func<Task> act = async () => await service.GetUserByIdAsync(invalidQuery, default);
 
-    //    //Assert
-    //    await act.Should().ThrowAsync<NotFoundException>();
-    //}
+        //Assert
+        await act.Should().ThrowAsync<NotFoundException>();
+    }
 }

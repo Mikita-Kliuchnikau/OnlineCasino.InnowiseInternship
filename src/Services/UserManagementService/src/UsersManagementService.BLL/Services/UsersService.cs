@@ -1,5 +1,4 @@
 ﻿using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.DeleteUser;
 using UsersManagementService.BLL.Models.User.UpdateUser;
 using UsersManagementService.BLL.Models.User.GetPagedUsers;
 using UsersManagementService.BLL.Models.User.GetUser;
@@ -14,16 +13,16 @@ namespace UsersManagementService.BLL.Services;
 
 public class UsersService(IUsersRepository usersRepository) : IUsersService
 {
-    public async Task<Guid> CreateUserAsync(CreateUserCommand createUserCommand, CancellationToken cancellationToken = default)
+    public async Task<Guid> CreateUserAsync(CreateUserModel createUserModel, CancellationToken cancellationToken = default)
     {
-        var user = createUserCommand.Adapt<UserEntity>();
+        var user = createUserModel.Adapt<UserEntity>();
 
         return await usersRepository.CreateAsync(user, cancellationToken);
     }
 
-    public async Task<Guid> DeleteUserAsync(DeleteUserCommand user, CancellationToken cancellationToken = default)
+    public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await usersRepository.DeleteAsync(user.Id, cancellationToken);
+        return await usersRepository.DeleteAsync(id, cancellationToken);
     }
 
     public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery getPagedUsersQuery, CancellationToken cancellationToken)
@@ -36,19 +35,19 @@ public class UsersService(IUsersRepository usersRepository) : IUsersService
          return pagedUsersProjection.Adapt<PagedUsersViewModel>();
     }
 
-    public async Task<UserViewModel> GetUserByIdAsync(GetUserQuery getUsersQuery, CancellationToken cancellationToken)
+    public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var userEntity = await usersRepository.GetByIdAsync(getUsersQuery.Id, cancellationToken);
+        var userEntity = await usersRepository.GetByIdAsync(id, cancellationToken);
 
         if (userEntity == null)
         {
-            throw new NotFoundException(nameof(userEntity), getUsersQuery.Id);
+            throw new NotFoundException(nameof(userEntity), id);
         }
 
         return userEntity.Adapt<UserViewModel>();
     }
 
-    public async Task<Guid> UpdateUserAsync(UpdateUserCommand user, CancellationToken cancellationToken)
+    public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken)
     {
         return await usersRepository.UpdateAsync(user.Adapt<UserEntity>(), cancellationToken);
     }

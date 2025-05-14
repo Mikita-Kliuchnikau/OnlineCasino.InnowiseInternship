@@ -4,9 +4,9 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Models.Image.UpdateImage;
 
-public class UpdateImageCommandValidator : AbstractValidator<UpdateImageCommand>
+public class UpdateImageModelValidator : AbstractValidator<UpdateImageModel>
 {
-    public UpdateImageCommandValidator(IImagesRepository imagesRepository)
+    public UpdateImageModelValidator(IImagesRepository imagesRepository)
     {
         RuleFor(u => u.Id)
             .DoesImageExist(imagesRepository)

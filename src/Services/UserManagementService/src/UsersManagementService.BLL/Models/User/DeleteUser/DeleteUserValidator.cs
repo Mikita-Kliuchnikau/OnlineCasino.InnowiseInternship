@@ -4,11 +4,11 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Models.User.DeleteUser;
 
-public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
+public class DeleteUserValidator : AbstractValidator<Guid>
 {
-    public DeleteUserCommandValidator(IUsersRepository usersRepository)
+    public DeleteUserValidator(IUsersRepository usersRepository)
     {
-        RuleFor(u => u.Id)
+        RuleFor(u => u)
             .DoesUserExist(usersRepository)
             .BaseIdRules();
     }

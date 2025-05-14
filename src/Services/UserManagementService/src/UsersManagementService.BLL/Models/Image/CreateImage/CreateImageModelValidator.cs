@@ -3,9 +3,9 @@ using UsersManagementService.BLL.Extensions;
 
 namespace UsersManagementService.BLL.Models.Image.CreateImage;
 
-public class CreateImageCommandValidator : AbstractValidator<CreateImageCommand>
+public class CreateImageModelValidator : AbstractValidator<CreateImageModel>
 {
-    public CreateImageCommandValidator()
+    public CreateImageModelValidator()
     {
         RuleFor(u => u.Id)
             .BaseIdRules();

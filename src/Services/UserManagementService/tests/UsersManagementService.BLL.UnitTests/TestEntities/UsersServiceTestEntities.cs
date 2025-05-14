@@ -10,13 +10,13 @@ namespace UsersManagementService.BLL.UnitTests.TestEntities;
 
 public static class UsersServiceTestEntities
 {
-    public static readonly CreateUserCommand CreateCommand = new(Guid.NewGuid(), Guid.NewGuid(), "user", "User@email.com");
-    public static readonly DeleteUserCommand DeleteCommand = new(Guid.NewGuid());
-    public static readonly UpdateUserCommand UpdateCommand = new(
+    public static readonly CreateUserModel CreateModel = new(Guid.NewGuid(), Guid.NewGuid(), "user", "User@email.com");
+    public static readonly Guid DeleteModel = Guid.NewGuid();
+    public static readonly UpdateUserModel UpdateModel = new(
         Id: Guid.NewGuid(), AuthId: Guid.NewGuid(), Username: "user", Email: "user@email.com", Balance: 0,
         VerificationStatus: VerificationStatus.UnVerified, IsBanned: false, IsDeleted: false, FirstName: "user",
         SecondName: "user", LastName: "user", PassportNumber: "123456789", IdentificationNumber: "987654321");
-    public static readonly GetUserQuery GetQuery = new(Guid.NewGuid());
+    public static readonly Guid GetQuery = Guid.NewGuid();
     
 
     public static readonly IUsersRepository _usersRepositoryMock = Substitute.For<IUsersRepository>();

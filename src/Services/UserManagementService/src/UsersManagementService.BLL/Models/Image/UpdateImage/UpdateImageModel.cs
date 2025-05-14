@@ -2,7 +2,7 @@
 
 namespace UsersManagementService.BLL.Models.Image.UpdateImage;
 
-public record UpdateImageCommand(
+public record UpdateImageModel(
     Guid Id, 
     Guid UserId, 
     string ImageUrl, 

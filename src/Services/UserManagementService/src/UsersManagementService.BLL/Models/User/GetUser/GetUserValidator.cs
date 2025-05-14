@@ -4,11 +4,11 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Models.User.GetUser;
 
-public class GetUserQueryValidator : AbstractValidator<GetUserQuery>
+public class GetUserValidator : AbstractValidator<Guid>
 {
-    public GetUserQueryValidator(IUsersRepository usersRepository)
+    public GetUserValidator(IUsersRepository usersRepository)
     {
-        RuleFor(u => u.Id)
+        RuleFor(u => u)
             .DoesUserExist(usersRepository)
             .BaseIdRules();
     }

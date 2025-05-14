@@ -9,29 +9,29 @@ namespace UsersManagementService.BLL.Services.Decorators;
 
 public class ImagesServiceValidationDecorator(IImagesService imagesService, IImagesValidator imagesValidator) : IImagesService
 {
-    public async Task<Guid> CreateImageAsync(CreateImageCommand image, CancellationToken cancellationToken)
+    public async Task<Guid> CreateImageAsync(CreateImageModel image, CancellationToken cancellationToken)
     {
-        var createImageCommandValidator = imagesValidator.CreateImageCommandValidator;
+        var createImageModelValidator = imagesValidator.CreateImageModelValidator;
 
-        await createImageCommandValidator.ValidateAndThrowAsync(image, cancellationToken);
+        await createImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
 
         return await imagesService.CreateImageAsync(image, cancellationToken);
     }
 
-    public async Task<Guid> DeleteImageAsync(DeleteImageCommand image, CancellationToken cancellationToken)
+    public async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken)
     {
-        var deleteImageCommandValidator = imagesValidator.DeleteImageCommandValidator;
+        var deleteImageModelValidator = imagesValidator.DeleteImageValidator;
 
-        await deleteImageCommandValidator.ValidateAndThrowAsync(image, cancellationToken);
+        await deleteImageModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
-        return await imagesService.DeleteImageAsync(image, cancellationToken);
+        return await imagesService.DeleteImageAsync(id, cancellationToken);
     }
 
-    public async Task<Guid> UpdateImageAsync(UpdateImageCommand image, CancellationToken cancellationToken)
+    public async Task<Guid> UpdateImageAsync(UpdateImageModel image, CancellationToken cancellationToken)
     {
-        var updateImageCommandValidator = imagesValidator.UpdateImageCommandValidator;
+        var updateImageModelValidator = imagesValidator.UpdateImageModelValidator;
 
-        await updateImageCommandValidator.ValidateAndThrowAsync(image, cancellationToken);
+        await updateImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
 
         return await imagesService.UpdateImageAsync(image, cancellationToken);
     }

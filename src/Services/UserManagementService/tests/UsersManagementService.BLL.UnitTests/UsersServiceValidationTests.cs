@@ -17,12 +17,12 @@ public class UsersServiceValidationTests
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid_And_User_Is_Unique()
     {
         // Arrange
-        _usersRepositoryMock.IsUserUniqeAsync(CreateCommand.Id, CreateCommand.AuthId, CreateCommand.Username, CreateCommand.Email, It.IsAny<CancellationToken>())
+        _usersRepositoryMock.IsUserUniqeAsync(CreateModel.Id, CreateModel.AuthId, CreateModel.Username, CreateModel.Email, It.IsAny<CancellationToken>())
             .Returns(true);
-        var validator = new CreateUserCommandValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(CreateCommand);
+        var result = await validator.TestValidateAsync(CreateModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -32,13 +32,13 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_User_Is_Not_Unique()
     {
         // Arrange
-        _usersRepositoryMock.IsUserUniqeAsync(CreateCommand.Id, CreateCommand.AuthId, CreateCommand.Username, CreateCommand.Email, It.IsAny<CancellationToken>())
+        _usersRepositoryMock.IsUserUniqeAsync(CreateModel.Id, CreateModel.AuthId, CreateModel.Username, CreateModel.Email, It.IsAny<CancellationToken>())
             .Returns(false);
 
-        var validator = new CreateUserCommandValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(CreateCommand);
+        var result = await validator.TestValidateAsync(CreateModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c);
@@ -48,12 +48,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_Id_Is_Empty()
     {
         // Arrange
-        var invalidCommand = CreateCommand with { Id = Guid.Empty };
+        var invalidModel = CreateModel with { Id = Guid.Empty };
         
-        var validator = new CreateUserCommandValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.Id);
@@ -63,12 +63,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_AuthId_Is_Empty()
     {
         // Arrange
-        var invalidCommand = CreateCommand with { AuthId = Guid.Empty };
+        var invalidModel = CreateModel with { AuthId = Guid.Empty };
 
-        var validator = new CreateUserCommandValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.AuthId);
@@ -81,12 +81,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_DeletedEmail_Is_Invalid(string email)
     {
         // Arrange
-        var invalidCommand = CreateCommand with { Email = email };
+        var invalidModel = CreateModel with { Email = email };
 
-        var validator = new CreateUserCommandValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.Email);
@@ -96,13 +96,13 @@ public class UsersServiceValidationTests
     public async Task Should_Not_Have_Error_When_DeletedId_Is_Valid_And_User_Is_Exists()
     {
         // Arrange
-        _usersRepositoryMock.DoesUserExistAsync(DeleteCommand.Id, It.IsAny<CancellationToken>())
+        _usersRepositoryMock.DoesUserExistAsync(DeleteModel, It.IsAny<CancellationToken>())
             .Returns(true);
 
-        var validator = new DeleteUserCommandValidator(_usersRepositoryMock);
+        var validator = new DeleteUserValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(DeleteCommand);
+        var result = await validator.TestValidateAsync(DeleteModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -112,44 +112,44 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_DeletedId_Is_Empty()
     {
         // Arrange
-        var invalidCommand = DeleteCommand with { Id = Guid.Empty };
+        var invalidModel = Guid.Empty;
 
-        var validator = new DeleteUserCommandValidator(_usersRepositoryMock);
+        var validator = new DeleteUserValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(c => c.Id);
+        result.ShouldHaveValidationErrorFor(c => c);
     }
 
     [Fact]
     public async Task Should_Have_Error_When_DeletedUser_Does_Not_Exist()
     {
         // Arrange
-        _usersRepositoryMock.DoesUserExistAsync(DeleteCommand.Id, It.IsAny<CancellationToken>())
+        _usersRepositoryMock.DoesUserExistAsync(DeleteModel, It.IsAny<CancellationToken>())
             .Returns(false);
 
-        var validator = new DeleteUserCommandValidator(_usersRepositoryMock);
+        var validator = new DeleteUserValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(DeleteCommand);
+        var result = await validator.TestValidateAsync(DeleteModel);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(c => c.Id);
+        result.ShouldHaveValidationErrorFor(c => c);
     }
 
     [Fact]
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid_And_UpdatedUser_Is_Exists()
     {
         // Arrange
-        _usersRepositoryMock.DoesUserExistAsync(UpdateCommand.Id, It.IsAny<CancellationToken>())
+        _usersRepositoryMock.DoesUserExistAsync(UpdateModel.Id, It.IsAny<CancellationToken>())
             .Returns(true);
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(UpdateCommand);
+        var result = await validator.TestValidateAsync(UpdateModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -159,13 +159,13 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_UpdatedUser_Does_Not_Exist()
     {
         // Arrange
-        _usersRepositoryMock.DoesUserExistAsync(UpdateCommand.Id, It.IsAny<CancellationToken>())
+        _usersRepositoryMock.DoesUserExistAsync(UpdateModel.Id, It.IsAny<CancellationToken>())
             .Returns(false);
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(UpdateCommand);
+        var result = await validator.TestValidateAsync(UpdateModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.Id);
@@ -175,12 +175,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_Username_Is_Invalid()
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { Username = string.Empty };
+        var invalidModel = UpdateModel with { Username = string.Empty };
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.Username);
@@ -193,12 +193,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_UpdatedEmail_Is_Invalid(string email)
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { Email = email };
+        var invalidModel = UpdateModel with { Email = email };
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.Email);
@@ -208,7 +208,7 @@ public class UsersServiceValidationTests
     public async Task Should_Not_Have_Error_When_Optional_Fields_Are_Null()
     {
         // Arrange
-        var validCommand = UpdateCommand with
+        var validModel = UpdateModel with
         {
             FirstName = null,
             SecondName = null,
@@ -217,10 +217,10 @@ public class UsersServiceValidationTests
             IdentificationNumber = null
         };
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(validCommand);
+        var result = await validator.TestValidateAsync(validModel);
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(c => c.FirstName);
@@ -236,12 +236,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_FirstName_Is_Invalid(string name)
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { FirstName = name };
+        var invalidModel = UpdateModel with { FirstName = name };
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.FirstName);
@@ -253,12 +253,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_SecondName_Is_Invalid(string name)
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { SecondName = name };
+        var invalidModel = UpdateModel with { SecondName = name };
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.SecondName);
@@ -270,12 +270,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_LastName_Is_Invalid(string name)
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { LastName = name };
+        var invalidModel = UpdateModel with { LastName = name };
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.LastName);
@@ -287,12 +287,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_PassportNumber_Is_Invalid(string passport)
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { PassportNumber = passport };
+        var invalidModel = UpdateModel with { PassportNumber = passport };
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.PassportNumber);
@@ -304,12 +304,12 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_IdentificationNumber_Is_Invalid(string identidication)
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { IdentificationNumber = identidication };
+        var invalidModel = UpdateModel with { IdentificationNumber = identidication };
 
-        var validator = new UpdateUserCommandValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.IdentificationNumber);
@@ -319,10 +319,10 @@ public class UsersServiceValidationTests
     public async Task Should_Not_Have_Validation_Error_When_User_Exists()
     {
         // Arrange
-        _usersRepositoryMock.DoesUserExistAsync(GetQuery.Id, It.IsAny<CancellationToken>())
+        _usersRepositoryMock.DoesUserExistAsync(GetQuery, It.IsAny<CancellationToken>())
             .Returns(true);
 
-        var validator = new GetUserQueryValidator(_usersRepositoryMock);
+        var validator = new GetUserValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(GetQuery);
@@ -335,15 +335,15 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Validation_Error_When_User_Does_Not_Exist()
     {
         // Arrange
-        var invalidQuery = GetQuery with { Id = Guid.Empty };
+        var invalidQuery = Guid.Empty;
 
-        var validator = new GetUserQueryValidator(_usersRepositoryMock);
+        var validator = new GetUserValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(invalidQuery);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(q => q.Id);
+        result.ShouldHaveValidationErrorFor(q => q);
     }
 
     [Theory]

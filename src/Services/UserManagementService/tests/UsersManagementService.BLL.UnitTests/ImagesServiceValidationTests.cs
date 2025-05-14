@@ -15,10 +15,10 @@ public class ImagesServiceValidationTests
     public async Task Should_Not_Have_Error_When_All_Fields_Are_ValidAsync()
     {
         // Arrange
-        var validator = new CreateImageCommandValidator();
+        var validator = new CreateImageModelValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(CreateCommand);
+        var result = await validator.TestValidateAsync(CreateModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -28,11 +28,11 @@ public class ImagesServiceValidationTests
     public async Task Should_Have_Error_When_Id_Is_Empty()
     {
         // Arrange
-        var invalidCommand = CreateCommand with { Id = Guid.Empty };
-        var validator = new CreateImageCommandValidator();
+        var invalidModel = CreateModel with { Id = Guid.Empty };
+        var validator = new CreateImageModelValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -42,11 +42,11 @@ public class ImagesServiceValidationTests
     public async Task Should_Have_Error_When_UserId_Is_Empty()
     {
         // Arrange
-        var invalidCommand = CreateCommand with { UserId = Guid.Empty };
-        var validator = new CreateImageCommandValidator();
+        var invalidModel = CreateModel with { UserId = Guid.Empty };
+        var validator = new CreateImageModelValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.UserId);
@@ -58,11 +58,11 @@ public class ImagesServiceValidationTests
     public async Task Should_Have_Error_When_ImageUrl_Is_Invalid(string imageUrl)
     {
         // Arrange
-        var invalidCommand = CreateCommand with { ImageUrl = imageUrl };
-        var validator = new CreateImageCommandValidator();
+        var invalidModel = CreateModel with { ImageUrl = imageUrl };
+        var validator = new CreateImageModelValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.ImageUrl);
@@ -72,13 +72,13 @@ public class ImagesServiceValidationTests
     public async Task Should_Not_Have_Error_When_DeletedId_Is_Valid_And_User_Is_Exists()
     {
         // Arrange
-        _imagesRepositoryMock.DoesImageExistAsync(DeleteCommand.Id, It.IsAny<CancellationToken>())
+        _imagesRepositoryMock.DoesImageExistAsync(DeleteModel, It.IsAny<CancellationToken>())
             .Returns(true);
 
-        var validator = new DeleteImageCommandValidator(_imagesRepositoryMock);
+        var validator = new DeleteImageValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(DeleteCommand);
+        var result = await validator.TestValidateAsync(DeleteModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -88,44 +88,44 @@ public class ImagesServiceValidationTests
     public async Task Should_Have_Error_When_DeletedId_Is_Empty()
     {
         // Arrange
-        var invalidCommand = DeleteCommand with { Id = Guid.Empty };
+        var invalidModel = Guid.Empty;
 
-        var validator = new DeleteImageCommandValidator(_imagesRepositoryMock);
+        var validator = new DeleteImageValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(c => c.Id);
+        result.ShouldHaveValidationErrorFor(c => c);
     }
 
     [Fact]
     public async Task Should_Have_Error_When_DeletedUser_Does_Not_Exist()
     {
         // Arrange
-        _imagesRepositoryMock.DoesImageExistAsync(DeleteCommand.Id, It.IsAny<CancellationToken>())
+        _imagesRepositoryMock.DoesImageExistAsync(DeleteModel, It.IsAny<CancellationToken>())
             .Returns(false);
 
-        var validator = new DeleteImageCommandValidator(_imagesRepositoryMock);
+        var validator = new DeleteImageValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(DeleteCommand);
+        var result = await validator.TestValidateAsync(DeleteModel);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(c => c.Id);
+        result.ShouldHaveValidationErrorFor(c => c);
     }
 
     [Fact]
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
     {
         // Arrange
-        _imagesRepositoryMock.DoesImageExistAsync(UpdateCommand.Id, It.IsAny<CancellationToken>())
+        _imagesRepositoryMock.DoesImageExistAsync(UpdateModel.Id, It.IsAny<CancellationToken>())
             .Returns(true);
 
-        var validator = new UpdateImageCommandValidator(_imagesRepositoryMock);
+        var validator = new UpdateImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(UpdateCommand);
+        var result = await validator.TestValidateAsync(UpdateModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -135,12 +135,12 @@ public class ImagesServiceValidationTests
     public async Task Should_Have_Error_When_UpdatedId_Is_Empty()
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { Id = Guid.Empty };
+        var invalidModel = UpdateModel with { Id = Guid.Empty };
 
-        var validator = new UpdateImageCommandValidator(_imagesRepositoryMock);
+        var validator = new UpdateImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.Id);
@@ -150,12 +150,12 @@ public class ImagesServiceValidationTests
     public async Task Should_Have_Error_When_UpdatedUserId_Is_Empty()
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { UserId = Guid.Empty };
+        var invalidModel = UpdateModel with { UserId = Guid.Empty };
 
-        var validator = new UpdateImageCommandValidator(_imagesRepositoryMock);
+        var validator = new UpdateImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.UserId);
@@ -167,12 +167,12 @@ public class ImagesServiceValidationTests
     public async Task Should_Have_Error_When_YpdatedImageUrl_Is_Invalid(string imageUrl)
     {
         // Arrange
-        var invalidCommand = UpdateCommand with { ImageUrl = imageUrl };
+        var invalidModel = UpdateModel with { ImageUrl = imageUrl };
 
-        var validator = new UpdateImageCommandValidator(_imagesRepositoryMock);
+        var validator = new UpdateImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidCommand);
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.ImageUrl);

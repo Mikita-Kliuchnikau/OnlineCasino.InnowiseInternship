@@ -31,7 +31,7 @@ public static class UsersMappingConfig
                 ? src.Images.Select(i => i.Adapt<ImageViewModel>()).ToList()
                 : null);
 
-        TypeAdapterConfig<UpdateUserCommand, UserEntity>.NewConfig()
+        TypeAdapterConfig<UpdateUserModel, UserEntity>.NewConfig()
             .Map(u => u.Id, src => src.Id)
             .Map(u => u.AuthId, src => src.AuthId)
             .Map(u => u.Username, src => src.Username)
@@ -47,7 +47,7 @@ public static class UsersMappingConfig
             .Map(u => u.PassportNumber, src => src.PassportNumber)
             .Map(u => u.IdentificationNumber, src => src.VerificationStatus);
 
-        TypeAdapterConfig<UpdateUserCommand, UserEntity>.NewConfig()
+        TypeAdapterConfig<UpdateUserModel, UserEntity>.NewConfig()
             .Map(u => u.Id, src => src.Id)
             .Map(u => u.AuthId, src => src.AuthId)
             .Map(u => u.Username, src => src.Username)

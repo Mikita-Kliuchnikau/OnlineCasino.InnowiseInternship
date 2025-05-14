@@ -2,7 +2,7 @@
 
 namespace UsersManagementService.BLL.Models.Image.CreateImage;
 
-public record CreateImageCommand(
+public record CreateImageModel(
     Guid Id,
     Guid UserId,
     string ImageUrl,

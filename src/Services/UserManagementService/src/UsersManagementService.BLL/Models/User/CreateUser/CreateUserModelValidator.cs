@@ -6,11 +6,11 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Models.User.CreateUser;
 
-public class CreateUserCommandValidator : AbstractValidator <CreateUserCommand>
+public class CreateUserModelValidator : AbstractValidator <CreateUserModel>
 {
     private static readonly ResourceHelper<UserMessages> resourceHelper = new(Common.Enums.CulturePreference.English);
 
-    public CreateUserCommandValidator(IUsersRepository usersRepository)
+    public CreateUserModelValidator(IUsersRepository usersRepository)
     {
         RuleFor(u => u.Id)
             .BaseIdRules();

@@ -4,9 +4,9 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Models.User.UpdateUser;
 
-public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
+public class UpdateUserModelValidator : AbstractValidator<UpdateUserModel>
 {
-    public UpdateUserCommandValidator(IUsersRepository usersRepository)
+    public UpdateUserModelValidator(IUsersRepository usersRepository)
     {
         RuleFor(u => u.Id)
             .DoesUserExist(usersRepository)
