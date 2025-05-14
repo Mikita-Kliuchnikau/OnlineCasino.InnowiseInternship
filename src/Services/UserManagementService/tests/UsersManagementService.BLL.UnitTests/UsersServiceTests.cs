@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using UsersManagementService.BLL.Services;
 using UsersManagementService.Common.Exceptions;
 using UsersManagementService.DAL.Entites.Core;
@@ -129,6 +130,8 @@ public class UsersServiceTests
     {
         //Arrange
         var invalidQuery = Guid.Empty;
+        _usersRepositoryMock.GetByIdAsync(Arg.Any<Guid>(), default)
+            .ThrowsAsync(new NotFoundException("", null!));
         var service = new UsersService(_usersRepositoryMock);
 
         //Act
