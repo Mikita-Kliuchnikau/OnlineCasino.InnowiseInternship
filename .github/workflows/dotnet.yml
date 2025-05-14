@@ -35,11 +35,14 @@ jobs:
         run: |
           mkdir -p ./.sonar/scanner
           dotnet tool install dotnet-sonarscanner --tool-path ./.sonar/scanner
+      - name: Install Dotenet-Coverage
+        run: |
+          mkdir -p ./.sonar/scanner
+          dotnet tool install dotnet-coverage --tool-path ./.sonar/scanner
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet tool install --global dotnet-coverage
           .sonar/scanner/dotnet-sonarscanner begin /k:"Mikita-Kliuchnikau_OnlineCasino.InnowiseInternship" /o:"mikita-kliuchnikau" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet build --configuration Release
       - name: Test
