@@ -35,15 +35,13 @@ public class TimestampInterceptor : SaveChangesInterceptor
             return base.SavingChangesAsync(eventData, result, cancellationToken);
         }
 
+        foreach (var entry in eventData.Context.ChangeTracker.Entries<IHasTimestamps>())
         {
-            foreach (var entry in eventData.Context.ChangeTracker.Entries<IHasTimestamps>())
+            if (entry.State == EntityState.Added)
             {
-                if (entry.State == EntityState.Added)
-                {
-                    entry.Entity.CreatedAt = DateTime.UtcNow;
-                }
+                entry.Entity.CreatedAt = DateTime.UtcNow;
             }
-            return base.SavingChangesAsync(eventData, result, cancellationToken);
         }
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 }

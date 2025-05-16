@@ -25,7 +25,7 @@ public class UsersService(IUsersRepository usersRepository) : IUsersService
         return await usersRepository.DeleteAsync(id, cancellationToken);
     }
 
-    public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery getPagedUsersQuery, CancellationToken cancellationToken)
+    public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery getPagedUsersQuery, CancellationToken cancellationToken = default)
     {
         var pagedUsersfilter = getPagedUsersQuery.Adapt<PagedUsersFilter>();
 
@@ -35,7 +35,7 @@ public class UsersService(IUsersRepository usersRepository) : IUsersService
          return pagedUsersProjection.Adapt<PagedUsersViewModel>();
     }
 
-    public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var userEntity = await usersRepository.GetByIdAsync(id, cancellationToken);
 
@@ -47,7 +47,7 @@ public class UsersService(IUsersRepository usersRepository) : IUsersService
         return userEntity.Adapt<UserViewModel>();
     }
 
-    public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken)
+    public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default)
     {
         return await usersRepository.UpdateAsync(user.Adapt<UserEntity>(), cancellationToken);
     }

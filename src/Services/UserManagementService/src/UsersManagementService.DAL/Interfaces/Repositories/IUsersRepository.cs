@@ -5,15 +5,15 @@ namespace UsersManagementService.DAL.Interfaces.Repositories;
 
 public interface IUsersRepository
 {
-    Task<Guid> CreateAsync(UserEntity user, CancellationToken cancellationToken);
+    Task<Guid> CreateAsync(UserEntity user, CancellationToken cancellationToken = default);
 
-    Task<PagedUsersProjection> GetPagedAsync(PagedUsersFilter pagedUsersFilter, CancellationToken cancellationToken);
+    Task<PagedUsersProjection> GetPagedAsync(PagedUsersFilter pagedUsersFilter, CancellationToken cancellationToken = default);
 
-    Task<UserEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<UserEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<Guid> UpdateAsync(UserEntity user, CancellationToken cancellationToken);
+    Task<Guid> UpdateAsync(UserEntity user, CancellationToken cancellationToken = default);
 
-    Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken);
+    Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<bool> IsUserUniqeAsync(
         Guid? id = null,

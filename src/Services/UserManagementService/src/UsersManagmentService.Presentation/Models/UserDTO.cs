@@ -4,17 +4,17 @@ namespace UsersManagmentService.Presentation.Models;
 
 public class UserDto
 {
-    required public Guid Id;
-    required public Guid AuthId;
-    required public string Username;
-    required public string Email;
-    public decimal? Balance;
-    public VerificationStatus? VerificationStatus;
-    public bool? IsBanned;
-    public string? FirstName = null;
-    public string? SecondName = null;
-    public string? LastName = null;
-    public DateOnly? BirthDate = null;
-    public string? PassportNumber = null;
-    public string? IdentificationNumber = null;
+    required public Guid Id { get; set; }
+    required public Guid AuthId { get; set; }
+    required public string Username { get; set; }
+    required public string Email { get; set; }
+    public decimal? Balance { get; set; }
+    public VerificationStatus? VerificationStatus { get; set; }
+    public bool? IsBanned { get; set; }
+    public string? FirstName { get; set; }
+    public string? SecondName { get; set; }  
+    public string? LastName { get; set; }
+    public DateOnly? BirthDate { get; set; }
+    public string? PassportNumber { get; set; }
+    public string? IdentificationNumber { get; set; }
 }
