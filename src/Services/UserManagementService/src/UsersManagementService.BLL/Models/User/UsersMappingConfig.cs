@@ -6,7 +6,7 @@ using UsersManagementService.BLL.Models.User.GetPagedUsers;
 using UsersManagementService.BLL.Models.User.GetUser;
 using UsersManagementService.BLL.Models.User.UpdateUser;
 using UsersManagementService.DAL.Entites.Core;
-using UsersManagementService.DAL.Entites.DTO;
+using UsersManagementService.DAL.Entites.Dto;
 
 namespace UsersManagementService.BLL.Models.User;
 

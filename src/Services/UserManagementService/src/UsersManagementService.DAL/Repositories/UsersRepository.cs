@@ -2,7 +2,7 @@
 using UsersManagementService.Common.Exceptions;
 using UsersManagementService.DAL.Context;
 using UsersManagementService.DAL.Entites.Core;
-using UsersManagementService.DAL.Entites.DTO;
+using UsersManagementService.DAL.Entites.Dto;
 using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.DAL.Repositories;
