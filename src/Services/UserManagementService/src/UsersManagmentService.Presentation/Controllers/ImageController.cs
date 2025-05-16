@@ -15,15 +15,15 @@ public class ImagesController(IImagesService imagesService) : ControllerBase
     [HttpPost]
     public async Task<Guid> Create(ImageDto image, CancellationToken cancellationToken = default)
     {
-        var ImageModel = image.Adapt<CreateImageModel>();
-        return await imagesService.CreateImageAsync(ImageModel, cancellationToken);
+        var imageModel = image.Adapt<CreateImageModel>();
+        return await imagesService.CreateImageAsync(imageModel, cancellationToken);
     }
 
     [HttpPut]
     public async Task<Guid> Update(ImageDto image, CancellationToken cancellationToken = default)
     {
-        var ImageModel = image.Adapt<UpdateImageModel>();
-        return await imagesService.UpdateImageAsync(ImageModel, cancellationToken);
+        var imageModel = image.Adapt<UpdateImageModel>();
+        return await imagesService.UpdateImageAsync(imageModel, cancellationToken);
     }
 
     [HttpDelete("{id}")]

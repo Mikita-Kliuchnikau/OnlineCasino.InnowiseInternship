@@ -2,8 +2,10 @@
 
 namespace UsersManagmentService.Presentation.Models;
 
-public record ImageDto(
-    Guid Id,
-    Guid UserId,
-    string ImageUrl,
-    ImageType Type);
+public class ImageDto
+{
+    required public Guid Id;
+    required public Guid UserId;
+    required public string ImageUrl;
+    required public ImageType Type;
+}
