@@ -19,7 +19,7 @@ namespace UsersManagementService.BLL.Services.Decorators
             return await usersService.CreateUserAsync(user, cancellationToken);
         }
 
-        public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var deleteUserModelValidator = usersValidator.DeleteUserValidator;
 

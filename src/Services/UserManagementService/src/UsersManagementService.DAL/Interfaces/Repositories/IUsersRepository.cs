@@ -22,5 +22,5 @@ public interface IUsersRepository
         string? email = null,
         CancellationToken cancellationToken = default);
 
-    Task<bool> DoesUserExistAsync(Guid id, CancellationToken cancellationToken);
+    Task<bool> DoesUserExistAsync(Guid id, CancellationToken cancellationToken = default);
 }
