@@ -15,5 +15,4 @@ public record UserViewModel(
     string? LastName = null,
     DateOnly? BirthDate = null,
     string? PassportNumber = null,
-    string? IdentificationNumber = null,
-    List<ImageViewModel>? Images = null);
+    string? IdentificationNumber = null);

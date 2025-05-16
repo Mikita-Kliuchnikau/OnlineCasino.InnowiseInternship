@@ -1,11 +1,22 @@
+using UsersManagmentService.Presentation.DI;
 using UsersManagmentService.Presentation.Middleware;
-using UsersManagementService.BLL.DI;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddBLL(builder.Configuration);
+
+builder.Services.AddDependencies(builder.Configuration);
+
+builder.Services.AddControllers();
+
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 app.UseExceptionMiddleware();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 await app.RunAsync();

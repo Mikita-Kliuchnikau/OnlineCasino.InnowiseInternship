@@ -1,15 +1,15 @@
 ﻿using UsersManagementService.Common.Enums;
 
-namespace UsersManagementService.BLL.Models.User.UpdateUser;
+namespace UsersManagmentService.Presentation.Models;
 
-public record UpdateUserModel(
-    Guid Id, 
+public record UserDTO(
+    Guid Id,
     Guid AuthId,
     string Username,
     string Email,
     decimal Balance,
-    VerificationStatus VerificationStatus,
-    bool IsBanned,
+    VerificationStatus? VerificationStatus,
+    bool? IsBanned,
     string? FirstName = null,
     string? SecondName = null,
     string? LastName = null,
