@@ -2,7 +2,7 @@
 
 namespace UsersManagmentService.Presentation.Models;
 
-public record UserDTO(
+public record UserDto(
     Guid Id,
     Guid AuthId,
     string Username,

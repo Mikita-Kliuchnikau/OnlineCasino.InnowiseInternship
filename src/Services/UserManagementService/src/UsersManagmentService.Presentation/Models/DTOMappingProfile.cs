@@ -6,17 +6,17 @@ using UsersManagementService.BLL.Models.User.UpdateUser;
 
 namespace UsersManagmentService.Presentation.Models;
 
-public static class DTOMappingProfile
+public static class DtoMappingProfile
 {
-    public static void AddDTOMappingConfig(this IServiceCollection services)
+    public static void AddDtoMappingConfig(this IServiceCollection services)
     {
-        TypeAdapterConfig<UserDTO, CreateUserModel>.NewConfig()
+        TypeAdapterConfig<UserDto, CreateUserModel>.NewConfig()
             .Map(u => u.Id, src => src.Id)
             .Map(u => u.AuthId, src => src.AuthId)
             .Map(u => u.Username, src => src.Username)
             .Map(u => u.Email, src => src.Email);
 
-        TypeAdapterConfig<UserDTO, UpdateUserModel>.NewConfig() 
+        TypeAdapterConfig<UserDto, UpdateUserModel>.NewConfig() 
             .Map(u => u.Id, src => src.Id)
             .Map(u => u.AuthId, src => src.AuthId)
             .Map(u => u.Username, src => src.Username)
@@ -31,13 +31,13 @@ public static class DTOMappingProfile
             .Map(u => u.PassportNumber, src => src.PassportNumber)
             .Map(u => u.IdentificationNumber, src => src.VerificationStatus);
 
-        TypeAdapterConfig<ImageDTO, CreateImageModel>.NewConfig()
+        TypeAdapterConfig<ImageDto, CreateImageModel>.NewConfig()
             .Map(i => i.Id, src => src.Id)
             .Map(i => i.UserId, src => src.UserId)
             .Map(i => i.ImageUrl, src => src.ImageUrl)
             .Map(i => i.Type, src => src.Type);
 
-        TypeAdapterConfig<ImageDTO, UpdateImageModel>.NewConfig()
+        TypeAdapterConfig<ImageDto, UpdateImageModel>.NewConfig()
             .Map(i => i.Id, src => src.Id)
             .Map(i => i.UserId, src => src.UserId)
             .Map(i => i.ImageUrl, src => src.ImageUrl)

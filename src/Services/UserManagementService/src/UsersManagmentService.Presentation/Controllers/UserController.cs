@@ -5,13 +5,14 @@ using UsersManagementService.BLL.Models.User.CreateUser;
 using UsersManagementService.BLL.Models.User.GetPagedUsers;
 using UsersManagementService.BLL.Models.User.GetUser;
 using UsersManagementService.BLL.Models.User.UpdateUser;
+using UsersManagmentService.Presentation.Constants;
 using UsersManagmentService.Presentation.Models;
 
 namespace UsersManagmentService.Presentation.Controllers;
 
-[Produces("application/json")]
+[Produces(MediaTypeConstants.Json)]
 [Route("api/[controller]")]
-public class UserController(IUsersService usersService) : ControllerBase
+public class UsersController(IUsersService usersService) : ControllerBase
 {
     [HttpGet]
     public async Task<PagedUsersViewModel> Get(
@@ -30,14 +31,14 @@ public class UserController(IUsersService usersService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Guid> Create([FromQuery] UserDTO user, CancellationToken cancellationToken = default)
+    public async Task<Guid> Create([FromBody] UserDto user, CancellationToken cancellationToken = default)
     {
         var userModel = user.Adapt<CreateUserModel>();
         return await usersService.CreateUserAsync(userModel, cancellationToken);
     }
 
     [HttpPut]
-    public async Task<Guid> Update([FromQuery] UserDTO user, CancellationToken cancellationToken = default)
+    public async Task<Guid> Update([FromBody] UserDto user, CancellationToken cancellationToken = default)
     {
         var userModel = user.Adapt<UpdateUserModel>();
         return await usersService.UpdateUserAsync(userModel, cancellationToken);

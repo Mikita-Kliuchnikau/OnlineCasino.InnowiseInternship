@@ -2,7 +2,7 @@
 
 namespace UsersManagmentService.Presentation.Models;
 
-public record ImageDTO(
+public record ImageDto(
     Guid Id,
     Guid UserId,
     string ImageUrl,
