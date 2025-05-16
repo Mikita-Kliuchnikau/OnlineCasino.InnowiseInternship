@@ -6,5 +6,4 @@ public record UpdateImageModel(
     Guid Id, 
     Guid UserId, 
     string ImageUrl, 
-    ImageType Type, 
-    bool IsDeleted);
+    ImageType Type);

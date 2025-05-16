@@ -1,5 +1,5 @@
 ﻿using UsersManagementService.DAL.Entites.Core;
-using UsersManagementService.DAL.Entites.DTO;
+using UsersManagementService.DAL.Entites.Dto;
 
 namespace UsersManagementService.DAL.Interfaces.Repositories;
 

@@ -14,7 +14,7 @@ public static class UsersServiceTestEntities
     public static readonly Guid DeleteModel = Guid.NewGuid();
     public static readonly UpdateUserModel UpdateModel = new(
         Id: Guid.NewGuid(), AuthId: Guid.NewGuid(), Username: "user", Email: "user@email.com", Balance: 0,
-        VerificationStatus: VerificationStatus.UnVerified, IsBanned: false, IsDeleted: false, FirstName: "user",
+        VerificationStatus: VerificationStatus.UnVerified, IsBanned: false, FirstName: "user",
         SecondName: "user", LastName: "user", PassportNumber: "123456789", IdentificationNumber: "987654321");
     public static readonly Guid GetQuery = Guid.NewGuid();
     

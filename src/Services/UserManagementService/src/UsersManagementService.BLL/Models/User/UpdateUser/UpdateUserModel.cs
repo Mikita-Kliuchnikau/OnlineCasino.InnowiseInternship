@@ -1,5 +1,4 @@
 ﻿using UsersManagementService.Common.Enums;
-using UsersManagementService.DAL.Entites.Core;
 
 namespace UsersManagementService.BLL.Models.User.UpdateUser;
 
@@ -11,11 +10,9 @@ public record UpdateUserModel(
     decimal Balance,
     VerificationStatus VerificationStatus,
     bool IsBanned,
-    bool IsDeleted,
     string? FirstName = null,
     string? SecondName = null,
     string? LastName = null,
     DateOnly? BirthDate = null,
     string? PassportNumber = null,
-    string? IdentificationNumber = null,
-    List<ImageEntity>? Images = null);
+    string? IdentificationNumber = null);

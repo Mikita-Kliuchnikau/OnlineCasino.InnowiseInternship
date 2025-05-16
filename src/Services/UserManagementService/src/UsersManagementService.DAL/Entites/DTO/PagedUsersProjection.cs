@@ -1,6 +1,6 @@
 ﻿using UsersManagementService.DAL.Entites.Core;
 
-namespace UsersManagementService.DAL.Entites.DTO;
+namespace UsersManagementService.DAL.Entites.Dto;
 
 public class PagedUsersProjection
 {

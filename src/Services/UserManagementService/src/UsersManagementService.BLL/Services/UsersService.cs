@@ -7,7 +7,7 @@ using UsersManagementService.DAL.Interfaces.Repositories;
 using UsersManagementService.BLL.Interfaces.Services;
 using Mapster;
 using UsersManagementService.DAL.Entites.Core;
-using UsersManagementService.DAL.Entites.DTO;
+using UsersManagementService.DAL.Entites.Dto;
 
 namespace UsersManagementService.BLL.Services;
 

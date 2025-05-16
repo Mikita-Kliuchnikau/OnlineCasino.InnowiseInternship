@@ -11,7 +11,7 @@ public static class ImageValidationTestEntities
 {
     public static readonly CreateImageModel CreateModel = new(Guid.NewGuid(), Guid.NewGuid(), "url.com", ImageType.Default);
     public static readonly Guid DeleteModel = Guid.NewGuid();
-    public static readonly UpdateImageModel UpdateModel = new(Guid.NewGuid(), Guid.NewGuid(), "url.com", ImageType.Default, false);
+    public static readonly UpdateImageModel UpdateModel = new(Guid.NewGuid(), Guid.NewGuid(), "url.com", ImageType.Default);
 
     public static readonly IImagesRepository _imagesRepositoryMock = Substitute.For<IImagesRepository>();
 }
