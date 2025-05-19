@@ -2,14 +2,13 @@
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.Image.CreateImage;
-using UsersManagementService.BLL.Models.Image.DeleteImage;
 using UsersManagementService.BLL.Models.Image.UpdateImage;
 
 namespace UsersManagementService.BLL.Services.Decorators;
 
 public class ImagesServiceValidationDecorator(IImagesService imagesService, IImagesValidator imagesValidator) : IImagesService
 {
-    public async Task<Guid> CreateImageAsync(CreateImageModel image, CancellationToken cancellationToken)
+    public async Task<Guid> CreateImageAsync(CreateImageModel image, CancellationToken cancellationToken = default)
     {
         var createImageModelValidator = imagesValidator.CreateImageModelValidator;
 
@@ -18,7 +17,7 @@ public class ImagesServiceValidationDecorator(IImagesService imagesService, IIma
         return await imagesService.CreateImageAsync(image, cancellationToken);
     }
 
-    public async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var deleteImageModelValidator = imagesValidator.DeleteImageValidator;
 
@@ -27,7 +26,7 @@ public class ImagesServiceValidationDecorator(IImagesService imagesService, IIma
         return await imagesService.DeleteImageAsync(id, cancellationToken);
     }
 
-    public async Task<Guid> UpdateImageAsync(UpdateImageModel image, CancellationToken cancellationToken)
+    public async Task<Guid> UpdateImageAsync(UpdateImageModel image, CancellationToken cancellationToken = default)
     {
         var updateImageModelValidator = imagesValidator.UpdateImageModelValidator;
 

@@ -7,13 +7,13 @@ namespace UsersManagementService.BLL.Interfaces.Services;
 
 public interface IUsersService
 {
-    Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery users, CancellationToken cancellationToken);
+    Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery users, CancellationToken cancellationToken = default);
 
-    Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken);
+    Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken = default);
 
-    Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken);
+    Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default);
 
-    Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken);
+    Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default);
 }

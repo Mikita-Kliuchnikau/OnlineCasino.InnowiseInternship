@@ -4,8 +4,8 @@ namespace UsersManagmentService.Presentation.Models;
 
 public class ImageDto
 {
-    required public Guid Id;
-    required public Guid UserId;
-    required public string ImageUrl;
-    required public ImageType Type;
+    required public Guid Id { get; set; }
+    required public Guid UserId { get; set; }
+    required public string ImageUrl { get; set; }
+    required public ImageType Type { get; set; }
 }

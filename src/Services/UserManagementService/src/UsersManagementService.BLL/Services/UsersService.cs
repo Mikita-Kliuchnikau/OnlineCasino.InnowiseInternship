@@ -13,11 +13,11 @@ namespace UsersManagementService.BLL.Services;
 
 public class UsersService(IUsersRepository usersRepository) : IUsersService
 {
-    public async Task<Guid> CreateUserAsync(CreateUserModel createUserModel, CancellationToken cancellationToken = default)
+    public async Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken = default)
     {
-        var user = createUserModel.Adapt<UserEntity>();
+        var userEntity = user.Adapt<UserEntity>();
 
-        return await usersRepository.CreateAsync(user, cancellationToken);
+        return await usersRepository.CreateAsync(userEntity, cancellationToken);
     }
 
     public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
@@ -25,9 +25,9 @@ public class UsersService(IUsersRepository usersRepository) : IUsersService
         return await usersRepository.DeleteAsync(id, cancellationToken);
     }
 
-    public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery getPagedUsersQuery, CancellationToken cancellationToken)
+    public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery users, CancellationToken cancellationToken = default)
     {
-        var pagedUsersfilter = getPagedUsersQuery.Adapt<PagedUsersFilter>();
+        var pagedUsersfilter = users.Adapt<PagedUsersFilter>();
 
         var pagedUsersProjection = await usersRepository
            .GetPagedAsync(pagedUsersfilter, cancellationToken);
@@ -35,7 +35,7 @@ public class UsersService(IUsersRepository usersRepository) : IUsersService
          return pagedUsersProjection.Adapt<PagedUsersViewModel>();
     }
 
-    public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var userEntity = await usersRepository.GetByIdAsync(id, cancellationToken);
 
@@ -47,7 +47,7 @@ public class UsersService(IUsersRepository usersRepository) : IUsersService
         return userEntity.Adapt<UserViewModel>();
     }
 
-    public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken)
+    public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default)
     {
         return await usersRepository.UpdateAsync(user.Adapt<UserEntity>(), cancellationToken);
     }
