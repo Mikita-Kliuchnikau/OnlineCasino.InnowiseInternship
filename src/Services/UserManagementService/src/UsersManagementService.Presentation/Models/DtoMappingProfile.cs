@@ -4,7 +4,7 @@ using UsersManagementService.BLL.Models.Image.UpdateImage;
 using UsersManagementService.BLL.Models.User.CreateUser;
 using UsersManagementService.BLL.Models.User.UpdateUser;
 
-namespace UsersManagmentService.Presentation.Models;
+namespace UsersManagementService.Presentation.Models;
 
 public static class DtoMappingProfile
 {

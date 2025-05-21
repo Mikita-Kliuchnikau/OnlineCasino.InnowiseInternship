@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using UsersManagmentService.Presentation.Constants;
+using UsersManagementService.Presentation.Constants;
 
-namespace UsersManagmentService.Presentation.Middleware;
+namespace UsersManagementService.Presentation.Middleware;
 
 public class ExceptionMiddleware(RequestDelegate next)
 {
