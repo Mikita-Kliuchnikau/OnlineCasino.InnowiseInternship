@@ -1,9 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
 using UsersManagementService.DAL.Context;
-using UsersManagmentService.Presentation.Models;
+using UsersManagementService.Presentation.Models;
 
 namespace UsersManagementService.IntegrationTests;
 
