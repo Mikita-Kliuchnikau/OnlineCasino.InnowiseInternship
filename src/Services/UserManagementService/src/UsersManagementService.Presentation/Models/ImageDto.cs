@@ -1,6 +1,6 @@
 ﻿using UsersManagementService.Common.Enums;
 
-namespace UsersManagmentService.Presentation.Models;
+namespace UsersManagementService.Presentation.Models;
 
 public class ImageDto
 {

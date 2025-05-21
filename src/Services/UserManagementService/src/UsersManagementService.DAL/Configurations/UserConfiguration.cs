@@ -20,6 +20,8 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
         builder.Property(user => user.Balance).IsRequired();
         builder.Property(user => user.VerificationStatus).IsRequired();
         builder.Property(user => user.IsBanned).IsRequired();
+        builder.Property(user => user.IsDeleted).IsRequired();
+        builder.Property(user => user.CreatedAt).IsRequired();
         builder.Property(user => user.FirstName).HasMaxLength(50);
         builder.Property(user => user.SecondName).HasMaxLength(50);
         builder.Property(user => user.LastName).HasMaxLength(50);

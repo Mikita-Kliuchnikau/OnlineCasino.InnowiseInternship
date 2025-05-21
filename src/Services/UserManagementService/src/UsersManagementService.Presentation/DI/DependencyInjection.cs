@@ -1,7 +1,7 @@
 ﻿using UsersManagementService.BLL.DI;
-using UsersManagmentService.Presentation.Models;
+using UsersManagementService.Presentation.Models;
 
-namespace UsersManagmentService.Presentation.DI;
+namespace UsersManagementService.Presentation.DI;
 
 public static class DependencyInjection
 {

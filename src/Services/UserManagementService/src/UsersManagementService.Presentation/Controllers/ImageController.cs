@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Models.Image.CreateImage;
 using UsersManagementService.BLL.Models.Image.UpdateImage;
-using UsersManagmentService.Presentation.Constants;
-using UsersManagmentService.Presentation.Models;
+using UsersManagementService.Presentation.Constants;
+using UsersManagementService.Presentation.Models;
 
-namespace UsersManagmentService.Presentation.Controllers;
+namespace UsersManagementService.Presentation.Controllers;
 
 [Produces(MediaTypeConstants.Json)]
 [Route("api/[controller]")]

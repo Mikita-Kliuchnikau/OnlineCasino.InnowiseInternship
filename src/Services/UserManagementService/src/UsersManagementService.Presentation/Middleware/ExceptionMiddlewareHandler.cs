@@ -1,4 +1,4 @@
-﻿namespace UsersManagmentService.Presentation.Middleware;
+﻿namespace UsersManagementService.Presentation.Middleware;
 
 public static class ExceptionMiddlewareHandler
 {

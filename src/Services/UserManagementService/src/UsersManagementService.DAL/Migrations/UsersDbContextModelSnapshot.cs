@@ -17,18 +17,18 @@ namespace UsersManagementService.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "9.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("UsersManagementService.DAL.Entites.ImageEntity", b =>
+            modelBuilder.Entity("UsersManagementService.DAL.Entites.Core.ImageEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("ImagesUrl")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -48,7 +48,7 @@ namespace UsersManagementService.DAL.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("UsersManagementService.DAL.Entites.UserEntity", b =>
+            modelBuilder.Entity("UsersManagementService.DAL.Entites.Core.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +91,7 @@ namespace UsersManagementService.DAL.Migrations
                     b.Property<string>("SecondName")
                         .HasColumnType("text");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -103,9 +103,9 @@ namespace UsersManagementService.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("UsersManagementService.DAL.Entites.ImageEntity", b =>
+            modelBuilder.Entity("UsersManagementService.DAL.Entites.Core.ImageEntity", b =>
                 {
-                    b.HasOne("UsersManagementService.DAL.Entites.UserEntity", "User")
+                    b.HasOne("UsersManagementService.DAL.Entites.Core.UserEntity", "User")
                         .WithMany("Images")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -114,7 +114,7 @@ namespace UsersManagementService.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("UsersManagementService.DAL.Entites.UserEntity", b =>
+            modelBuilder.Entity("UsersManagementService.DAL.Entites.Core.UserEntity", b =>
                 {
                     b.Navigation("Images");
                 });
