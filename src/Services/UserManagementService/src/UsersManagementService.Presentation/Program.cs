@@ -1,5 +1,5 @@
-using UsersManagmentService.Presentation.DI;
-using UsersManagmentService.Presentation.Middleware;
+using UsersManagementService.Presentation.DI;
+using UsersManagementService.Presentation.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.MapControllers();
 
 app.UseExceptionMiddleware();
 

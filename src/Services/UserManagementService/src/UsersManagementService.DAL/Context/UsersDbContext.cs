@@ -5,6 +5,7 @@ namespace UsersManagementService.DAL.Context;
 
 public class UsersDbContext : DbContext
 {
+    public UsersDbContext() { }
     public UsersDbContext(DbContextOptions<UsersDbContext> options) : base(options)
     {
         Database.Migrate();

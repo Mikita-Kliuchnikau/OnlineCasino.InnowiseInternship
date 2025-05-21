@@ -5,10 +5,10 @@ using UsersManagementService.BLL.Models.User.CreateUser;
 using UsersManagementService.BLL.Models.User.GetPagedUsers;
 using UsersManagementService.BLL.Models.User.GetUser;
 using UsersManagementService.BLL.Models.User.UpdateUser;
-using UsersManagmentService.Presentation.Constants;
-using UsersManagmentService.Presentation.Models;
+using UsersManagementService.Presentation.Constants;
+using UsersManagementService.Presentation.Models;
 
-namespace UsersManagmentService.Presentation.Controllers;
+namespace UsersManagementService.Presentation.Controllers;
 
 [Produces(MediaTypeConstants.Json)]
 [Route("api/[controller]")]
