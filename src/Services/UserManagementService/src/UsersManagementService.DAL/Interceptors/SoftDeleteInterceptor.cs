@@ -17,7 +17,7 @@ public class SoftDeleteInterceptor : SaveChangesInterceptor
 
         foreach (var entry in eventData.Context.ChangeTracker.Entries<ISoftDeletable>())
         {
-            if (entry.State == EntityState.Added)
+            if (entry.State == EntityState.Deleted)
             {
                 entry.State = EntityState.Modified;
                 entry.Entity.IsDeleted = true;
@@ -38,8 +38,11 @@ public class SoftDeleteInterceptor : SaveChangesInterceptor
 
         foreach (var entry in eventData.Context.ChangeTracker.Entries<ISoftDeletable>())
         {
-            entry.State = EntityState.Modified;
-            entry.Entity.IsDeleted = true;
+            if (entry.State == EntityState.Deleted)
+            {
+                entry.State = EntityState.Modified;
+                entry.Entity.IsDeleted = true;
+            }
         }
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);

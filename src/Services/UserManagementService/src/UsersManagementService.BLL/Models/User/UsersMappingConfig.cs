@@ -26,7 +26,7 @@ public static class UsersMappingConfig
             .Map(vm => vm.LastName, src => src.LastName)
             .Map(vm => vm.BirthDate, src => src.BirthDate)
             .Map(vm => vm.PassportNumber, src => src.PassportNumber)
-            .Map(vm => vm.IdentificationNumber, src => src.VerificationStatus);
+            .Map(vm => vm.IdentificationNumber, src => src.IdentificationNumber);
 
         TypeAdapterConfig<CreateUserModel, UserEntity>.NewConfig()
             .Map(u => u.Id, src => src.Id)
