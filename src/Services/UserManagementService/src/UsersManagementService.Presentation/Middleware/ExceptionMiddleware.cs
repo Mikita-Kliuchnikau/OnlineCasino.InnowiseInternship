@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using UsersManagementService.Presentation.Constants;
+using static UsersManagementService.Presentation.Constants.MediaTypeConstants;
 
 namespace UsersManagementService.Presentation.Middleware;
 
@@ -31,7 +31,7 @@ public class ExceptionMiddleware(RequestDelegate next)
             Title = message,
         };
 
-        context.Response.ContentType = MediaTypeConstants.Json;
+        context.Response.ContentType = Json;
         context.Response.StatusCode = (int)statusCode;
         
         await context.Response.WriteAsJsonAsync(details);

@@ -10,6 +10,8 @@ using UsersManagementService.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using static UsersManagementService.Common.Constants.Environments;
+using static UsersManagementService.IntegrationTests.Constants.DbConnectionStrings;
 
 namespace UsersManagementService.IntegrationTests;
 
@@ -34,8 +36,8 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        Environment.SetEnvironmentVariable("ConnectionStrings:UsersDatabase", _dbContainer.GetConnectionString());
-        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Test");
+        Environment.SetEnvironmentVariable(UsersDatabase, _dbContainer.GetConnectionString());
+        Environment.SetEnvironmentVariable(AspNetCoreEnvironment, TestEnvironment);
 
         builder.ConfigureTestServices(services =>
         {

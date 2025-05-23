@@ -5,6 +5,7 @@ using UsersManagementService.BLL.Models.User.GetUser;
 using UsersManagementService.BLL.Models.User.GetPagedUsers;
 using static UsersManagementService.IntegrationTests.TestEntities.UserTestEntities;
 using static UsersManagementService.IntegrationTests.TestEntities.ImageTestEntities;
+using static UsersManagementService.IntegrationTests.Constants.EndpointsUrls;
 
 namespace UsersManagementService.IntegrationTests;
 

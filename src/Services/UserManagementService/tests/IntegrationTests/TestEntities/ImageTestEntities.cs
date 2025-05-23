@@ -6,7 +6,6 @@ namespace UsersManagementService.IntegrationTests.TestEntities;
 
 public static class ImageTestEntities
 {
-    public static readonly string BaseImageUrl = "https://localhost:7228/api/Images";
     public static readonly ImageDto ImageDto = new()
     {
         Id = BaseTestGuid,
