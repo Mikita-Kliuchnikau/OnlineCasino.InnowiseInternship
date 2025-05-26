@@ -2,7 +2,7 @@
 using NSubstitute;
 using UsersManagementService.BLL.Services;
 using UsersManagementService.DAL.Entites.Core;
-using static UsersManagementService.BLL.UnitTests.TestEntities.ImagesServiceTestsEntities;
+using static UsersManagementService.BLL.UnitTests.TestEntities.TestImageEntities;
 
 namespace UsersManagementService.BLL.UnitTests;
 

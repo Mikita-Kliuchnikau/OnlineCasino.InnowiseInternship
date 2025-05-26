@@ -6,7 +6,7 @@ using UsersManagementService.BLL.Models.User.DeleteUser;
 using UsersManagementService.BLL.Models.User.GetPagedUsers;
 using UsersManagementService.BLL.Models.User.GetUser;
 using UsersManagementService.BLL.Models.User.UpdateUser;
-using static UsersManagementService.BLL.UnitTests.TestEntities.UserValidationTestEntities;
+using static UsersManagementService.BLL.UnitTests.TestEntities.TestUserEntities;
 
 
 namespace UsersManagementService.BLL.UnitTests;

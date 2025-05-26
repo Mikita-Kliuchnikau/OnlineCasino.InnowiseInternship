@@ -1,16 +1,18 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.User.CreateUser;
+using UsersManagementService.BLL.Models.User.DeleteUser;
 using UsersManagementService.BLL.Models.User.GetPagedUsers;
+using UsersManagementService.BLL.Models.User.GetUser;
 using UsersManagementService.BLL.Models.User.UpdateUser;
 
 namespace UsersManagementService.BLL.Models.User;
 
 public class UsersValidator(
     IValidator<CreateUserModel> createUserModelValidator,
-    IValidator<Guid> deleteUserValidator,
+    DeleteUserValidator deleteUserValidator,
     IValidator<UpdateUserModel> updateUserModelValidator,
-    IValidator<Guid> getUserValidator,
+    GetUserValidator getUserValidator,
     IValidator<GetPagedUsersQuery> getPagedUsersQueryValidator) : IUsersValidator 
 {
     public IValidator<CreateUserModel> CreateUserModelValidator { get; init; } = createUserModelValidator;

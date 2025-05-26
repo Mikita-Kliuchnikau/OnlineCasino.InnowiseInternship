@@ -4,7 +4,7 @@ using NSubstitute.ExceptionExtensions;
 using UsersManagementService.BLL.Services;
 using UsersManagementService.Common.Exceptions;
 using UsersManagementService.DAL.Entites.Core;
-using static UsersManagementService.BLL.UnitTests.TestEntities.UsersServiceTestEntities;
+using static UsersManagementService.BLL.UnitTests.TestEntities.TestUserEntities;
 
 namespace UsersManagementService.BLL.UnitTests;
 
