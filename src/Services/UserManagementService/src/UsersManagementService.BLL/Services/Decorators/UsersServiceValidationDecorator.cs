@@ -2,7 +2,6 @@
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.User;
-using UsersManagementService.Common.Exceptions;
 
 namespace UsersManagementService.BLL.Services.Decorators
 {
@@ -10,12 +9,7 @@ namespace UsersManagementService.BLL.Services.Decorators
     {
         public async Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken = default)
         {
-            var createUserModelValidator = usersValidator.CreateUserModelValidator;
-
-            if (createUserModelValidator is null)
-            {
-                throw new NotFoundException(nameof(createUserModelValidator), null!);
-            }
+            var createUserModelValidator = usersValidator.GetCreateUserModelValidatorOrThrow();
 
             await createUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
 
@@ -24,12 +18,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var deleteUserModelValidator = usersValidator.UserIdValidator;
-
-            if (deleteUserModelValidator is null)
-            {
-                throw new NotFoundException(nameof(deleteUserModelValidator), null!);
-            }
+            var deleteUserModelValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             await deleteUserModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
@@ -38,12 +27,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery users, CancellationToken cancellationToken = default)
         {
-            var getPagedUsersQueryValidator = usersValidator.GetPagedUsersQueryValidator;
-
-            if (getPagedUsersQueryValidator is null)
-            {
-                throw new NotFoundException(nameof(getPagedUsersQueryValidator), null!);
-            }
+            var getPagedUsersQueryValidator = usersValidator.GetPagedUsersQueryValidatorOrThrow();
 
             await getPagedUsersQueryValidator.ValidateAndThrowAsync(users, cancellationToken);
 
@@ -52,12 +36,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var getUserQueryValidator = usersValidator.UserIdValidator;
-
-            if (getUserQueryValidator is null)
-            {
-                throw new NotFoundException(nameof(getUserQueryValidator), null!);
-            }
+            var getUserQueryValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
 
@@ -66,12 +45,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default)
         {
-            var updateUserModelValidator = usersValidator.UpdateUserModelValidator;
-            
-            if (updateUserModelValidator is null)
-            {
-                throw new NotFoundException(nameof(updateUserModelValidator), null!);
-            }
+            var updateUserModelValidator = usersValidator.GetUpdateUserModelValidatorOrThrow();
 
             await updateUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
 

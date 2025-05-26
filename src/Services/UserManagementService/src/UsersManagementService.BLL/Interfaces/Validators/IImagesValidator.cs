@@ -4,6 +4,6 @@ using UsersManagementService.BLL.Models.Image;
 namespace UsersManagementService.BLL.Interfaces.Validators;
 public interface IImagesValidator 
 {
-    public IValidator<ImageModel>? ImageModelValidator { get; }
-    public IValidator<Guid>? ImageIdValidator { get; }
+    public IValidator<ImageModel> GetImageModelValidatorOrThrow();
+    public IValidator<Guid> GetImageIdValidatorOrThrow();
 }

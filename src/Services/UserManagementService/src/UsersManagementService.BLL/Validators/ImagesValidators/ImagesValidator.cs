@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.Image;
+using UsersManagementService.Common.Exceptions;
 
 namespace UsersManagementService.BLL.Validators.ImagesValidators;
 
@@ -11,13 +12,15 @@ public class ImagesValidator(
     private readonly IEnumerable<IValidator<ImageModel>> _imageModelValidator = imageModelValidator;
     private readonly IEnumerable<IValidator<Guid>> _imageIdValidator = imageIdValidator;
 
-    public IValidator<ImageModel>? ImageModelValidator
+    public IValidator<ImageModel> GetImageModelValidatorOrThrow()
     {
-        get => _imageModelValidator.FirstOrDefault(v => v is ImageModelValidator);
+        var validator = _imageModelValidator.FirstOrDefault(v => v is ImageModelValidator);
 
+        return validator is null ? throw new NotFoundException(nameof(validator), null!) : validator;
     }
-    public IValidator<Guid>? ImageIdValidator
+    public IValidator<Guid> GetImageIdValidatorOrThrow()
     {
-        get => _imageIdValidator.FirstOrDefault(v => v is ImageIdValidator);
+        var validator = _imageIdValidator.FirstOrDefault(v => v is ImageIdValidator);
+        return validator is null ? throw new NotFoundException(nameof(validator), null!) : validator;
     }
 }

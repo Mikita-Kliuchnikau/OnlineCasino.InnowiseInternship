@@ -2,7 +2,6 @@
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.Image;
-using UsersManagementService.Common.Exceptions;
 using static UsersManagementService.BLL.Constants.ValidationRules.ImageValidationRules;
 
 namespace UsersManagementService.BLL.Services.Decorators;
@@ -11,12 +10,7 @@ public class ImagesServiceValidationDecorator(IImagesService imagesService, IIma
 {
     public async Task<Guid> CreateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
     {
-        var createImageModelValidator = imagesValidator.ImageModelValidator;
-
-        if (createImageModelValidator is null)
-        {
-            throw new NotFoundException(nameof(createImageModelValidator), null!);
-        }
+        var createImageModelValidator = imagesValidator.GetImageModelValidatorOrThrow();
 
         await createImageModelValidator.ValidateAsync(image, options =>
         {
@@ -29,12 +23,7 @@ public class ImagesServiceValidationDecorator(IImagesService imagesService, IIma
 
     public async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var deleteImageModelValidator = imagesValidator.ImageIdValidator;
-
-        if (deleteImageModelValidator is null)
-        {
-            throw new NotFoundException(nameof(deleteImageModelValidator), null!);
-        }
+        var deleteImageModelValidator = imagesValidator.GetImageIdValidatorOrThrow();
 
         await deleteImageModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
@@ -43,12 +32,7 @@ public class ImagesServiceValidationDecorator(IImagesService imagesService, IIma
 
     public async Task<Guid> UpdateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
     {
-        var updateImageModelValidator = imagesValidator.ImageModelValidator;
-
-        if (updateImageModelValidator is null)
-        {
-            throw new NotFoundException(nameof(updateImageModelValidator), null!);
-        }
+        var updateImageModelValidator = imagesValidator.GetImageModelValidatorOrThrow();
 
         await updateImageModelValidator.ValidateAsync(image, options =>
         {
