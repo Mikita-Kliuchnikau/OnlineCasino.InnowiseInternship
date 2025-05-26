@@ -13,18 +13,11 @@ public class ImagesValidator(
 
     public IValidator<ImageModel>? ImageModelValidator
     {
-        get
-        {
-            var validator = _imageModelValidator.FirstOrDefault(v => v is ImageModelValidator);
-            return validator;
-        }
+        get => _imageModelValidator.FirstOrDefault(v => v is ImageModelValidator);
+
     }
     public IValidator<Guid>? ImageIdValidator
     {
-        get
-        {
-            var validator = _imageIdValidator.FirstOrDefault(v => v is ImageIdValidator);
-            return validator;
-        }
+        get => _imageIdValidator.FirstOrDefault(v => v is ImageIdValidator);
     }
 }

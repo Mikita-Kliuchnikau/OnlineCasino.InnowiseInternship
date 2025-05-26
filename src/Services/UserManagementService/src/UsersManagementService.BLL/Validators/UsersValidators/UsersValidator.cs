@@ -17,35 +17,21 @@ public class UsersValidator(
 
     public IValidator<CreateUserModel>? CreateUserModelValidator 
     {
-        get
-        { 
-            var validator = _createUserModelValidator.FirstOrDefault(v => v is CreateUserModelValidator);
-            return validator;
-        }
+        get => _createUserModelValidator.FirstOrDefault(v => v is CreateUserModelValidator);
+
     }
     public IValidator<Guid>? UserIdValidator 
-    { 
-        get
-        {
-            var validator = _userIdValidator.FirstOrDefault(v => v is UserIdValidator);
-            return validator;
-        }
+    {
+        get => _userIdValidator.FirstOrDefault(v => v is UserIdValidator);
     }
 
     public IValidator<UpdateUserModel>? UpdateUserModelValidator 
-    { 
-        get
-        {
-            var validator = _updateUserModelValidator.FirstOrDefault(v => v is UpdateUserModelValidator);
-            return validator;
-        }
+    {
+        get => _updateUserModelValidator.FirstOrDefault(v => v is UpdateUserModelValidator);
+
     }
     public IValidator<GetPagedUsersQuery>? GetPagedUsersQueryValidator 
-    { 
-        get
-        {
-            var validator = _getPagedUsersQueryValidator.FirstOrDefault(v => v is GetPagedUsersQueryValidator);
-            return validator;
-        }
+    {
+        get => _getPagedUsersQueryValidator.FirstOrDefault(v => v is GetPagedUsersQueryValidator);
     }
 }
