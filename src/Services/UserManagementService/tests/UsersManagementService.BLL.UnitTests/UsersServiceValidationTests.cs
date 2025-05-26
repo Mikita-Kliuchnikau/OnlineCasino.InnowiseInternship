@@ -1,11 +1,7 @@
 ﻿using FluentValidation.TestHelper;
 using Moq;
 using NSubstitute;
-using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.DeleteUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.GetUser;
-using UsersManagementService.BLL.Models.User.UpdateUser;
+using UsersManagementService.BLL.Validators.UsersValidators;
 using static UsersManagementService.BLL.UnitTests.TestEntities.UserValidationTestEntities;
 
 
@@ -99,7 +95,7 @@ public class UsersServiceValidationTests
         _usersRepositoryMock.DoesUserExistAsync(DeleteModel, It.IsAny<CancellationToken>())
             .Returns(true);
 
-        var validator = new DeleteUserValidator(_usersRepositoryMock);
+        var validator = new UserIdValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(DeleteModel);
@@ -114,7 +110,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = Guid.Empty;
 
-        var validator = new DeleteUserValidator(_usersRepositoryMock);
+        var validator = new UserIdValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -130,7 +126,7 @@ public class UsersServiceValidationTests
         _usersRepositoryMock.DoesUserExistAsync(DeleteModel, It.IsAny<CancellationToken>())
             .Returns(false);
 
-        var validator = new DeleteUserValidator(_usersRepositoryMock);
+        var validator = new UserIdValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(DeleteModel);
@@ -146,7 +142,8 @@ public class UsersServiceValidationTests
         _usersRepositoryMock.DoesUserExistAsync(UpdateModel.Id, It.IsAny<CancellationToken>())
             .Returns(true);
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(UpdateModel);
@@ -162,7 +159,8 @@ public class UsersServiceValidationTests
         _usersRepositoryMock.DoesUserExistAsync(UpdateModel.Id, It.IsAny<CancellationToken>())
             .Returns(false);
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(UpdateModel);
@@ -177,7 +175,8 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { Username = string.Empty };
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -195,7 +194,8 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { Email = email };
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -217,7 +217,8 @@ public class UsersServiceValidationTests
             IdentificationNumber = null
         };
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(validModel);
@@ -238,7 +239,8 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { FirstName = name };
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -255,7 +257,8 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { SecondName = name };
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -272,7 +275,8 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { LastName = name };
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -289,7 +293,8 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { PassportNumber = passport };
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -306,7 +311,8 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { IdentificationNumber = identidication };
 
-        var validator = new UpdateUserModelValidator(_usersRepositoryMock);
+        var idValidator = new UserIdValidator(_usersRepositoryMock);
+        var validator = new UpdateUserModelValidator(idValidator);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -322,7 +328,7 @@ public class UsersServiceValidationTests
         _usersRepositoryMock.DoesUserExistAsync(GetQuery, It.IsAny<CancellationToken>())
             .Returns(true);
 
-        var validator = new GetUserValidator(_usersRepositoryMock);
+        var validator = new UserIdValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(GetQuery);
@@ -337,7 +343,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidQuery = Guid.Empty;
 
-        var validator = new GetUserValidator(_usersRepositoryMock);
+        var validator = new UserIdValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(invalidQuery);

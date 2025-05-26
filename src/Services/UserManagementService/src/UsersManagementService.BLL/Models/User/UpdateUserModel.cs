@@ -1,6 +1,6 @@
 ﻿using UsersManagementService.Common.Enums;
 
-namespace UsersManagementService.BLL.Models.User.UpdateUser;
+namespace UsersManagementService.BLL.Models.User;
 
 public record UpdateUserModel(
     Guid Id, 

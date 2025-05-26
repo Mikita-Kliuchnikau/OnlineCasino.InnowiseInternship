@@ -1,8 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using UsersManagementService.BLL.Interfaces.Services;
-using UsersManagementService.BLL.Models.Image.CreateImage;
-using UsersManagementService.BLL.Models.Image.UpdateImage;
+using UsersManagementService.BLL.Models.Image;
 using UsersManagementService.Presentation.Constants;
 using UsersManagementService.Presentation.Models;
 
@@ -15,14 +14,14 @@ public class ImagesController(IImagesService imagesService) : ControllerBase
     [HttpPost]
     public async Task<Guid> Create(ImageDto image, CancellationToken cancellationToken = default)
     {
-        var imageModel = image.Adapt<CreateImageModel>();
+        var imageModel = image.Adapt<ImageModel>();
         return await imagesService.CreateImageAsync(imageModel, cancellationToken);
     }
 
     [HttpPut]
     public async Task<Guid> Update(ImageDto image, CancellationToken cancellationToken = default)
     {
-        var imageModel = image.Adapt<UpdateImageModel>();
+        var imageModel = image.Adapt<ImageModel>();
         return await imagesService.UpdateImageAsync(imageModel, cancellationToken);
     }
 

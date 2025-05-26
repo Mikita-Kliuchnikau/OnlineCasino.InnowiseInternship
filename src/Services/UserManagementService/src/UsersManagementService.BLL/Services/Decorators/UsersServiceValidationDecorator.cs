@@ -1,10 +1,7 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
-using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.GetUser;
-using UsersManagementService.BLL.Models.User.UpdateUser;
+using UsersManagementService.BLL.Models.User;
 
 namespace UsersManagementService.BLL.Services.Decorators
 {
@@ -21,7 +18,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var deleteUserModelValidator = usersValidator.DeleteUserValidator;
+            var deleteUserModelValidator = usersValidator.UserIdValidator;
 
             await deleteUserModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
@@ -39,7 +36,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var getUserQueryValidator = usersValidator.GetUserValidator;
+            var getUserQueryValidator = usersValidator.UserIdValidator;
 
             await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
 

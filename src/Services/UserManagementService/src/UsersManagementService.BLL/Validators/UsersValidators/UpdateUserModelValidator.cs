@@ -1,16 +1,19 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Extensions;
-using UsersManagementService.DAL.Interfaces.Repositories;
+using UsersManagementService.BLL.Models.User;
 
-namespace UsersManagementService.BLL.Models.User.UpdateUser;
+namespace UsersManagementService.BLL.Validators.UsersValidators;
 
 public class UpdateUserModelValidator : AbstractValidator<UpdateUserModel>
 {
-    public UpdateUserModelValidator(IUsersRepository usersRepository)
+    public UpdateUserModelValidator(UserIdValidator idValidator)
     {
         RuleFor(u => u.Id)
-            .DoesUserExist(usersRepository)
-            .BaseIdRules();
+            .MustAsync(async (id, cancellationToken) =>
+            {
+                var result = await idValidator.ValidateAsync(id, cancellationToken);
+                return result.IsValid;
+            });
         RuleFor(u => u.AuthId)
             .BaseIdRules();
         RuleFor(u => u.Username)
