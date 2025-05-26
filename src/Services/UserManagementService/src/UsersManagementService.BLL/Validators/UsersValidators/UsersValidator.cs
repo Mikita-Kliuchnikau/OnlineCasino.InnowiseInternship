@@ -21,11 +21,7 @@ public class UsersValidator(
         get
         { 
             var validator = _createUserModelValidator.FirstOrDefault(v => v is CreateUserModelValidator);
-            if (validator is null)
-            {
-                throw new NotFoundException(nameof(validator), null!);
-            }
-            return validator;
+            return validator!;
         }
     }
     public IValidator<Guid> UserIdValidator 
@@ -33,11 +29,7 @@ public class UsersValidator(
         get
         {
             var validator = _userIdValidator.FirstOrDefault(v => v is UserIdValidator);
-            if (validator is null)
-            {
-                throw new NotFoundException(nameof(validator), null!);
-            }
-            return validator;
+            return validator!;
         }
     }
 
@@ -46,11 +38,7 @@ public class UsersValidator(
         get
         {
             var validator = _updateUserModelValidator.FirstOrDefault(v => v is UpdateUserModelValidator);
-            if (validator is null)
-            {
-                throw new NotFoundException(nameof(validator), null!);
-            }
-            return validator;
+            return validator!;
         }
     }
     public IValidator<GetPagedUsersQuery> GetPagedUsersQueryValidator 
@@ -58,11 +46,7 @@ public class UsersValidator(
         get
         {
             var validator = _getPagedUsersQueryValidator.FirstOrDefault(v => v is GetPagedUsersQueryValidator);
-            if (validator is null)
-            {
-                throw new NotFoundException(nameof(validator), null!);
-            }
-            return validator;
+            return validator!;
         }
     }
 }

@@ -17,11 +17,7 @@ public class ImagesValidator(
         get
         {
             var validator = _imageModelValidator.FirstOrDefault(v => v is ImageModelValidator);
-            if (validator is null)
-            {
-                throw new NotFoundException(nameof(validator), null!);
-            }
-            return validator;
+            return validator!;
         }
     }
     public IValidator<Guid> ImageIdValidator
@@ -29,11 +25,7 @@ public class ImagesValidator(
         get
         {
             var validator = _imageIdValidator.FirstOrDefault(v => v is ImageIdValidator);
-            if (validator is null)
-            {
-                throw new NotFoundException(nameof(validator), null!);
-            }
-            return validator;
+            return validator!;
         }
     }
 }
