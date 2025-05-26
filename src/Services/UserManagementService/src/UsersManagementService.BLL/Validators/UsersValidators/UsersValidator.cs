@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.User;
-using UsersManagementService.Common.Exceptions;
 
 namespace UsersManagementService.BLL.Validators.UsersValidators;
 
@@ -16,37 +15,37 @@ public class UsersValidator(
     private readonly IEnumerable<IValidator<UpdateUserModel>> _updateUserModelValidator = updateUserModelValidator;
     private readonly IEnumerable<IValidator<GetPagedUsersQuery>> _getPagedUsersQueryValidator = getPagedUsersQueryValidator;
 
-    public IValidator<CreateUserModel> CreateUserModelValidator 
+    public IValidator<CreateUserModel>? CreateUserModelValidator 
     {
         get
         { 
             var validator = _createUserModelValidator.FirstOrDefault(v => v is CreateUserModelValidator);
-            return validator!;
+            return validator;
         }
     }
-    public IValidator<Guid> UserIdValidator 
+    public IValidator<Guid>? UserIdValidator 
     { 
         get
         {
             var validator = _userIdValidator.FirstOrDefault(v => v is UserIdValidator);
-            return validator!;
+            return validator;
         }
     }
 
-    public IValidator<UpdateUserModel> UpdateUserModelValidator 
+    public IValidator<UpdateUserModel>? UpdateUserModelValidator 
     { 
         get
         {
             var validator = _updateUserModelValidator.FirstOrDefault(v => v is UpdateUserModelValidator);
-            return validator!;
+            return validator;
         }
     }
-    public IValidator<GetPagedUsersQuery> GetPagedUsersQueryValidator 
+    public IValidator<GetPagedUsersQuery>? GetPagedUsersQueryValidator 
     { 
         get
         {
             var validator = _getPagedUsersQueryValidator.FirstOrDefault(v => v is GetPagedUsersQueryValidator);
-            return validator!;
+            return validator;
         }
     }
 }
