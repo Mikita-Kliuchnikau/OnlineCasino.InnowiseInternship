@@ -1,6 +1,5 @@
 ﻿using NSubstitute;
 using UsersManagementService.BLL.Models.User;
-using UsersManagementService.BLL.Validators.UsersValidators;
 using UsersManagementService.Common.Enums;
 using UsersManagementService.DAL.Interfaces.Repositories;
 

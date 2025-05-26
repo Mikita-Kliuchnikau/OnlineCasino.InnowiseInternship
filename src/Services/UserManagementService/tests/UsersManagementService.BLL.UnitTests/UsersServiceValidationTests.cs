@@ -2,7 +2,7 @@
 using Moq;
 using NSubstitute;
 using UsersManagementService.BLL.Validators.UsersValidators;
-using static UsersManagementService.BLL.UnitTests.TestEntities.UserValidationTestEntities;
+using static UsersManagementService.BLL.UnitTests.TestEntities.TestUserEntities;
 
 
 namespace UsersManagementService.BLL.UnitTests;

@@ -1,5 +1,4 @@
-﻿using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.GetUser;
+﻿using UsersManagementService.BLL.Models.User;
 using UsersManagementService.Common.Enums;
 using UsersManagementService.Presentation.Models;
 
@@ -37,5 +36,6 @@ public static class UserTestEntities
                 Balance: 0,
                 VerificationStatus: VerificationStatus.UnVerified,
                 IsBanned: false,
-                IsDeleted: false)]);
+                IsDeleted: false,
+                CreatedAt: DateTime.UtcNow)]);
 }

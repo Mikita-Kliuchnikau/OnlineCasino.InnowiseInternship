@@ -2,7 +2,7 @@
 using Moq;
 using NSubstitute;
 using UsersManagementService.BLL.Validators.ImagesValidators;
-using static UsersManagementService.BLL.UnitTests.TestEntities.ImageValidationTestEntities;
+using static UsersManagementService.BLL.UnitTests.TestEntities.TestImageEntities;
 
 namespace UsersManagementService.BLL.UnitTests;
 
