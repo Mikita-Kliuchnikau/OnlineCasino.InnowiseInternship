@@ -1,13 +1,10 @@
-﻿using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.UpdateUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.GetUser;
-using UsersManagementService.Common.Exceptions;
+﻿using UsersManagementService.Common.Exceptions;
 using UsersManagementService.DAL.Interfaces.Repositories;
 using UsersManagementService.BLL.Interfaces.Services;
 using Mapster;
 using UsersManagementService.DAL.Entites.Core;
 using UsersManagementService.DAL.Entites.Dto;
+using UsersManagementService.BLL.Models.User;
 
 namespace UsersManagementService.BLL.Services;
 

@@ -1,14 +1,11 @@
 ﻿using FluentValidation;
-using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.UpdateUser;
+using UsersManagementService.BLL.Models.User;
 
 namespace UsersManagementService.BLL.Interfaces.Validators;
 public interface IUsersValidator 
 {
-    public IValidator<CreateUserModel> CreateUserModelValidator { get; init; }
-    public IValidator<Guid> DeleteUserValidator { get; init; }
-    public IValidator<UpdateUserModel> UpdateUserModelValidator { get; init; }
-    public IValidator<Guid> GetUserValidator { get; init; }
-    public IValidator<GetPagedUsersQuery> GetPagedUsersQueryValidator { get; init; }
+    public IValidator<CreateUserModel> CreateUserModelValidator { get; set; }
+    public IValidator<Guid> UserIdValidator { get; set; }
+    public IValidator<UpdateUserModel> UpdateUserModelValidator { get; set; }
+    public IValidator<GetPagedUsersQuery> GetPagedUsersQueryValidator { get; set; }
 }
