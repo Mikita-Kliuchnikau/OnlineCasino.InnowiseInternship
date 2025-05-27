@@ -4,10 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
-using UsersManagementService.BLL.Models.Image;
-using UsersManagementService.BLL.Models.User;
+using UsersManagementService.BLL.Models.Image.MappingConfigurations;
+using UsersManagementService.BLL.Models.User.MappingConfigurations;
 using UsersManagementService.BLL.Services;
 using UsersManagementService.BLL.Services.Decorators;
+using UsersManagementService.BLL.Validators.ImagesValidators;
+using UsersManagementService.BLL.Validators.UsersValidators;
 using UsersManagementService.DAL.DI;
 
 namespace UsersManagementService.BLL.DI;

@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Extensions;
+using UsersManagementService.BLL.Models.User;
 using UsersManagementService.BLL.Resources;
 using UsersManagementService.Common.Helpers;
 using UsersManagementService.DAL.Interfaces.Repositories;
 
-namespace UsersManagementService.BLL.Models.User.CreateUser;
+namespace UsersManagementService.BLL.Validators.UsersValidators;
 
 public class CreateUserModelValidator : AbstractValidator <CreateUserModel>
 {
@@ -30,6 +31,6 @@ public class CreateUserModelValidator : AbstractValidator <CreateUserModel>
                 username: User.Username,
                 email: User.Email,
                 cancellationToken: CancellationToken);
-        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser));
+        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField));
     }
 }

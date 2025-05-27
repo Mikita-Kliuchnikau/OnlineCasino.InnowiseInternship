@@ -1,8 +1,9 @@
 ﻿using UsersManagementService.Common.Enums;
 
-namespace UsersManagementService.BLL.Models.User.GetUser;
+namespace UsersManagementService.BLL.Models.Image;
 
-public record ImageViewModel(Guid Id,
+public record ImageModel(
+    Guid Id,
     Guid UserId,
     string ImageUrl,
     ImageType Type);

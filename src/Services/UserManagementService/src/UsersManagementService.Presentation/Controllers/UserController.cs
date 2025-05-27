@@ -1,10 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using UsersManagementService.BLL.Interfaces.Services;
-using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.GetUser;
-using UsersManagementService.BLL.Models.User.UpdateUser;
+using UsersManagementService.BLL.Models.User;
 using UsersManagementService.Presentation.Constants;
 using UsersManagementService.Presentation.Models;
 
