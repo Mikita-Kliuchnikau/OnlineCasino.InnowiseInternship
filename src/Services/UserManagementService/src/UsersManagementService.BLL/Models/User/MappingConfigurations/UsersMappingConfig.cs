@@ -1,14 +1,10 @@
 ﻿using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.GetUser;
-using UsersManagementService.BLL.Models.User.UpdateUser;
 using UsersManagementService.DAL.Entites.Core;
 using UsersManagementService.DAL.Entites.Dto;
 
-namespace UsersManagementService.BLL.Models.User;
+namespace UsersManagementService.BLL.Models.User.MappingConfigurations;
 
 public static class UsersMappingConfig
 {
@@ -21,12 +17,13 @@ public static class UsersMappingConfig
             .Map(vm => vm.VerificationStatus, src => src.VerificationStatus)
             .Map(vm => vm.IsBanned, src => src.IsBanned)
             .Map(vm => vm.IsDeleted, src => src.IsDeleted)
+            .Map(vm => vm.CreatedAt, src => src.CreatedAt)
             .Map(vm => vm.FirstName, src => src.FirstName)
             .Map(vm => vm.SecondName, src => src.SecondName)
             .Map(vm => vm.LastName, src => src.LastName)
             .Map(vm => vm.BirthDate, src => src.BirthDate)
             .Map(vm => vm.PassportNumber, src => src.PassportNumber)
-            .Map(vm => vm.IdentificationNumber, src => src.IdentificationNumber);
+            .Map(vm => vm.IdentificationNumber, src => src.VerificationStatus);
 
         TypeAdapterConfig<CreateUserModel, UserEntity>.NewConfig()
             .Map(u => u.Id, src => src.Id)
@@ -55,8 +52,8 @@ public static class UsersMappingConfig
 
         TypeAdapterConfig<PagedUsersProjection, PagedUsersViewModel>.NewConfig()
             .Map(vm => vm.PageNumber, src => src.PageNumber)
-            .Map(f => f.TotalCount, src => src.TotalCount)
-            .Map(f => f.UserViewModels, src => src.Users != null
+            .Map(vm => vm.TotalCount, src => src.TotalCount)
+            .Map(vm => vm.UserViewModels, src => src.Users != null
                 ? src.Users.Select(i => i.Adapt<UserViewModel>()).ToList()
                 : null);
 

@@ -1,10 +1,7 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
-using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.GetUser;
-using UsersManagementService.BLL.Models.User.UpdateUser;
+using UsersManagementService.BLL.Models.User;
 
 namespace UsersManagementService.BLL.Services.Decorators
 {
@@ -12,7 +9,7 @@ namespace UsersManagementService.BLL.Services.Decorators
     {
         public async Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken = default)
         {
-            var createUserModelValidator = usersValidator.CreateUserModelValidator;
+            var createUserModelValidator = usersValidator.GetCreateUserModelValidatorOrThrow();
 
             await createUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
 
@@ -21,7 +18,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var deleteUserModelValidator = usersValidator.DeleteUserValidator;
+            var deleteUserModelValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             await deleteUserModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
@@ -30,7 +27,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery users, CancellationToken cancellationToken = default)
         {
-            var getPagedUsersQueryValidator = usersValidator.GetPagedUsersQueryValidator;
+            var getPagedUsersQueryValidator = usersValidator.GetPagedUsersQueryValidatorOrThrow();
 
             await getPagedUsersQueryValidator.ValidateAndThrowAsync(users, cancellationToken);
 
@@ -39,7 +36,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var getUserQueryValidator = usersValidator.GetUserValidator;
+            var getUserQueryValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
 
@@ -48,7 +45,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default)
         {
-            var updateUserModelValidator = usersValidator.UpdateUserModelValidator;
+            var updateUserModelValidator = usersValidator.GetUpdateUserModelValidatorOrThrow();
 
             await updateUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
 

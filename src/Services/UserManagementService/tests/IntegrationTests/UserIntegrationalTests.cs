@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Http;
-using UsersManagementService.BLL.Models.User.GetUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
+using UsersManagementService.BLL.Models.User;
 using static UsersManagementService.IntegrationTests.TestEntities.UserTestEntities;
 using static UsersManagementService.IntegrationTests.TestEntities.ImageTestEntities;
 using static UsersManagementService.IntegrationTests.Constants.EndpointsUrls;

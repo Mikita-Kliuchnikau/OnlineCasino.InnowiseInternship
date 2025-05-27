@@ -1,6 +1,11 @@
 ﻿using FluentValidation;
+using System.ComponentModel.DataAnnotations;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using UsersManagementService.BLL.Interfaces.Validators;
+using UsersManagementService.BLL.Models.Image;
 using UsersManagementService.BLL.Resources;
+using UsersManagementService.Common.Exceptions;
 using UsersManagementService.Common.Helpers;
 using UsersManagementService.DAL.Interfaces.Repositories;
 

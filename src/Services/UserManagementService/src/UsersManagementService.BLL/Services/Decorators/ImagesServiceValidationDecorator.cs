@@ -1,36 +1,44 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
-using UsersManagementService.BLL.Models.Image.CreateImage;
-using UsersManagementService.BLL.Models.Image.UpdateImage;
+using UsersManagementService.BLL.Models.Image;
+using static UsersManagementService.BLL.Constants.ValidationRules.ImageValidationRules;
 
 namespace UsersManagementService.BLL.Services.Decorators;
 
 public class ImagesServiceValidationDecorator(IImagesService imagesService, IImagesValidator imagesValidator) : IImagesService
 {
-    public async Task<Guid> CreateImageAsync(CreateImageModel image, CancellationToken cancellationToken = default)
+    public async Task<Guid> CreateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
     {
-        var createImageModelValidator = imagesValidator.CreateImageModelValidator;
+        var createImageModelValidator = imagesValidator.GetImageModelValidatorOrThrow();
 
-        await createImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
+        await createImageModelValidator.ValidateAsync(image, options =>
+        {
+            options.IncludeRuleSets(CreateImageRules);
+            options.ThrowOnFailures();
+        }, cancellationToken);
 
         return await imagesService.CreateImageAsync(image, cancellationToken);
     }
 
     public async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var deleteImageModelValidator = imagesValidator.DeleteImageValidator;
+        var deleteImageModelValidator = imagesValidator.GetImageIdValidatorOrThrow();
 
         await deleteImageModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
         return await imagesService.DeleteImageAsync(id, cancellationToken);
     }
 
-    public async Task<Guid> UpdateImageAsync(UpdateImageModel image, CancellationToken cancellationToken = default)
+    public async Task<Guid> UpdateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
     {
-        var updateImageModelValidator = imagesValidator.UpdateImageModelValidator;
+        var updateImageModelValidator = imagesValidator.GetImageModelValidatorOrThrow();
 
-        await updateImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
+        await updateImageModelValidator.ValidateAsync(image, options =>
+        {
+            options.IncludeRuleSets(UpdateImageRules);
+            options.ThrowOnFailures();
+        }, cancellationToken);
 
         return await imagesService.UpdateImageAsync(image, cancellationToken);
     }

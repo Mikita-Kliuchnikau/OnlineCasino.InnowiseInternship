@@ -1,4 +1,4 @@
-﻿namespace UsersManagementService.BLL.Models.User.CreateUser;
+﻿namespace UsersManagementService.BLL.Models.User;
 
 public record CreateUserModel(
     Guid Id, 

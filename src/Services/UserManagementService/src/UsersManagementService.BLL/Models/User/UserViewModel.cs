@@ -1,6 +1,6 @@
 ﻿using UsersManagementService.Common.Enums;
 
-namespace UsersManagementService.BLL.Models.User.GetUser;
+namespace UsersManagementService.BLL.Models.User;
 
 public record UserViewModel(
     Guid Id,
@@ -10,6 +10,7 @@ public record UserViewModel(
     VerificationStatus VerificationStatus,
     bool IsBanned,
     bool IsDeleted,
+    DateTime CreatedAt,
     string? FirstName = null,
     string? SecondName = null,
     string? LastName = null,

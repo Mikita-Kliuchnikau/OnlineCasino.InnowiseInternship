@@ -1,7 +1,8 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Extensions;
+using UsersManagementService.BLL.Models.User;
 
-namespace UsersManagementService.BLL.Models.User.GetPagedUsers;
+namespace UsersManagementService.BLL.Validators.UsersValidators;
 
 public class GetPagedUsersQueryValidator : AbstractValidator<GetPagedUsersQuery>
 {

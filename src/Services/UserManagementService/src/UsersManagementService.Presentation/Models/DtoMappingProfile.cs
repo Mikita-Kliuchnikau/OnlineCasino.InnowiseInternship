@@ -1,8 +1,6 @@
 ﻿using Mapster;
-using UsersManagementService.BLL.Models.Image.CreateImage;
-using UsersManagementService.BLL.Models.Image.UpdateImage;
-using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.UpdateUser;
+using UsersManagementService.BLL.Models.Image;
+using UsersManagementService.BLL.Models.User;
 
 namespace UsersManagementService.Presentation.Models;
 
@@ -31,13 +29,7 @@ public static class DtoMappingProfile
             .Map(u => u.PassportNumber, src => src.PassportNumber)
             .Map(u => u.IdentificationNumber, src => src.VerificationStatus);
 
-        TypeAdapterConfig<ImageDto, CreateImageModel>.NewConfig()
-            .Map(i => i.Id, src => src.Id)
-            .Map(i => i.UserId, src => src.UserId)
-            .Map(i => i.ImageUrl, src => src.ImageUrl)
-            .Map(i => i.Type, src => src.Type);
-
-        TypeAdapterConfig<ImageDto, UpdateImageModel>.NewConfig()
+        TypeAdapterConfig<ImageDto, ImageModel>.NewConfig()
             .Map(i => i.Id, src => src.Id)
             .Map(i => i.UserId, src => src.UserId)
             .Map(i => i.ImageUrl, src => src.ImageUrl)
