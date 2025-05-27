@@ -1,5 +1,7 @@
-﻿using NSubstitute;
+﻿using Microsoft.Extensions.Logging;
+using NSubstitute;
 using UsersManagementService.BLL.Models.User;
+using UsersManagementService.BLL.Services;
 using UsersManagementService.Common.Enums;
 using UsersManagementService.DAL.Interfaces.Repositories;
 
@@ -16,5 +18,6 @@ public static class TestUserEntities
     public static readonly Guid GetQuery = Guid.NewGuid();
     public static readonly GetPagedUsersQuery GetPagedQuery = new(1, 10);
 
+    public static readonly ILogger<UsersService> _loggerMock = Substitute.For<ILogger<UsersService>>();
     public static readonly IUsersRepository _usersRepositoryMock = Substitute.For<IUsersRepository>();
 }

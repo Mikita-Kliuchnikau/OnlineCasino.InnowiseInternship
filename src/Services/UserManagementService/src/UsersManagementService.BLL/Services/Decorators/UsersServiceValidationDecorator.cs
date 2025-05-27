@@ -3,10 +3,6 @@ using Microsoft.Extensions.Logging;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.User;
-using UsersManagementService.BLL.Models.User.CreateUser;
-using UsersManagementService.BLL.Models.User.GetPagedUsers;
-using UsersManagementService.BLL.Models.User.GetUser;
-using UsersManagementService.BLL.Models.User.UpdateUser;
 using static UsersManagementService.Common.Constants.LoggingMessages;
 
 namespace UsersManagementService.BLL.Services.Decorators
@@ -120,7 +116,7 @@ namespace UsersManagementService.BLL.Services.Decorators
 
         public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var getUserQueryValidator = usersValidator.GetUserValidator;
+            var getUserQueryValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             try
             {

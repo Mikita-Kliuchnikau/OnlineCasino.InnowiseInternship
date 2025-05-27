@@ -2,11 +2,8 @@
 using Microsoft.Extensions.Logging;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
-using UsersManagementService.BLL.Models.Image.CreateImage;
-using UsersManagementService.BLL.Models.Image.UpdateImage;
-using static UsersManagementService.Common.Constants.LoggingMessages;
 using UsersManagementService.BLL.Models.Image;
-using static UsersManagementService.BLL.Constants.ValidationRules.ImageValidationRules;
+using static UsersManagementService.Common.Constants.LoggingMessages;
 
 namespace UsersManagementService.BLL.Services.Decorators;
 
@@ -24,7 +21,7 @@ public class ImagesServiceValidationDecorator(
         logger.LogDebug(string.Format(
             ValidatingSucceededMessage,
             nameof(CreateImageAsync),
-            nameof(CreateImageModel),
+            nameof(ImageModel),
             DateTime.UtcNow));
 
         return await imagesService.CreateImageAsync(image, cancellationToken);
