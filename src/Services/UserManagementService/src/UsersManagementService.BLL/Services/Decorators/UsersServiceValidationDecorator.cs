@@ -1,17 +1,51 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Logging;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.User;
+using UsersManagementService.BLL.Models.User.CreateUser;
+using UsersManagementService.BLL.Models.User.GetPagedUsers;
+using UsersManagementService.BLL.Models.User.GetUser;
+using UsersManagementService.BLL.Models.User.UpdateUser;
+using static UsersManagementService.Common.Constants.LoggingMessages;
 
 namespace UsersManagementService.BLL.Services.Decorators
 {
-    public class UsersServiceValidationDecorator(IUsersService usersService, IUsersValidator usersValidator) : IUsersService
+    public class UsersServiceValidationDecorator(
+        IUsersService usersService, 
+        IUsersValidator usersValidator,
+        ILogger<UsersServiceValidationDecorator> logger) : IUsersService
     {
         public async Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken = default)
         {
             var createUserModelValidator = usersValidator.GetCreateUserModelValidatorOrThrow();
 
-            await createUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
+            logger.LogDebug(string.Format(
+                ValidatingStartingMessage, 
+                nameof(CreateUserAsync),
+                nameof(CreateUserModel),
+                DateTime.UtcNow));
+
+            try
+            {
+                await createUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
+            }
+            catch (ValidationException ex)
+            {
+                logger.LogError(string.Format(
+                    ValidatingFailedMessage,
+                    nameof(CreateUserAsync),
+                    nameof(CreateUserModel),
+                    ex.Errors,
+                    DateTime.UtcNow));
+                throw;
+            }
+
+            logger.LogDebug(string.Format(
+                ValidatingSucceededMessage,
+                nameof(CreateUserAsync),
+                nameof(CreateUserModel),
+                DateTime.UtcNow));
 
             return await usersService.CreateUserAsync(user, cancellationToken);
         }
@@ -20,7 +54,32 @@ namespace UsersManagementService.BLL.Services.Decorators
         {
             var deleteUserModelValidator = usersValidator.GetUserIdValidatorOrThrow();
 
-            await deleteUserModelValidator.ValidateAndThrowAsync(id, cancellationToken);
+            logger.LogDebug(string.Format(
+                ValidatingStartingMessage, 
+                nameof(DeleteUserAsync),
+                nameof(Guid),
+                DateTime.UtcNow));
+
+            try
+            {
+                await deleteUserModelValidator.ValidateAndThrowAsync(id, cancellationToken);
+            }
+            catch (ValidationException ex)
+            {
+                logger.LogError(string.Format(
+                    ValidatingFailedMessage,
+                    nameof(DeleteUserAsync),
+                    nameof(Guid),
+                    ex.Errors,
+                    DateTime.UtcNow));
+                throw;
+            }
+
+            logger.LogDebug(string.Format(
+                ValidatingSucceededMessage,
+                nameof(DeleteUserAsync),
+                nameof(Guid),
+                DateTime.UtcNow));
 
             return await usersService.DeleteUserAsync(id, cancellationToken);
         }
@@ -29,16 +88,60 @@ namespace UsersManagementService.BLL.Services.Decorators
         {
             var getPagedUsersQueryValidator = usersValidator.GetPagedUsersQueryValidatorOrThrow();
 
-            await getPagedUsersQueryValidator.ValidateAndThrowAsync(users, cancellationToken);
+            logger.LogDebug(string.Format(
+                ValidatingStartingMessage, 
+                nameof(GetPagedUsersAsync),
+                nameof(GetPagedUsersQuery),
+                DateTime.UtcNow));
+
+            try
+            {
+                await getPagedUsersQueryValidator.ValidateAndThrowAsync(users, cancellationToken);
+            }
+            catch (ValidationException ex)
+            {
+                logger.LogError(string.Format(
+                    ValidatingFailedMessage,
+                    nameof(GetPagedUsersAsync),
+                    nameof(GetPagedUsersQuery),
+                    ex.Errors,
+                    DateTime.UtcNow));
+                throw;
+            }
+
+            logger.LogDebug(string.Format(
+                ValidatingSucceededMessage,
+                nameof(GetPagedUsersAsync),
+                nameof(GetPagedUsersQuery),
+                DateTime.UtcNow));
 
             return await usersService.GetPagedUsersAsync(users, cancellationToken);
         }
 
         public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var getUserQueryValidator = usersValidator.GetUserIdValidatorOrThrow();
+            var getUserQueryValidator = usersValidator.GetUserValidator;
 
-            await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
+            try
+            {
+                await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
+            }
+            catch (ValidationException ex)
+            {
+                logger.LogError(string.Format(
+                    ValidatingFailedMessage,
+                    nameof(GetUserByIdAsync),
+                    nameof(Guid),
+                    ex.Errors,
+                    DateTime.UtcNow));
+                throw;
+            }
+
+            logger.LogDebug(string.Format(
+                ValidatingSucceededMessage,
+                nameof(GetUserByIdAsync),
+                nameof(Guid),
+                DateTime.UtcNow));
 
             return await usersService.GetUserByIdAsync(id, cancellationToken);
         }
@@ -47,7 +150,32 @@ namespace UsersManagementService.BLL.Services.Decorators
         {
             var updateUserModelValidator = usersValidator.GetUpdateUserModelValidatorOrThrow();
 
-            await updateUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
+            logger.LogDebug(string.Format(
+                ValidatingStartingMessage, 
+                nameof(UpdateUserAsync),
+                nameof(UpdateUserModel),
+                DateTime.UtcNow));
+
+            try
+            {
+                await updateUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
+            }
+            catch (ValidationException ex)
+            {
+                logger.LogError(string.Format(
+                    ValidatingFailedMessage,
+                    nameof(CreateUserAsync),
+                    nameof(UpdateUserModel),
+                    ex.Errors,
+                    DateTime.UtcNow));
+                throw;
+            }
+
+            logger.LogDebug(string.Format(
+                ValidatingSucceededMessage,
+                nameof(UpdateUserAsync),
+                nameof(UpdateUserModel),
+                DateTime.UtcNow));
 
             return await usersService.UpdateUserAsync(user, cancellationToken);
         }
