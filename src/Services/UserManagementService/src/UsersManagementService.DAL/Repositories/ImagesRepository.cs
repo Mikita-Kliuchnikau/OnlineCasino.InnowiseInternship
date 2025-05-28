@@ -40,7 +40,7 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
         ImageEntity image, 
         CancellationToken cancellationToken = default)
     {
-        if (await DoesImageExistAsync(image.Id, cancellationToken) is false)
+        if (!await DoesImageExistAsync(image.Id, cancellationToken))
         {
             throw new NotFoundException(nameof(image), image.Id);
         }

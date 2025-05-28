@@ -77,7 +77,7 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user,
         CancellationToken cancellationToken = default)
     {
-        if (await DoesUserExistAsync(user.Id, cancellationToken) is false)
+        if (!await DoesUserExistAsync(user.Id, cancellationToken))
         {
             throw new NotFoundException(nameof(user), user.Id);
         }

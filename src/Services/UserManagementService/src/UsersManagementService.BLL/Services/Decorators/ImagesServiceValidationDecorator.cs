@@ -18,17 +18,17 @@ public class ImagesServiceValidationDecorator(
         var createImageModelValidator = imagesValidator.GetImageModelValidatorOrThrow();
 
         logger.LogDebug(
-            "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}",
+            "Processing validation {ValidationName}, {@Model}, {@DateTime}",
             nameof(CreateImageAsync),
-            nameof(ImageModel),
+            image,
             DateTime.UtcNow);
 
         await createImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
 
         logger.LogDebug(
-            "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
+            "Complited validation {ValidationName}, {@Model}, {@DateTime}",
             nameof(CreateImageAsync),
-            nameof(ImageModel),
+            image,
             DateTime.UtcNow);
 
         return await imagesService.CreateImageAsync(image, cancellationToken);
@@ -38,17 +38,17 @@ public class ImagesServiceValidationDecorator(
     {
         var deleteImageModelValidator = imagesValidator.GetImageIdValidatorOrThrow();
         logger.LogDebug(
-            "Processing validation { @ValidationName}, { @ModelName}, { @DateTime}",
+            "Processing validation {ValidationName}, {@Model}, {@DateTime}",
             nameof(DeleteImageAsync),
-            nameof(Guid),
+            id,
             DateTime.UtcNow);
 
         await deleteImageModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
         logger.LogDebug(
-            "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
+            "Complited validation {ValidationName}, {@Model}, {@DateTime}",
             nameof(DeleteImageAsync),
-            nameof(Guid),
+            id,
             DateTime.UtcNow);
 
         return await imagesService.DeleteImageAsync(id, cancellationToken);
@@ -59,17 +59,17 @@ public class ImagesServiceValidationDecorator(
         var updateImageModelValidator = imagesValidator.GetImageModelValidatorOrThrow();
 
         logger.LogDebug(
-            "Processing validation { @ValidationName}, { @ModelName}, { @DateTime}",
+            "Processing validation {ValidationName}, {@Model}, { @DateTime}",
             nameof(UpdateImageAsync),
-            nameof(ImageModel),
+            image,
             DateTime.UtcNow);
 
         await updateImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
 
         logger.LogDebug(
-            "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
+            "Complited validation {ValidationName}, {@Model}, {@DateTime}",
             nameof(UpdateImageAsync),
-            nameof(ImageModel),
+            image,
             DateTime.UtcNow);
 
         return await imagesService.UpdateImageAsync(image, cancellationToken);

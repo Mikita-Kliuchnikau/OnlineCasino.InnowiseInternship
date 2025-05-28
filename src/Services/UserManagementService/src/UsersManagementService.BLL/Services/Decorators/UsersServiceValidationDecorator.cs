@@ -16,18 +16,18 @@ namespace UsersManagementService.BLL.Services.Decorators
             var createUserModelValidator = usersValidator.GetCreateUserModelValidatorOrThrow();
 
             logger.LogDebug(
-                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}", 
+                "Processing validation {ValidationName}, {@Model}, {@DateTime}", 
                 nameof(CreateUserAsync),
-                nameof(CreateUserModel),
+                user,
                 DateTime.UtcNow);
 
             await createUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
 
 
             logger.LogDebug(
-                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
+                "Complited validation {ValidationName}, {@Model}, {@DateTime}",
                 nameof(CreateUserAsync),
-                nameof(CreateUserModel),
+                user,
                 DateTime.UtcNow);
 
             return await usersService.CreateUserAsync(user, cancellationToken);
@@ -38,17 +38,17 @@ namespace UsersManagementService.BLL.Services.Decorators
             var deleteUserModelValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             logger.LogDebug(
-                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}", 
+                "Processing validation {ValidationName}, {@Model}, {@DateTime}", 
                 nameof(DeleteUserAsync),
-                nameof(Guid),
+                id,
                 DateTime.UtcNow);
 
             await deleteUserModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
             logger.LogDebug(
-                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
+                "Complited validation {ValidationName}, {@Model}, {@DateTime}",
                 nameof(DeleteUserAsync),
-                nameof(Guid),
+                id,
                 DateTime.UtcNow);
 
             return await usersService.DeleteUserAsync(id, cancellationToken);
@@ -59,17 +59,17 @@ namespace UsersManagementService.BLL.Services.Decorators
             var getPagedUsersQueryValidator = usersValidator.GetPagedUsersQueryValidatorOrThrow();
 
             logger.LogDebug(
-                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}", 
+                "Processing validation {ValidationName}, {@Model}, {@DateTime}", 
                 nameof(GetPagedUsersAsync),
-                nameof(GetPagedUsersQuery),
+                users,
                 DateTime.UtcNow);
 
             await getPagedUsersQueryValidator.ValidateAndThrowAsync(users, cancellationToken);
 
             logger.LogDebug(
-                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
+                "Complited validation {ValidationName}, {@Model}, {@DateTime}",
                 nameof(GetPagedUsersAsync),
-                nameof(GetPagedUsersQuery),
+                users,
                 DateTime.UtcNow);
 
             return await usersService.GetPagedUsersAsync(users, cancellationToken);
@@ -80,17 +80,17 @@ namespace UsersManagementService.BLL.Services.Decorators
             var getUserQueryValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             logger.LogDebug(
-                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}",
+                "Processing validation {ValidationName}, {@Model}, {@DateTime}",
                 nameof(GetUserByIdAsync),
-                nameof(Guid),
+                id,
                 DateTime.UtcNow);
 
             await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
 
             logger.LogDebug(
-                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
+                "Complited validation {ValidationName}, {@Model}, {@DateTime}",
                 nameof(GetUserByIdAsync),
-                nameof(Guid),
+                id,
                 DateTime.UtcNow);
 
             return await usersService.GetUserByIdAsync(id, cancellationToken);
@@ -101,17 +101,17 @@ namespace UsersManagementService.BLL.Services.Decorators
             var updateUserModelValidator = usersValidator.GetUpdateUserModelValidatorOrThrow();
 
             logger.LogDebug(
-                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}", 
+                "Processing validation {ValidationName}, {@Model}, {@DateTime}", 
                 nameof(UpdateUserAsync),
-                nameof(UpdateUserModel),
+                user,
                 DateTime.UtcNow);
 
             await updateUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
 
             logger.LogDebug(
-                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
+                "Complited validation {ValidationName}, {@Model}, {@DateTime}",
                 nameof(UpdateUserAsync),
-                nameof(UpdateUserModel),
+                user,
                 DateTime.UtcNow);
 
             return await usersService.UpdateUserAsync(user, cancellationToken);
