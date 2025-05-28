@@ -15,18 +15,16 @@ namespace UsersManagementService.BLL.Services
             var imageEntity = image.Adapt<ImageEntity>();
             
             logger.LogInformation(
-                "Processing request {RequestName}, {@Model}, {@DateTime}",
+                "Processing request {RequestName}, {@Model}",
                 nameof(CreateImageAsync),
-                imageEntity,
-                DateTime.UtcNow);
+                imageEntity);
 
             var result = await imagesRepository.CreateAsync(imageEntity, cancellationToken);
 
             logger.LogInformation(
-                "Complited request {RequestName} with result {@Result}, {@DateTime}",
+                "Complited request {RequestName} with result {@Result}",
                 nameof(CreateImageAsync),
-                result,
-                DateTime.UtcNow);
+                result);
 
             return result;
         }
@@ -34,18 +32,16 @@ namespace UsersManagementService.BLL.Services
         public async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
         {
             logger.LogInformation(
-                "Processing request {RequestName}, {@Model}, {@DateTime}",
+                "Processing request {RequestName}, {@Model}",
                 nameof(DeleteImageAsync),
-                id,
-                DateTime.UtcNow);
+                id);
 
             var result = await imagesRepository.DeleteAsync(id, cancellationToken);
 
             logger.LogInformation(
-                "Complited request {RequestName} with result {@Result}, {@DateTime}",
+                "Complited request {RequestName} with result {@Result}",
                 nameof(DeleteImageAsync),
-                result,
-                DateTime.UtcNow);
+                result);
 
             return result;
         }
@@ -55,18 +51,16 @@ namespace UsersManagementService.BLL.Services
             var imageEntity = image.Adapt<ImageEntity>();
             
             logger.LogInformation(
-                "Processing request {RequestName}, {@Model}, {@DateTime}",
+                "Processing request {RequestName}, {@Model}",
                 nameof(UpdateImageAsync),
-                imageEntity,
-                DateTime.UtcNow);
+                imageEntity);
 
             var result = await imagesRepository.UpdateAsync(imageEntity, cancellationToken);
 
             logger.LogInformation(
-                "Complited request {RequestName} with result {@Result}, {@DateTime}",
+                "Complited request {RequestName} with result {@Result}",
                 nameof(UpdateImageAsync),
-                result,
-                DateTime.UtcNow);
+                result);
 
             return result;
         }

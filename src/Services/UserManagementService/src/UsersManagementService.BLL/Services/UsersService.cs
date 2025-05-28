@@ -15,18 +15,16 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
         var userEntity = user.Adapt<UserEntity>();
         
         logger.LogInformation(
-            "Processing request {RequestName}, {@Model}, {@DateTime}",
+            "Processing request {RequestName}, {@Model}",
             nameof(CreateUserAsync),
-            userEntity,
-            DateTime.UtcNow);
+            userEntity);
 
         var result =  await usersRepository.CreateAsync(userEntity, cancellationToken);
 
         logger.LogInformation(
-            "Complited request {RequestName} with result {@Result}, {@DateTime}",
+            "Complited request {RequestName} with result {@Result}",
             nameof(CreateUserAsync),
-            result,
-            DateTime.UtcNow);
+            result);
 
         return result; 
     }
@@ -34,18 +32,16 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
     public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
-            "Processing request {RequestName}, {@Model}, {@DateTime}",
+            "Processing request {RequestName}, {@Model}",
             nameof(DeleteUserAsync),
-            id,
-            DateTime.UtcNow);
+            id);
 
         var result = await usersRepository.DeleteAsync(id, cancellationToken);
 
         logger.LogInformation(
-            "Complited request {RequestName} with result {@Result}, {@DateTime}",
+            "Complited request {RequestName} with result {@Result}",
             nameof(DeleteUserAsync),
-            result,
-            DateTime.UtcNow);
+            result);
 
         return result;
     }
@@ -54,19 +50,17 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
     {
         var pagedUsersfilter = users.Adapt<PagedUsersFilter>();
         logger.LogInformation(
-            "Processing request {RequestName}, {@Model}, {@DateTime}",
+            "Processing request {RequestName}, {@Model}",
             nameof(GetPagedUsersAsync),
-            pagedUsersfilter,
-            DateTime.UtcNow);
+            pagedUsersfilter);
 
         var pagedUsersProjection = await usersRepository.GetPagedAsync(pagedUsersfilter, cancellationToken);
         var result = pagedUsersProjection.Adapt<PagedUsersViewModel>();
 
         logger.LogInformation(
-            "Complited request {RequestName} with result {@Result}, {@DateTime}",
+            "Complited request {RequestName} with result {@Result}",
             nameof(GetPagedUsersAsync),
-            result,
-            DateTime.UtcNow);
+            result);
 
         return result;
     }
@@ -74,20 +68,18 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
     public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
-            "Processing request {RequestName}, {@Model}, {@DateTime}",
+            "Processing request {RequestName}, {@Model}",
             nameof(GetUserByIdAsync),
-            id,
-            DateTime.UtcNow);
+            id);
 
         var userEntity = await usersRepository.GetByIdAsync(id, cancellationToken);
 
         var result = userEntity.Adapt<UserViewModel>();
 
         logger.LogInformation(
-            "Complited request {RequestName} with result {@Result}, {@DateTime}",
+            "Complited request {RequestName} with result {@Result}",
             nameof(GetUserByIdAsync),
-            result,
-            DateTime.UtcNow);
+            result);
 
         return result;
     }
@@ -95,18 +87,16 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
     public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
-            "Processing request {RequestName}, {@Model}, {@DateTime}",
+            "Processing request {RequestName}, {@Model}",
             nameof(UpdateUserAsync),
-            user,
-            DateTime.UtcNow);
+            user);
 
         var result = await usersRepository.UpdateAsync(user.Adapt<UserEntity>(), cancellationToken);
 
         logger.LogInformation(
-            "Complited request {RequestName} with result {@Result}, {@DateTime}",
+            "Complited request {RequestName} with result {@Result}",
             nameof(UpdateUserAsync),
-            result,
-            DateTime.UtcNow);
+            result);
 
         return result;
     }
