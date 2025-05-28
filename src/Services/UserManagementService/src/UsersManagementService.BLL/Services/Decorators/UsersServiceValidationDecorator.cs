@@ -16,11 +16,11 @@ namespace UsersManagementService.BLL.Services.Decorators
         {
             var createUserModelValidator = usersValidator.GetCreateUserModelValidatorOrThrow();
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingStartingMessage, 
                 nameof(CreateUserAsync),
                 nameof(CreateUserModel),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             try
             {
@@ -37,11 +37,11 @@ namespace UsersManagementService.BLL.Services.Decorators
                 throw;
             }
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingSucceededMessage,
                 nameof(CreateUserAsync),
                 nameof(CreateUserModel),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             return await usersService.CreateUserAsync(user, cancellationToken);
         }
@@ -50,11 +50,11 @@ namespace UsersManagementService.BLL.Services.Decorators
         {
             var deleteUserModelValidator = usersValidator.GetUserIdValidatorOrThrow();
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingStartingMessage, 
                 nameof(DeleteUserAsync),
                 nameof(Guid),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             try
             {
@@ -62,20 +62,20 @@ namespace UsersManagementService.BLL.Services.Decorators
             }
             catch (ValidationException ex)
             {
-                logger.LogError(string.Format(
+                logger.LogError(
                     ValidatingFailedMessage,
                     nameof(DeleteUserAsync),
                     nameof(Guid),
                     ex.Errors,
-                    DateTime.UtcNow));
+                    DateTime.UtcNow);
                 throw;
             }
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingSucceededMessage,
                 nameof(DeleteUserAsync),
                 nameof(Guid),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             return await usersService.DeleteUserAsync(id, cancellationToken);
         }
@@ -84,11 +84,11 @@ namespace UsersManagementService.BLL.Services.Decorators
         {
             var getPagedUsersQueryValidator = usersValidator.GetPagedUsersQueryValidatorOrThrow();
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingStartingMessage, 
                 nameof(GetPagedUsersAsync),
                 nameof(GetPagedUsersQuery),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             try
             {
@@ -96,20 +96,20 @@ namespace UsersManagementService.BLL.Services.Decorators
             }
             catch (ValidationException ex)
             {
-                logger.LogError(string.Format(
+                logger.LogError(
                     ValidatingFailedMessage,
                     nameof(GetPagedUsersAsync),
                     nameof(GetPagedUsersQuery),
                     ex.Errors,
-                    DateTime.UtcNow));
+                    DateTime.UtcNow);
                 throw;
             }
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingSucceededMessage,
                 nameof(GetPagedUsersAsync),
                 nameof(GetPagedUsersQuery),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             return await usersService.GetPagedUsersAsync(users, cancellationToken);
         }
@@ -118,26 +118,32 @@ namespace UsersManagementService.BLL.Services.Decorators
         {
             var getUserQueryValidator = usersValidator.GetUserIdValidatorOrThrow();
 
+            logger.LogDebug(
+                ValidatingStartingMessage,
+                nameof(GetUserByIdAsync),
+                nameof(Guid),
+                DateTime.UtcNow);
+
             try
             {
                 await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
             }
             catch (ValidationException ex)
             {
-                logger.LogError(string.Format(
+                logger.LogError(
                     ValidatingFailedMessage,
                     nameof(GetUserByIdAsync),
                     nameof(Guid),
                     ex.Errors,
-                    DateTime.UtcNow));
+                    DateTime.UtcNow);
                 throw;
             }
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingSucceededMessage,
                 nameof(GetUserByIdAsync),
                 nameof(Guid),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             return await usersService.GetUserByIdAsync(id, cancellationToken);
         }
@@ -146,11 +152,11 @@ namespace UsersManagementService.BLL.Services.Decorators
         {
             var updateUserModelValidator = usersValidator.GetUpdateUserModelValidatorOrThrow();
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingStartingMessage, 
                 nameof(UpdateUserAsync),
                 nameof(UpdateUserModel),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             try
             {
@@ -158,20 +164,20 @@ namespace UsersManagementService.BLL.Services.Decorators
             }
             catch (ValidationException ex)
             {
-                logger.LogError(string.Format(
+                logger.LogError(
                     ValidatingFailedMessage,
                     nameof(CreateUserAsync),
                     nameof(UpdateUserModel),
                     ex.Errors,
-                    DateTime.UtcNow));
+                    DateTime.UtcNow);
                 throw;
             }
 
-            logger.LogDebug(string.Format(
+            logger.LogDebug(
                 ValidatingSucceededMessage,
                 nameof(UpdateUserAsync),
                 nameof(UpdateUserModel),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             return await usersService.UpdateUserAsync(user, cancellationToken);
         }

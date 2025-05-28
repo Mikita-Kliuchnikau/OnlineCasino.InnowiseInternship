@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Models.Image;
+using UsersManagementService.Common.Exceptions;
 using UsersManagementService.DAL.Entites.Core;
 using UsersManagementService.DAL.Interfaces.Repositories;
 using static UsersManagementService.Common.Constants.LoggingMessages;
@@ -12,43 +13,30 @@ namespace UsersManagementService.BLL.Services
     {
         public async Task<Guid> CreateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
         {
-            logger.LogInformation(string.Format(
+            logger.LogInformation(
                 RequestStartingMessage,
                 nameof(CreateImageAsync),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             var imageEntity = image.Adapt<ImageEntity>();
-            var result = Guid.Empty;
 
-            try
-            {
-                result = await imagesRepository.CreateAsync(imageEntity, cancellationToken);
-            }
-            catch(Exception ex)
-            {
-                logger.LogError(string.Format(
-                    RequestFailedMessage,
-                    nameof(CreateImageAsync),
-                    ex.Message,
-                    DateTime.UtcNow));
-                throw;
-            }
+            var result = await imagesRepository.CreateAsync(imageEntity, cancellationToken);
 
-            logger.LogInformation(string.Format(
+            logger.LogInformation(
                 RequestSucceededMessage,
                 nameof(CreateImageAsync),
                 result,
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             return result;
         }
 
         public async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            logger.LogInformation(string.Format(
+            logger.LogInformation(
                 RequestStartingMessage,
                 nameof(DeleteImageAsync),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             var result = Guid.Empty;
 
@@ -56,31 +44,31 @@ namespace UsersManagementService.BLL.Services
             {
                 result = await imagesRepository.DeleteAsync(id, cancellationToken);
             }
-            catch (Exception ex)
+            catch (NotFoundException ex)
             {
-                logger.LogError(string.Format(
+                logger.LogError(
                     RequestFailedMessage,
                     nameof(DeleteImageAsync),
                     ex.Message,
-                    DateTime.UtcNow));
+                    DateTime.UtcNow);
                 throw;
             }
 
-            logger.LogInformation(string.Format(
+            logger.LogInformation(
                 RequestSucceededMessage,
                 nameof(DeleteImageAsync),
                 result,
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             return result;
         }
 
         public async Task<Guid> UpdateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
         {
-            logger.LogInformation(string.Format(
+            logger.LogInformation(
                 RequestStartingMessage,
                 nameof(UpdateImageAsync),
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             var imageEntity = image.Adapt<ImageEntity>();
             var result = Guid.Empty;
@@ -89,21 +77,21 @@ namespace UsersManagementService.BLL.Services
             {
                 result = await imagesRepository.UpdateAsync(imageEntity, cancellationToken);
             }
-            catch(Exception ex)
+            catch(NotFoundException ex)
             {
-                logger.LogError(string.Format(
+                logger.LogError(
                     RequestFailedMessage,
                     nameof(UpdateImageAsync),
                     ex.Message,
-                    DateTime.UtcNow));
+                    DateTime.UtcNow);
                 throw;
             }
 
-            logger.LogInformation(string.Format(
+            logger.LogInformation(
                 RequestSucceededMessage,
                 nameof(UpdateImageAsync),
                 result,
-                DateTime.UtcNow));
+                DateTime.UtcNow);
 
             return result;
         }

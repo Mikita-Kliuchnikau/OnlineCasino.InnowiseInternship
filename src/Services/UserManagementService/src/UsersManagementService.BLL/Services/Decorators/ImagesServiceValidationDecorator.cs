@@ -16,13 +16,32 @@ public class ImagesServiceValidationDecorator(
     {
         var createImageModelValidator = imagesValidator.GetImageModelValidatorOrThrow();
 
-        await createImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
+        logger.LogDebug(
+            ValidatingStartingMessage,
+            nameof(CreateImageAsync),
+            nameof(ImageModel),
+            DateTime.UtcNow);
 
-        logger.LogDebug(string.Format(
+        try
+        {
+            await createImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
+        }
+        catch (ValidationException ex)
+        {
+            logger.LogError(
+                ValidatingFailedMessage,
+                nameof(CreateImageAsync),
+                nameof(ImageModel),
+                ex.Message,
+                DateTime.UtcNow);
+            throw;
+        }
+
+        logger.LogDebug(
             ValidatingSucceededMessage,
             nameof(CreateImageAsync),
             nameof(ImageModel),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         return await imagesService.CreateImageAsync(image, cancellationToken);
     }
@@ -31,32 +50,32 @@ public class ImagesServiceValidationDecorator(
     {
         var deleteImageModelValidator = imagesValidator.GetImageIdValidatorOrThrow();
 
-        logger.LogDebug(string.Format(
+        logger.LogDebug(
             ValidatingStartingMessage,
             nameof(DeleteImageAsync),
             nameof(Guid),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         try
         {
             await deleteImageModelValidator.ValidateAndThrowAsync(id, cancellationToken);
         }
-        catch (Exception ex) 
+        catch (ValidationException ex) 
         {
-            logger.LogError(string.Format(
+            logger.LogError(
                 ValidatingFailedMessage,
                 nameof(DeleteImageAsync),
                 nameof(Guid),
                 ex.Message,
-                DateTime.UtcNow));
+                DateTime.UtcNow);
             throw;
         }
 
-        logger.LogDebug(string.Format(
+        logger.LogDebug(
             ValidatingSucceededMessage,
             nameof(DeleteImageAsync),
             nameof(Guid),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         return await imagesService.DeleteImageAsync(id, cancellationToken);
     }
@@ -65,7 +84,32 @@ public class ImagesServiceValidationDecorator(
     {
         var updateImageModelValidator = imagesValidator.GetImageModelValidatorOrThrow();
 
-        await updateImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
+        logger.LogDebug(
+            ValidatingStartingMessage,
+            nameof(UpdateImageAsync),
+            nameof(ImageModel),
+            DateTime.UtcNow);
+
+        try
+        {
+            await updateImageModelValidator.ValidateAndThrowAsync(image, cancellationToken);
+        }
+        catch (ValidationException ex)
+        {
+            logger.LogError(
+                ValidatingFailedMessage,
+                nameof(UpdateImageAsync),
+                nameof(ImageModel),
+                ex.Message,
+                DateTime.UtcNow);
+            throw;
+        }
+
+        logger.LogDebug(
+            ValidatingSucceededMessage,
+            nameof(UpdateImageAsync),
+            nameof(ImageModel),
+            DateTime.UtcNow);
 
         return await imagesService.UpdateImageAsync(image, cancellationToken);
     }

@@ -14,43 +14,29 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
 {
     public async Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken = default)
     {
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestStartingMessage,
             nameof(CreateUserAsync),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         var userEntity = user.Adapt<UserEntity>();
-        var result = Guid.Empty;
+        var result =  await usersRepository.CreateAsync(userEntity, cancellationToken);
 
-        try
-        {
-            result = await usersRepository.CreateAsync(userEntity, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(string.Format(
-                RequestFailedMessage,
-                nameof(CreateUserAsync),
-                ex.Message,
-                DateTime.UtcNow));
-            throw;
-        }
-
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestSucceededMessage,
             nameof(CreateUserAsync),
             result,
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         return result; 
     }
 
     public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestStartingMessage,
             nameof(DeleteUserAsync),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         var result = Guid.Empty;
 
@@ -58,66 +44,52 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
         {
             result = await usersRepository.DeleteAsync(id, cancellationToken);
         }
-        catch(Exception ex)
+        catch(NotFoundException ex)
         {
-            logger.LogError(string.Format(
+            logger.LogError(
                 RequestFailedMessage,
                 nameof(DeleteUserAsync),
                 ex.Message,
-                DateTime.UtcNow));
+                DateTime.UtcNow);
             throw;
         }
 
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestSucceededMessage,
             nameof(DeleteUserAsync),
             id,
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         return result;
     }
 
     public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery users, CancellationToken cancellationToken = default)
     {
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestStartingMessage,
             nameof(GetPagedUsersAsync),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         var pagedUsersfilter = users.Adapt<PagedUsersFilter>();
-        PagedUsersProjection pagedUsersProjection = null!;
-
-        try
-        {
-            pagedUsersProjection = await usersRepository.GetPagedAsync(pagedUsersfilter, cancellationToken);
-        }
-        catch(Exception ex)
-        {
-            logger.LogError(string.Format(
-                RequestFailedMessage,
-                nameof(GetPagedUsersAsync),
-                ex.Message,
-                DateTime.UtcNow));
-            throw;
-        }
+        var pagedUsersProjection = await usersRepository.GetPagedAsync(pagedUsersfilter, cancellationToken);
 
         var result = pagedUsersProjection.Adapt<PagedUsersViewModel>();
 
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestSucceededMessage,
             nameof(GetPagedUsersAsync),
             result.TotalCount,
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         return result;
     }
 
     public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestStartingMessage,
             nameof(GetUserByIdAsync),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
 
         UserEntity userEntity = null!;
@@ -130,32 +102,32 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
                 throw new NotFoundException(nameof(userEntity), id);
             }
         }
-        catch (Exception ex)
+        catch (NotFoundException ex)
         {
-            logger.LogError(string.Format(
+            logger.LogError(
                 RequestFailedMessage,
                 nameof(GetUserByIdAsync),
                 ex.Message,
-                DateTime.UtcNow));
+                DateTime.UtcNow);
             throw;
         }
 
         var result = userEntity.Adapt<UserViewModel>();
 
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestSucceededMessage,
             nameof(GetUserByIdAsync),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         return result;
     }
 
     public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default)
     {
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestStartingMessage,
             nameof(UpdateUserAsync),
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         var result = Guid.Empty;
 
@@ -163,21 +135,21 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
         {
             result = await usersRepository.UpdateAsync(user.Adapt<UserEntity>(), cancellationToken);
         }
-        catch(Exception ex)
+        catch(NotFoundException ex)
         {
-            logger.LogError(string.Format(
+            logger.LogError(
                 RequestFailedMessage,
                 nameof(UpdateUserAsync),
                 ex.Message,
-                DateTime.UtcNow));
+                DateTime.UtcNow);
             throw;
         }
 
-        logger.LogInformation(string.Format(
+        logger.LogInformation(
             RequestSucceededMessage,
             nameof(UpdateUserAsync),
             result,
-            DateTime.UtcNow));
+            DateTime.UtcNow);
 
         return result;
     }
