@@ -17,6 +17,7 @@ var app = builder.Build();
 
 app.MapControllers();
 
+app.UseRequestLogContextMiddleware();
 app.UseExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())

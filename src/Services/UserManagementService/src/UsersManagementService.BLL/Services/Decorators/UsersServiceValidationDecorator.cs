@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Interfaces.Validators;
 using UsersManagementService.BLL.Models.User;
-using static UsersManagementService.Common.Constants.LoggingMessages;
 
 namespace UsersManagementService.BLL.Services.Decorators
 {
@@ -17,28 +16,16 @@ namespace UsersManagementService.BLL.Services.Decorators
             var createUserModelValidator = usersValidator.GetCreateUserModelValidatorOrThrow();
 
             logger.LogDebug(
-                ValidatingStartingMessage, 
+                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}", 
                 nameof(CreateUserAsync),
                 nameof(CreateUserModel),
                 DateTime.UtcNow);
 
-            try
-            {
-                await createUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
-            }
-            catch (ValidationException ex)
-            {
-                logger.LogError(string.Format(
-                    ValidatingFailedMessage,
-                    nameof(CreateUserAsync),
-                    nameof(CreateUserModel),
-                    ex.Errors,
-                    DateTime.UtcNow));
-                throw;
-            }
+            await createUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
+
 
             logger.LogDebug(
-                ValidatingSucceededMessage,
+                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
                 nameof(CreateUserAsync),
                 nameof(CreateUserModel),
                 DateTime.UtcNow);
@@ -51,28 +38,15 @@ namespace UsersManagementService.BLL.Services.Decorators
             var deleteUserModelValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             logger.LogDebug(
-                ValidatingStartingMessage, 
+                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}", 
                 nameof(DeleteUserAsync),
                 nameof(Guid),
                 DateTime.UtcNow);
 
-            try
-            {
-                await deleteUserModelValidator.ValidateAndThrowAsync(id, cancellationToken);
-            }
-            catch (ValidationException ex)
-            {
-                logger.LogError(
-                    ValidatingFailedMessage,
-                    nameof(DeleteUserAsync),
-                    nameof(Guid),
-                    ex.Errors,
-                    DateTime.UtcNow);
-                throw;
-            }
+            await deleteUserModelValidator.ValidateAndThrowAsync(id, cancellationToken);
 
             logger.LogDebug(
-                ValidatingSucceededMessage,
+                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
                 nameof(DeleteUserAsync),
                 nameof(Guid),
                 DateTime.UtcNow);
@@ -85,28 +59,15 @@ namespace UsersManagementService.BLL.Services.Decorators
             var getPagedUsersQueryValidator = usersValidator.GetPagedUsersQueryValidatorOrThrow();
 
             logger.LogDebug(
-                ValidatingStartingMessage, 
+                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}", 
                 nameof(GetPagedUsersAsync),
                 nameof(GetPagedUsersQuery),
                 DateTime.UtcNow);
 
-            try
-            {
-                await getPagedUsersQueryValidator.ValidateAndThrowAsync(users, cancellationToken);
-            }
-            catch (ValidationException ex)
-            {
-                logger.LogError(
-                    ValidatingFailedMessage,
-                    nameof(GetPagedUsersAsync),
-                    nameof(GetPagedUsersQuery),
-                    ex.Errors,
-                    DateTime.UtcNow);
-                throw;
-            }
+            await getPagedUsersQueryValidator.ValidateAndThrowAsync(users, cancellationToken);
 
             logger.LogDebug(
-                ValidatingSucceededMessage,
+                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
                 nameof(GetPagedUsersAsync),
                 nameof(GetPagedUsersQuery),
                 DateTime.UtcNow);
@@ -119,28 +80,15 @@ namespace UsersManagementService.BLL.Services.Decorators
             var getUserQueryValidator = usersValidator.GetUserIdValidatorOrThrow();
 
             logger.LogDebug(
-                ValidatingStartingMessage,
+                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}",
                 nameof(GetUserByIdAsync),
                 nameof(Guid),
                 DateTime.UtcNow);
 
-            try
-            {
-                await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
-            }
-            catch (ValidationException ex)
-            {
-                logger.LogError(
-                    ValidatingFailedMessage,
-                    nameof(GetUserByIdAsync),
-                    nameof(Guid),
-                    ex.Errors,
-                    DateTime.UtcNow);
-                throw;
-            }
+            await getUserQueryValidator.ValidateAndThrowAsync(id, cancellationToken);
 
             logger.LogDebug(
-                ValidatingSucceededMessage,
+                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
                 nameof(GetUserByIdAsync),
                 nameof(Guid),
                 DateTime.UtcNow);
@@ -153,28 +101,15 @@ namespace UsersManagementService.BLL.Services.Decorators
             var updateUserModelValidator = usersValidator.GetUpdateUserModelValidatorOrThrow();
 
             logger.LogDebug(
-                ValidatingStartingMessage, 
+                "Processing validation {@ValidationName}, {@ModelName}, {@DateTime}", 
                 nameof(UpdateUserAsync),
                 nameof(UpdateUserModel),
                 DateTime.UtcNow);
 
-            try
-            {
-                await updateUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
-            }
-            catch (ValidationException ex)
-            {
-                logger.LogError(
-                    ValidatingFailedMessage,
-                    nameof(CreateUserAsync),
-                    nameof(UpdateUserModel),
-                    ex.Errors,
-                    DateTime.UtcNow);
-                throw;
-            }
+            await updateUserModelValidator.ValidateAndThrowAsync(user, cancellationToken);
 
             logger.LogDebug(
-                ValidatingSucceededMessage,
+                "Complited validation {@ValidationName}, {@ModelName}, {@DateTime}",
                 nameof(UpdateUserAsync),
                 nameof(UpdateUserModel),
                 DateTime.UtcNow);
