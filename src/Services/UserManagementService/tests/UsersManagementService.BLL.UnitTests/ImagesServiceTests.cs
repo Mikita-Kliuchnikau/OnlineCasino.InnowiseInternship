@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using UsersManagementService.BLL.Services;
 using UsersManagementService.DAL.Entites.Core;
@@ -15,7 +16,7 @@ public class ImagesServiceTests
         _imagesRepositoryMock.CreateAsync(Arg.Any<ImageEntity>(), default)
             .Returns(ImageModel.Id);
 
-        var service = new ImagesService(_imagesRepositoryMock);
+        var service = new ImagesService(_imagesRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.CreateImageAsync(ImageModel, default);
@@ -32,7 +33,7 @@ public class ImagesServiceTests
         _imagesRepositoryMock.CreateAsync(Arg.Any<ImageEntity>(), default)
             .Returns(invalidModel.Id);
 
-        var service = new ImagesService(_imagesRepositoryMock);
+        var service = new ImagesService(_imagesRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.CreateImageAsync(invalidModel, default);
@@ -48,7 +49,7 @@ public class ImagesServiceTests
         _imagesRepositoryMock.DeleteAsync(Arg.Any<Guid>(), default)
             .Returns(DeleteModel);
 
-        var service = new ImagesService(_imagesRepositoryMock);
+        var service = new ImagesService(_imagesRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.DeleteImageAsync(DeleteModel, default);
@@ -65,7 +66,7 @@ public class ImagesServiceTests
         _imagesRepositoryMock.DeleteAsync(Arg.Any<Guid>(), default)
             .Returns(invalidModel);
 
-        var service = new ImagesService(_imagesRepositoryMock);
+        var service = new ImagesService(_imagesRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.DeleteImageAsync(invalidModel, default);
@@ -81,7 +82,7 @@ public class ImagesServiceTests
         _imagesRepositoryMock.UpdateAsync(Arg.Any<ImageEntity>(), default)
             .Returns(ImageModel.Id);
 
-        var service = new ImagesService(_imagesRepositoryMock);
+        var service = new ImagesService(_imagesRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.UpdateImageAsync(ImageModel, default);
@@ -98,7 +99,7 @@ public class ImagesServiceTests
         _imagesRepositoryMock.UpdateAsync(Arg.Any<ImageEntity>(), default)
             .Returns(invalidModel.Id);
 
-        var service = new ImagesService(_imagesRepositoryMock);
+        var service = new ImagesService(_imagesRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.UpdateImageAsync(invalidModel, default);

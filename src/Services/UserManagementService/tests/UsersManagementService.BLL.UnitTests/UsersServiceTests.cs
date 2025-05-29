@@ -17,7 +17,7 @@ public class UsersServiceTests
         _usersRepositoryMock.CreateAsync(Arg.Any<UserEntity>(), default)
             .Returns(CreateModel.Id);
 
-        var service = new UsersService(_usersRepositoryMock);
+        var service = new UsersService(_usersRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.CreateUserAsync(CreateModel, default);
@@ -34,7 +34,7 @@ public class UsersServiceTests
         _usersRepositoryMock.CreateAsync(Arg.Any<UserEntity>(), default)
             .Returns(invalidModel.Id);
 
-        var service = new UsersService(_usersRepositoryMock);
+        var service = new UsersService(_usersRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.CreateUserAsync(invalidModel, default);
@@ -50,7 +50,7 @@ public class UsersServiceTests
         _usersRepositoryMock.DeleteAsync(Arg.Any<Guid>(), default)
             .Returns(DeleteModel);
 
-        var service = new UsersService(_usersRepositoryMock);
+        var service = new UsersService(_usersRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.DeleteUserAsync(DeleteModel, default);
@@ -67,7 +67,7 @@ public class UsersServiceTests
         _usersRepositoryMock.DeleteAsync(Arg.Any<Guid>(), default)
             .Returns(invalidModel);
 
-        var service = new UsersService(_usersRepositoryMock);
+        var service = new UsersService(_usersRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.DeleteUserAsync(invalidModel, default);
@@ -83,7 +83,7 @@ public class UsersServiceTests
         _usersRepositoryMock.UpdateAsync(Arg.Any<UserEntity>(), default)
             .Returns(UpdateModel.Id);
 
-        var service = new UsersService(_usersRepositoryMock);
+        var service = new UsersService(_usersRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.UpdateUserAsync(UpdateModel, default);
@@ -100,7 +100,7 @@ public class UsersServiceTests
         _usersRepositoryMock.UpdateAsync(Arg.Any<UserEntity>(), default)
             .Returns(invalidModel.Id);
 
-        var service = new UsersService(_usersRepositoryMock);
+        var service = new UsersService(_usersRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.UpdateUserAsync(invalidModel, default);
@@ -116,7 +116,7 @@ public class UsersServiceTests
         _usersRepositoryMock.GetByIdAsync(Arg.Any<Guid>(), default)
             .Returns(new UserEntity { Id = GetQuery, AuthId = Guid.NewGuid() });
 
-        var service = new UsersService(_usersRepositoryMock);
+        var service = new UsersService(_usersRepositoryMock, _loggerMock);
 
         //Act
         var result = await service.GetUserByIdAsync(GetQuery, default);
@@ -132,7 +132,7 @@ public class UsersServiceTests
         var invalidQuery = Guid.Empty;
         _usersRepositoryMock.GetByIdAsync(Arg.Any<Guid>(), default)
             .ThrowsAsync(new NotFoundException("", null!));
-        var service = new UsersService(_usersRepositoryMock);
+        var service = new UsersService(_usersRepositoryMock, _loggerMock);
 
         //Act
         Func<Task> act = async () => await service.GetUserByIdAsync(invalidQuery, default);

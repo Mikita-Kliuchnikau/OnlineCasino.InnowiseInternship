@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog.Context;
 using System.Net;
 using static UsersManagementService.Presentation.Constants.MediaTypeConstants;
 
 namespace UsersManagementService.Presentation.Middleware;
 
-public class ExceptionMiddleware(RequestDelegate next)
+public class ExceptionMiddleware(
+    RequestDelegate next,
+    ILogger<ExceptionMiddleware> logger)
 {
     public async Task InvokeAsync(HttpContext context)
     {
@@ -14,7 +17,15 @@ public class ExceptionMiddleware(RequestDelegate next)
         }
         catch (Exception ex)
         {
-           await HandleExceptionAsync(context, ex);
+            using (LogContext.PushProperty("Error", ex.Message, true))
+            {
+                logger.LogError(
+                    ex,
+                    "Request {@Request} complited with error",
+                    context.Request.Path);
+            }
+
+            await HandleExceptionAsync(context, ex);
         }
     }
 
