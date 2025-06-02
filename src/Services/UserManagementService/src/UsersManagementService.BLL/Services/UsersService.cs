@@ -5,12 +5,15 @@ using UsersManagementService.DAL.Entites.Core;
 using UsersManagementService.DAL.Entites.Dto;
 using UsersManagementService.BLL.Models.User;
 using Microsoft.Extensions.Logging;
+using UsersManagementService.BLL.Attributes;
+using UsersManagementService.BLL.Validators.UsersValidators;
 
 namespace UsersManagementService.BLL.Services;
 
 public class UsersService(IUsersRepository usersRepository, ILogger<UsersService> logger) : IUsersService
 {
-    public async Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken = default)
+    [Validate(typeof(CreateUserModelValidator))]
+    public virtual async Task<Guid> CreateUserAsync(CreateUserModel user, CancellationToken cancellationToken = default)
     {
         var userEntity = user.Adapt<UserEntity>();
         
@@ -29,7 +32,8 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
         return result; 
     }
 
-    public async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
+    [Validate(typeof(UserIdValidator))]
+    public virtual async Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
             "Processing request {RequestName}, {@Model}",
@@ -46,7 +50,8 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
         return result;
     }
 
-    public async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery users, CancellationToken cancellationToken = default)
+    [Validate(typeof(GetPagedUsersQueryValidator))]
+    public virtual async Task<PagedUsersViewModel> GetPagedUsersAsync(GetPagedUsersQuery users, CancellationToken cancellationToken = default)
     {
         var pagedUsersfilter = users.Adapt<PagedUsersFilter>();
         logger.LogInformation(
@@ -65,7 +70,8 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
         return result;
     }
 
-    public async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    [Validate(typeof(UserIdValidator))]
+    public virtual async Task<UserViewModel> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
             "Processing request {RequestName}, {@Model}",
@@ -84,7 +90,8 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
         return result;
     }
 
-    public async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default)
+    [Validate(typeof(UpdateUserModelValidator))]
+    public virtual async Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
             "Processing request {RequestName}, {@Model}",

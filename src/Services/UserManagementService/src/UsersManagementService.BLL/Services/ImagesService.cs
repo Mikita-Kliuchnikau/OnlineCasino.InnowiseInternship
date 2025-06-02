@@ -1,8 +1,10 @@
 ﻿using Mapster;
 using Microsoft.Extensions.Logging;
+using UsersManagementService.BLL.Attributes;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Models.Image;
-using UsersManagementService.Common.Exceptions;
+using UsersManagementService.BLL.Validators.ImagesValidators;
+using UsersManagementService.BLL.Validators.UsersValidators;
 using UsersManagementService.DAL.Entites.Core;
 using UsersManagementService.DAL.Interfaces.Repositories;
 
@@ -10,7 +12,8 @@ namespace UsersManagementService.BLL.Services
 {
     public class ImagesService(IImagesRepository imagesRepository, ILogger<ImagesService> logger) : IImagesService
     {
-        public async Task<Guid> CreateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
+        [Validate(typeof(ImageModelValidator))]
+        public virtual async Task<Guid> CreateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
         {
             var imageEntity = image.Adapt<ImageEntity>();
             
@@ -29,7 +32,8 @@ namespace UsersManagementService.BLL.Services
             return result;
         }
 
-        public async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
+        [Validate(typeof(ImageIdValidator))]
+        public virtual async Task<Guid> DeleteImageAsync(Guid id, CancellationToken cancellationToken = default)
         {
             logger.LogInformation(
                 "Processing request {RequestName}, {@Model}",
@@ -46,7 +50,8 @@ namespace UsersManagementService.BLL.Services
             return result;
         }
 
-        public async Task<Guid> UpdateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
+        [Validate(typeof(ImageModelValidator))]
+        public virtual async Task<Guid> UpdateImageAsync(ImageModel image, CancellationToken cancellationToken = default)
         {
             var imageEntity = image.Adapt<ImageEntity>();
             

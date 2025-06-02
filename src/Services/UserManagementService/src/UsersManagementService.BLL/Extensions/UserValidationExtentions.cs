@@ -1,13 +1,7 @@
 ﻿using FluentValidation;
-using System.ComponentModel.DataAnnotations;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using UsersManagementService.BLL.Interfaces.Validators;
-using UsersManagementService.BLL.Models.Image;
 using UsersManagementService.BLL.Resources;
-using UsersManagementService.Common.Exceptions;
 using UsersManagementService.Common.Helpers;
-using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Extensions;
 
@@ -61,29 +55,5 @@ public static class UserValidationExtentions
             .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField))
             .EmailAddress()
             .WithMessage(resourceHelper.GetValue(UserKeys.ValidationInvalidEmail));
-    }
-
-    public static IRuleBuilderOptions<T, Guid> DoesUserExist<T>(
-        this IRuleBuilder<T, Guid> ruleBuilder, IUsersRepository usersRepository)
-    {
-        return ruleBuilder
-            .MustAsync(async (Id, CancellationToken) =>
-            {
-                return await usersRepository
-                    .DoesUserExistAsync(Id, CancellationToken);
-            })
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationUserDoesntExist));
-    }
-
-    public static IRuleBuilderOptions<T, Guid> DoesImageExist<T>(
-        this IRuleBuilder<T, Guid> ruleBuilder, IImagesRepository imagesRepository)
-    {
-        return ruleBuilder
-            .MustAsync(async (Id, CancellationToken) =>
-            {
-                return await imagesRepository
-                    .DoesImageExistAsync(Id, CancellationToken);
-            })
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationImageDoesntExist));
     }
 }
