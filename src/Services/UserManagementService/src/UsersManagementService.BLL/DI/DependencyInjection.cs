@@ -27,7 +27,6 @@ public static class DependencyInjection
 
         services.AddScoped<IValidatorFactory, ValidatorFactory>();
         services.AddScoped<ValidationInterceptor>();
-        services.AddScoped<UsersService>();
         services.AddScopedProxyServer<UsersService, IUsersService>();
         services.AddScopedProxyServer<ImagesService, IImagesService>();
         return services;

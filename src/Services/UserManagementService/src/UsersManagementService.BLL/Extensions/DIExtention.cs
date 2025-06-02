@@ -11,13 +11,15 @@ public static class DIExtention
         where TService : class, TInterface
         where TInterface : class
     {
+        var testType1 = typeof(TService);
+        var testType2 = typeof(TInterface);
         services.AddScoped<TService>();
         services.AddScoped<TInterface>(static provider =>
         {
             var proxyGenerator = new ProxyGenerator();
             var service = provider.GetRequiredService<TService>;
             var interceptor = provider.GetRequiredService<ValidationInterceptor>();
-            return proxyGenerator.CreateInterfaceProxyWithTarget<TService>(
+            return proxyGenerator.CreateInterfaceProxyWithTarget<TInterface>(
                 service(),
                 interceptor);
         });
