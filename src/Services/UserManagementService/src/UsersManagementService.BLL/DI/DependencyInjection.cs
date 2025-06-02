@@ -1,8 +1,8 @@
-﻿using Castle.DynamicProxy;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using UsersManagementService.BLL.Extensions;
 using UsersManagementService.BLL.Interceptors;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Models.Image.MappingConfigurations;
@@ -28,25 +28,8 @@ public static class DependencyInjection
         services.AddScoped<IValidatorFactory, ValidatorFactory>();
         services.AddScoped<ValidationInterceptor>();
         services.AddScoped<UsersService>();
-        services.AddScoped<IUsersService>(static provider =>
-        {
-            var proxyGenerator = new ProxyGenerator();
-            var userService = provider.GetRequiredService<UsersService>;
-            var interceptor = provider.GetRequiredService<ValidationInterceptor>();
-            return proxyGenerator.CreateInterfaceProxyWithTarget<IUsersService>(
-                userService(),
-                interceptor);
-        });
-        services.AddScoped<ImagesService>();
-        services.AddScoped<IImagesService>(static provider =>
-        {
-            var proxyGenerator = new ProxyGenerator();
-            var imageService = provider.GetRequiredService<ImagesService>;
-            var interceptor = provider.GetRequiredService<ValidationInterceptor>();
-            return proxyGenerator.CreateInterfaceProxyWithTarget<IImagesService>(
-                imageService(),
-                interceptor);
-        });
+        services.AddScopedProxyServer<UsersService, IUsersService>();
+        services.AddScopedProxyServer<ImagesService, IImagesService>();
         return services;
     }
 }

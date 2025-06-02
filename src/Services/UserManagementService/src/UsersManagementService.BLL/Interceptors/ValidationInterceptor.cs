@@ -6,7 +6,6 @@ using UsersManagementService.BLL.Attributes;
 using IValidatorFactory = UsersManagementService.BLL.Interfaces.Validators.IValidatorFactory;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 using ValidationException = FluentValidation.ValidationException;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace UsersManagementService.BLL.Interceptors;
 
@@ -21,7 +20,7 @@ public class ValidationInterceptor(
         var validatorType = attribute?.FirstOrDefault()?.ValidatorType;
         if (validatorType is null)
         {
-            logger.LogError("Invalid validation attribute");
+            logger.LogInformation("Invalid validation attribute");
             invocation.Proceed();
             return;
         }
@@ -37,24 +36,24 @@ public class ValidationInterceptor(
                 m.GetParameters()[0].ParameterType != typeof(IValidationContext));
         if (validateMethod is null)
         {
-            logger.LogError("Validation method not found");
+            logger.LogWarning("Validation method not found");
             invocation.Proceed();
             return;
         }
         if (model is null)
         {
-            logger.LogError("Validation model is empty");
+            logger.LogWarning("Validation model is empty");
             invocation.Proceed();
             return;
         }
-        logger.LogDebug("Processing validation {ValidationName}, {@Model}", method.Name, model);
+        logger.LogInformation("Processing validation {ValidationName}, {@Model}", method.Name, model);
         var task = validateMethod.Invoke(validator, [model, CancellationToken.None]) as Task<ValidationResult>;
         var validationResult = task?.GetAwaiter().GetResult();
         if (validationResult is null || !validationResult.IsValid)
         {
             throw new ValidationException($"Validation failed for {method.Name}", validationResult?.Errors);
         }
-        logger.LogDebug("Completed validation {ValidationName}, {@Model}", method.Name, model);
+        logger.LogInformation("Completed validation {ValidationName}, {@Model}", method.Name, model);
 
         invocation.Proceed();
     }
