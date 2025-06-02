@@ -12,9 +12,7 @@ public class ImagesServiceValidationTests
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
     {
         // Arrange
-        _imagesRepositoryMock.DoesImageExistAsync(ImageModel.Id, It.IsAny<CancellationToken>())
-            .Returns(true);
-        var idValidator = new ImageIdValidator(_imagesRepositoryMock);
+        var idValidator = new ImageIdValidator();
         var validator = new ImageModelValidator(idValidator);
 
         // Act
@@ -29,7 +27,7 @@ public class ImagesServiceValidationTests
     {
         // Arrange
         var invalidModel = ImageModel with { Id = Guid.Empty };
-        var idValidator = new ImageIdValidator(_imagesRepositoryMock);
+        var idValidator = new ImageIdValidator();
         var validator = new ImageModelValidator(idValidator);
 
         // Act
@@ -44,7 +42,7 @@ public class ImagesServiceValidationTests
     {
         // Arrange
         var invalidModel = ImageModel with { UserId = Guid.Empty };
-        var idValidator = new ImageIdValidator(_imagesRepositoryMock);
+        var idValidator = new ImageIdValidator();
         var validator = new ImageModelValidator(idValidator);
 
         // Act
@@ -61,7 +59,7 @@ public class ImagesServiceValidationTests
     {
         // Arrange
         var invalidModel = ImageModel with { ImageUrl = imageUrl };
-        var idValidator = new ImageIdValidator(_imagesRepositoryMock);
+        var idValidator = new ImageIdValidator();
         var validator = new ImageModelValidator(idValidator);
 
         // Act
@@ -72,13 +70,10 @@ public class ImagesServiceValidationTests
     }
 
     [Fact]
-    public async Task Should_Not_Have_Error_When_DeletedId_Is_Valid_And_User_Is_Exists()
+    public async Task Should_Not_Have_Error_When_DeletedId_Is_Valid()
     {
         // Arrange
-        _imagesRepositoryMock.DoesImageExistAsync(DeleteModel, It.IsAny<CancellationToken>())
-            .Returns(true);
-
-        var validator = new ImageIdValidator(_imagesRepositoryMock);
+        var validator = new ImageIdValidator();
 
         // Act
         var result = await validator.TestValidateAsync(DeleteModel, options => options.IncludeAllRuleSets());
@@ -93,26 +88,10 @@ public class ImagesServiceValidationTests
         // Arrange
         var invalidModel = Guid.Empty;
 
-        var validator = new ImageIdValidator(_imagesRepositoryMock);
+        var validator = new ImageIdValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(c => c);
-    }
-
-    [Fact]
-    public async Task Should_Have_Error_When_DeletedUser_Does_Not_Exist()
-    {
-        // Arrange
-        _imagesRepositoryMock.DoesImageExistAsync(DeleteModel, It.IsAny<CancellationToken>())
-            .Returns(false);
-
-        var validator = new ImageIdValidator(_imagesRepositoryMock);
-
-        // Act
-        var result = await validator.TestValidateAsync(DeleteModel, options => options.IncludeAllRuleSets());
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c);
@@ -123,7 +102,7 @@ public class ImagesServiceValidationTests
     {
         // Arrange
         var invalidModel = ImageModel with { Id = Guid.Empty };
-        var idValidator = new ImageIdValidator(_imagesRepositoryMock);
+        var idValidator = new ImageIdValidator();
         var validator = new ImageModelValidator(idValidator);
 
         // Act
@@ -138,7 +117,7 @@ public class ImagesServiceValidationTests
     {
         // Arrange
         var invalidModel = ImageModel with { UserId = Guid.Empty };
-        var idValidator = new ImageIdValidator(_imagesRepositoryMock);
+        var idValidator = new ImageIdValidator();
         var validator = new ImageModelValidator(idValidator);
 
         // Act
@@ -155,7 +134,7 @@ public class ImagesServiceValidationTests
     {
         // Arrange
         var invalidModel = ImageModel with { ImageUrl = imageUrl };
-        var idValidator = new ImageIdValidator(_imagesRepositoryMock);
+        var idValidator = new ImageIdValidator();
         var validator = new ImageModelValidator(idValidator);
 
         // Act
