@@ -11,8 +11,6 @@ public static class DIExtention
         where TService : class, TInterface
         where TInterface : class
     {
-        var testType1 = typeof(TService);
-        var testType2 = typeof(TInterface);
         services.AddScoped<TService>();
         services.AddScoped<TInterface>(static provider =>
         {
