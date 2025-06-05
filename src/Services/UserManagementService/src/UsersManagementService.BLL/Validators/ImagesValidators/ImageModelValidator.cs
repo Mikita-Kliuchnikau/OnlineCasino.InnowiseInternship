@@ -21,7 +21,7 @@ public class ImageModelValidator : AbstractValidator<ImageModel>
                   {
                       var result = await imageIdValidator.ValidateAsync(id, cancellationToken);
                       return result.IsValid;
-                  });
+                  }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredId));
         });
         RuleSet(CreateImageRules, () =>
         {
