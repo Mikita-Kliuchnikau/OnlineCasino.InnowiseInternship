@@ -14,11 +14,10 @@ public class ImagesServiceValidationTests
         _imagesRepositoryMock
             .IsImageUniqeAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
             .Returns(true);
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator, _imagesRepositoryMock);
+        var validator = new ImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(ImageModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(ImageModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -32,11 +31,10 @@ public class ImagesServiceValidationTests
             .IsImageUniqeAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
             .Returns(true);
         var invalidModel = ImageModel with { Id = Guid.Empty };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator, _imagesRepositoryMock);
+        var validator = new ImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -50,11 +48,10 @@ public class ImagesServiceValidationTests
            .IsImageUniqeAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
           .Returns(true);
         var invalidModel = ImageModel with { UserId = Guid.Empty };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator, _imagesRepositoryMock);
+        var validator = new ImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.UserId);
@@ -68,10 +65,9 @@ public class ImagesServiceValidationTests
             .IsImageUniqeAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
             .Returns(false);
         var invalidModel = ImageModel;
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator, _imagesRepositoryMock);
+        var validator = new ImageModelValidator(_imagesRepositoryMock);
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
         // Assert
         result.ShouldHaveValidationErrorFor(x => x);
     }
@@ -83,7 +79,7 @@ public class ImagesServiceValidationTests
         var validator = new ImageIdValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(DeleteModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(DeleteModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -98,7 +94,7 @@ public class ImagesServiceValidationTests
         var validator = new ImageIdValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c);
@@ -112,11 +108,10 @@ public class ImagesServiceValidationTests
           .IsImageUniqeAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
           .Returns(true);
         var invalidModel = ImageModel with { Id = Guid.Empty };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator, _imagesRepositoryMock);
+        var validator = new ImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -130,11 +125,10 @@ public class ImagesServiceValidationTests
             .IsImageUniqeAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
             .Returns(true);
         var invalidModel = ImageModel with { UserId = Guid.Empty };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator, _imagesRepositoryMock);
+        var validator = new ImageModelValidator(_imagesRepositoryMock);
 
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c.UserId);
