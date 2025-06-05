@@ -31,6 +31,6 @@ public class CreateUserModelValidator : AbstractValidator <CreateUserModel>
                 username: User.Username,
                 email: User.Email,
                 cancellationToken: CancellationToken);
-        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser));
+        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser) ?? "Error message not found");
     }
 }

@@ -6,14 +6,10 @@ namespace UsersManagementService.BLL.Validators.UsersValidators;
 
 public class UpdateUserModelValidator : AbstractValidator<UpdateUserModel>
 {
-    public UpdateUserModelValidator(UserIdValidator idValidator)
+    public UpdateUserModelValidator()
     {
         RuleFor(u => u.Id)
-            .MustAsync(async (id, cancellationToken) =>
-            {
-                var result = await idValidator.ValidateAsync(id, cancellationToken);
-                return result.IsValid;
-            });
+            .BaseIdRules();
         RuleFor(u => u.AuthId)
             .BaseIdRules();
         RuleFor(u => u.Username)

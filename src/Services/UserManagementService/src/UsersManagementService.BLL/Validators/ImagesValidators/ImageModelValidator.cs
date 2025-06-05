@@ -23,6 +23,6 @@ public class ImageModelValidator : AbstractValidator<ImageModel>
             return await imagesRepository.IsImageUniqeAsync(
                 id: image.Id,
                 cancellationToken: cancellationToken);
-        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationNotUniqueImage));
+        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationNotUniqueImage) ?? "Error message not found");
     }
 }

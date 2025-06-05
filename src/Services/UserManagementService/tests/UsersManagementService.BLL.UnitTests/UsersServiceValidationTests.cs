@@ -121,8 +121,7 @@ public class UsersServiceValidationTests
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
     {
         // Arrange
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(UpdateModel);
@@ -137,8 +136,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { Username = string.Empty };
 
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -156,8 +154,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { Email = email };
 
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -179,8 +176,7 @@ public class UsersServiceValidationTests
             IdentificationNumber = null
         };
 
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(validModel);
@@ -201,8 +197,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { FirstName = name };
 
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -219,8 +214,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { SecondName = name };
 
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -237,8 +231,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { LastName = name };
 
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -255,8 +248,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { PassportNumber = passport };
 
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -273,8 +265,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = UpdateModel with { IdentificationNumber = identidication };
 
-        var idValidator = new UserIdValidator();
-        var validator = new UpdateUserModelValidator(idValidator);
+        var validator = new UpdateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
