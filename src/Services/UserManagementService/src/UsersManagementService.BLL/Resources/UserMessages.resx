@@ -129,12 +129,6 @@
   <data name="ValidationNoPositiveNumber" xml:space="preserve">
     <value>Number must be positive</value>
   </data>
-  <data name="ValidationNotUniqueImage" xml:space="preserve">
-    <value />
-  </data>
-  <data name="ValidationNotUniqueUser" xml:space="preserve">
-    <value>Not unique user</value>
-  </data>
   <data name="ValidationRequiredField" xml:space="preserve">
     <value>Field is required</value>
   </data>

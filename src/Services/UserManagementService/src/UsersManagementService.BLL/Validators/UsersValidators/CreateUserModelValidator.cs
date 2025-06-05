@@ -1,17 +1,12 @@
 ﻿using FluentValidation;
 using UsersManagementService.BLL.Extensions;
 using UsersManagementService.BLL.Models.User;
-using UsersManagementService.BLL.Resources;
-using UsersManagementService.Common.Helpers;
-using UsersManagementService.DAL.Interfaces.Repositories;
 
 namespace UsersManagementService.BLL.Validators.UsersValidators;
 
 public class CreateUserModelValidator : AbstractValidator <CreateUserModel>
 {
-    private static readonly ResourceHelper<UserMessages> resourceHelper = new(Common.Enums.CulturePreference.English);
-
-    public CreateUserModelValidator(IUsersRepository usersRepository)
+    public CreateUserModelValidator()
     {
         RuleFor(u => u.Id)
             .BaseIdRules();
@@ -21,16 +16,5 @@ public class CreateUserModelValidator : AbstractValidator <CreateUserModel>
             .BaseNamesRules();
         RuleFor(u => u.Email)
             .BaseEmailRules();
-        RuleFor(u => u)
-            .MustAsync(async (User, CancellationToken) =>
-        {
-            return await usersRepository
-            .IsUserUniqeAsync(
-                id: User.Id,
-                authId: User.AuthId,
-                username: User.Username,
-                email: User.Email,
-                cancellationToken: CancellationToken);
-        }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser) ?? "Error message not found");
     }
 }

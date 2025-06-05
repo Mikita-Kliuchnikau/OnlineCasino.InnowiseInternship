@@ -1,5 +1,4 @@
 ﻿using FluentValidation.TestHelper;
-using Moq;
 using NSubstitute;
 using UsersManagementService.BLL.Validators.UsersValidators;
 using static UsersManagementService.BLL.UnitTests.TestEntities.TestUserEntities;
@@ -10,12 +9,10 @@ namespace UsersManagementService.BLL.UnitTests;
 public class UsersServiceValidationTests
 {
     [Fact]
-    public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid_And_User_Is_Unique()
+    public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
     {
         // Arrange
-        _usersRepositoryMock.IsUserUniqeAsync(CreateModel.Id, CreateModel.AuthId, CreateModel.Username, CreateModel.Email, It.IsAny<CancellationToken>())
-            .Returns(true);
-        var validator = new CreateUserModelValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(CreateModel);
@@ -25,28 +22,12 @@ public class UsersServiceValidationTests
     }
 
     [Fact]
-    public async Task Should_Have_Error_When_User_Is_Not_Unique()
-    {
-        // Arrange
-        _usersRepositoryMock.IsUserUniqeAsync(CreateModel.Id, CreateModel.AuthId, CreateModel.Username, CreateModel.Email, It.IsAny<CancellationToken>())
-            .Returns(false);
-
-        var validator = new CreateUserModelValidator(_usersRepositoryMock);
-
-        // Act
-        var result = await validator.TestValidateAsync(CreateModel);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(c => c);
-    }
-
-    [Fact]
     public async Task Should_Have_Error_When_Id_Is_Empty()
     {
         // Arrange
         var invalidModel = CreateModel with { Id = Guid.Empty };
         
-        var validator = new CreateUserModelValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -61,7 +42,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = CreateModel with { AuthId = Guid.Empty };
 
-        var validator = new CreateUserModelValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -79,7 +60,7 @@ public class UsersServiceValidationTests
         // Arrange
         var invalidModel = CreateModel with { Email = email };
 
-        var validator = new CreateUserModelValidator(_usersRepositoryMock);
+        var validator = new CreateUserModelValidator();
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -115,19 +96,6 @@ public class UsersServiceValidationTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c);
-    }
-
-    [Fact]
-    public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
-    {
-        // Arrange
-        var validator = new UpdateUserModelValidator();
-
-        // Act
-        var result = await validator.TestValidateAsync(UpdateModel);
-
-        // Assert
-        result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact]

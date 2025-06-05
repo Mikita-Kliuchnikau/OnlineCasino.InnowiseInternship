@@ -13,6 +13,10 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user,
         CancellationToken cancellationToken = default)
     {
+        if (!await IsUserUniqeAsync(user.Id, user.AuthId, user.Username, user.Email, cancellationToken))
+        {
+            throw new InvalidOperationException($"User {@user} already exists.");
+        }
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
