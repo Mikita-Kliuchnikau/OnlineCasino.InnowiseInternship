@@ -13,7 +13,7 @@ public class AzureBlobService(IOptions<BlobStorageOptions> options) : IAzureBlob
 
     public async Task<string> UploadImageAsync(Stream fileStream, string fileName, string contentType, CancellationToken cancellationToken = default)
     {
-        _containerClient.CreateIfNotExists(cancellationToken: cancellationToken);
+        await _containerClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken);
         var blobClient = _containerClient.GetBlobClient(fileName);
         await blobClient.UploadAsync(
             fileStream,

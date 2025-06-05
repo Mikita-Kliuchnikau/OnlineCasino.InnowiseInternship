@@ -16,7 +16,7 @@ public static class ImageTestEntities
         File = TestFile
     };
 
-    public static MultipartFormDataContent ImageRequest = new()
+    public static readonly MultipartFormDataContent ImageRequest = new()
     {
             { new StringContent(ImageDto.Id.ToString()), "Id" },
             { new StringContent(ImageDto.UserId.ToString()), "UserId" },
