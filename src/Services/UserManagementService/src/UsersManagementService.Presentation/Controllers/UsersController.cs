@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Models.User;
-using UsersManagementService.Presentation.Constants;
+using UsersManagementService.Common.Constants;
 using UsersManagementService.Presentation.Models;
 
 namespace UsersManagementService.Presentation.Controllers;

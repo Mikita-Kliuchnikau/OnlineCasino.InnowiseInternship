@@ -10,6 +10,7 @@ using UsersManagementService.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Testcontainers.Azurite;
 using static UsersManagementService.Common.Constants.Environments;
 using static UsersManagementService.IntegrationTests.Constants.DbConnectionStrings;
 
@@ -22,6 +23,12 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
         .WithDatabase("usersdb")
         .WithUsername("postgres")
         .WithPassword("password")
+        .Build();
+
+    private readonly AzuriteContainer _blobContainer = new AzuriteBuilder()
+        .WithImage("mcr.microsoft.com/azure-storage/azurite:latest")
+        .WithName("azurite.blob-storage")
+        .WithPortBinding(10000, 10000)
         .Build();
 
     private DbConnection _dbConnection = null!;
@@ -37,6 +44,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         Environment.SetEnvironmentVariable(UsersDatabase, _dbContainer.GetConnectionString());
+        Environment.SetEnvironmentVariable(AzureBlobStorage, _blobContainer.GetConnectionString());
         Environment.SetEnvironmentVariable(AspNetCoreEnvironment, TestEnvironment);
 
         builder.ConfigureTestServices(services =>
@@ -48,7 +56,9 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
     public async Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
-        
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+        await _blobContainer.StartAsync(cts.Token);
+
         _dbConnection = new NpgsqlConnection(_dbContainer.GetConnectionString());
         
         HttpClient = CreateClient();
@@ -62,6 +72,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
     {
         await _dbContainer.DisposeAsync();
         await _dbConnection.DisposeAsync();
+        await _blobContainer.DisposeAsync();
     }
 
     public async Task ResetDatabaseAsync()

@@ -97,6 +97,15 @@ namespace UsersManagementService.BLL.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationNotUniqueImage {
+            get {
+                return ResourceManager.GetString("ValidationNotUniqueImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not unique user.
         /// </summary>
         public static string ValidationNotUniqueUser {

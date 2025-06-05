@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using UsersManagementService.DAL.Constants;
+using static UsersManagementService.DAL.Constants.DatabaseConstants;
 
 namespace UsersManagementService.DAL.Options;
 
@@ -10,10 +10,10 @@ public class DatabaseOptionsSetup(IConfiguration configuration)
     public void Configure(DatabaseOptions options)
     {
         var connectionString = configuration
-            .GetConnectionString(DatabaseConstants.UsersDatabaseConnectionStringName);
+            .GetConnectionString(UsersDatabaseConnectionStringName);
          
         options.ConnectionString = connectionString!;    
 
-        configuration.GetSection(DatabaseConstants.ConfigurationSectionName).Bind(options);
+        configuration.GetSection(ConfigurationSectionName).Bind(options);
     }
 }

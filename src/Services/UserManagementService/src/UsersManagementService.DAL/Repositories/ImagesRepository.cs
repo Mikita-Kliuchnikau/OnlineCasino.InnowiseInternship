@@ -36,20 +36,9 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
         return id;
     }
 
-    public async Task<Guid> UpdateAsync(
-        ImageEntity image, 
-        CancellationToken cancellationToken = default)
+    public async Task<bool> IsImageUniqeAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        if (!await DoesImageExistAsync(image.Id, cancellationToken))
-        {
-            throw new NotFoundException(nameof(image), image.Id);
-        }
-
-        context.Images.Update(image);
-
-        await context.SaveChangesAsync(cancellationToken);
-
-        return image.Id;
+        return !await context.Images.AllAsync(u => u.Id == id, cancellationToken);
     }
 
     public async Task<bool> DoesImageExistAsync(Guid id, CancellationToken cancellationToken = default)
