@@ -52,7 +52,10 @@ public class ValidationInterceptor(
         if (validationResult is null || !validationResult.IsValid)
         {
             logger.LogError("Validation failed for {ValidationName}, {@Model}, {@Errors}", method.Name, model, validationResult?.Errors);
-            throw new ValidationException(validationResult?.Errors);
+            var errorMessages = validationResult?.Errors
+                .Select(x => $"{x.PropertyName}: {x.ErrorMessage}")
+                .ToList();
+            throw new ValidationException("Validation failed: " + string.Join(string.Empty, errorMessages!));
         }
         logger.LogInformation("Completed validation {ValidationName}, {@Model}", method.Name, model);
 
