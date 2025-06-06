@@ -140,7 +140,7 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
     {
         // Arrange
         var _ = await factory.HttpClient.PostAsJsonAsync(BaseUserUrl, UserDto);
-        var httpResponse = await factory.HttpClient.PostAsJsonAsync(BaseImageUrl, ImageDto);
+        var httpResponse = await factory.HttpClient.PostAsync(BaseImageUrl, ImageRequest);
 
         // Act
         var apiResponse = await httpResponse.Content.ReadFromJsonAsync<Guid>();
@@ -153,36 +153,10 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
     public async Task CreateImage_ImageAlreadyExists_ReturnsInternalServerError()
     {
         // Arrange
-        var _ = await factory.HttpClient.PostAsJsonAsync(BaseImageUrl, ImageDto);
+        var _ = await factory.HttpClient.PostAsync(BaseImageUrl, ImageRequest);
 
         // Act
-        var httpResponse = await factory.HttpClient.PostAsJsonAsync(BaseImageUrl, ImageDto);
-
-        // Assert
-        httpResponse.StatusCode.Should().Be((System.Net.HttpStatusCode)StatusCodes.Status500InternalServerError);
-    }
-
-    [Fact]
-    public async Task UpdateImage_ValidImageReturnsId()
-    {
-        // Arrange
-        var _ = await factory.HttpClient.PostAsJsonAsync(BaseUserUrl, UserDto);
-        _ = await factory.HttpClient.PostAsJsonAsync(BaseImageUrl, ImageDto);
-        var httpResponse = await factory.HttpClient.PutAsJsonAsync(BaseImageUrl, ImageDto);
-        
-        // Act
-        var apiResponse = await httpResponse.Content.ReadFromJsonAsync<Guid>();
-
-        // Assert
-        apiResponse.Should().Be(BaseTestGuid);
-    }
-
-    [Fact]
-    public async Task UpdateImage_ImageDoesntExists_ReturnsInternalServerError()
-    {
-        // Arrange
-        // Act
-        var httpResponse = await factory.HttpClient.PutAsJsonAsync(BaseImageUrl, ImageDto);
+        var httpResponse = await factory.HttpClient.PostAsync(BaseImageUrl, ImageRequest);
 
         // Assert
         httpResponse.StatusCode.Should().Be((System.Net.HttpStatusCode)StatusCodes.Status500InternalServerError);
@@ -193,7 +167,7 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
     {
         // Arrange
         var _ = await factory.HttpClient.PostAsJsonAsync(BaseUserUrl, UserDto);
-        _ = await factory.HttpClient.PostAsJsonAsync(BaseImageUrl, ImageDto);
+        _ = await factory.HttpClient.PostAsync(BaseImageUrl, ImageRequest);
         var httpResponse = await factory.HttpClient.DeleteAsync(BaseImageUrl + $"/{BaseTestGuid}");
         
         // Act

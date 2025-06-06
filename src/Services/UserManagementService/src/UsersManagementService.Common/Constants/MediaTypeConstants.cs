@@ -1,4 +1,4 @@
-﻿namespace UsersManagementService.Presentation.Constants;
+﻿namespace UsersManagementService.Common.Constants;
 
 public static class MediaTypeConstants
 {

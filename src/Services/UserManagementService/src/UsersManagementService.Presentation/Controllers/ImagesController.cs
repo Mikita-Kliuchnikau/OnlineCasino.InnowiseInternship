@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Models.Image;
-using UsersManagementService.Presentation.Constants;
+using UsersManagementService.Common.Constants;
 using UsersManagementService.Presentation.Models;
 
 namespace UsersManagementService.Presentation.Controllers;
@@ -12,17 +12,10 @@ namespace UsersManagementService.Presentation.Controllers;
 public class ImagesController(IImagesService imagesService) : ControllerBase
 {
     [HttpPost]
-    public async Task<Guid> Create([FromBody]ImageDto image, CancellationToken cancellationToken = default)
+    public async Task<Guid> Create([FromForm] ImageDto image, CancellationToken cancellationToken = default)
     {
         var imageModel = image.Adapt<ImageModel>();
         return await imagesService.CreateImageAsync(imageModel, cancellationToken);
-    }
-
-    [HttpPut]
-    public async Task<Guid> Update([FromBody] ImageDto image, CancellationToken cancellationToken = default)
-    {
-        var imageModel = image.Adapt<ImageModel>();
-        return await imagesService.UpdateImageAsync(imageModel, cancellationToken);
     }
 
     [HttpDelete("{id}")]
@@ -30,5 +23,4 @@ public class ImagesController(IImagesService imagesService) : ControllerBase
     {
         return await imagesService.DeleteImageAsync(id, cancellationToken);
     }
-
 }

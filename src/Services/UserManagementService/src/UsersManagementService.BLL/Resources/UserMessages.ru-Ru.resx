@@ -129,9 +129,6 @@
   <data name="ValidationNoPositiveNumber" xml:space="preserve">
     <value />
   </data>
-  <data name="ValidationNotUniqueUser" xml:space="preserve">
-    <value />
-  </data>
   <data name="ValidationRequiredField" xml:space="preserve">
     <value />
   </data>

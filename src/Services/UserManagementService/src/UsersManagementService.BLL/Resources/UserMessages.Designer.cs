@@ -97,15 +97,6 @@ namespace UsersManagementService.BLL.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Not unique user.
-        /// </summary>
-        public static string ValidationNotUniqueUser {
-            get {
-                return ResourceManager.GetString("ValidationNotUniqueUser", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Field is required.
         /// </summary>
         public static string ValidationRequiredField {

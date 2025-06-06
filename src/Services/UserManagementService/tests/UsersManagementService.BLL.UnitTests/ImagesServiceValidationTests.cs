@@ -1,6 +1,4 @@
 ﻿using FluentValidation.TestHelper;
-using Moq;
-using NSubstitute;
 using UsersManagementService.BLL.Validators.ImagesValidators;
 using static UsersManagementService.BLL.UnitTests.TestEntities.TestImageEntities;
 
@@ -12,11 +10,10 @@ public class ImagesServiceValidationTests
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
     {
         // Arrange
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator);
+        var validator = new ImageModelValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(ImageModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(ImageModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -27,11 +24,10 @@ public class ImagesServiceValidationTests
     {
         // Arrange
         var invalidModel = ImageModel with { Id = Guid.Empty };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator);
+        var validator = new ImageModelValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
@@ -42,31 +38,13 @@ public class ImagesServiceValidationTests
     {
         // Arrange
         var invalidModel = ImageModel with { UserId = Guid.Empty };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator);
+        var validator = new ImageModelValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.UserId);
-    }
-
-    [Theory]
-    [InlineData("")]
-    [InlineData("   ")]
-    public async Task Should_Have_Error_When_ImageUrl_Is_Invalid(string imageUrl)
-    {
-        // Arrange
-        var invalidModel = ImageModel with { ImageUrl = imageUrl };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator);
-
-        // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.ImageUrl);
     }
 
     [Fact]
@@ -76,7 +54,7 @@ public class ImagesServiceValidationTests
         var validator = new ImageIdValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(DeleteModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(DeleteModel);
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
@@ -91,57 +69,9 @@ public class ImagesServiceValidationTests
         var validator = new ImageIdValidator();
 
         // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
+        var result = await validator.TestValidateAsync(invalidModel);
 
         // Assert
         result.ShouldHaveValidationErrorFor(c => c);
     }
-
-    [Fact]
-    public async Task Should_Have_Error_When_UpdatedId_Is_Empty()
-    {
-        // Arrange
-        var invalidModel = ImageModel with { Id = Guid.Empty };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator);
-
-        // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
-    }
-
-    [Fact]
-    public async Task Should_Have_Error_When_UpdatedUserId_Is_Empty()
-    {
-        // Arrange
-        var invalidModel = ImageModel with { UserId = Guid.Empty };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator);
-
-        // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(c => c.UserId);
-    }
-
-    [Theory]
-    [InlineData("")]
-    [InlineData("   ")]
-    public async Task Should_Have_Error_When_YpdatedImageUrl_Is_Invalid(string imageUrl)
-    {
-        // Arrange
-        var invalidModel = ImageModel with { ImageUrl = imageUrl };
-        var idValidator = new ImageIdValidator();
-        var validator = new ImageModelValidator(idValidator);
-
-        // Act
-        var result = await validator.TestValidateAsync(invalidModel, options => options.IncludeAllRuleSets());
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(c => c.ImageUrl);
-    }
-
 }

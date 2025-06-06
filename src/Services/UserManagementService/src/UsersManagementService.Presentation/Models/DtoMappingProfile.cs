@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using UsersManagementService.BLL.Models.Image;
 using UsersManagementService.BLL.Models.User;
+using UsersManagementService.Common.Exceptions;
 
 namespace UsersManagementService.Presentation.Models;
 
@@ -14,7 +15,7 @@ public static class DtoMappingProfile
             .Map(u => u.Username, src => src.Username)
             .Map(u => u.Email, src => src.Email);
 
-        TypeAdapterConfig<UserDto, UpdateUserModel>.NewConfig() 
+        TypeAdapterConfig<UserDto, UpdateUserModel>.NewConfig()
             .Map(u => u.Id, src => src.Id)
             .Map(u => u.AuthId, src => src.AuthId)
             .Map(u => u.Username, src => src.Username)
@@ -30,9 +31,27 @@ public static class DtoMappingProfile
             .Map(u => u.IdentificationNumber, src => src.VerificationStatus);
 
         TypeAdapterConfig<ImageDto, ImageModel>.NewConfig()
-            .Map(i => i.Id, src => src.Id)
-            .Map(i => i.UserId, src => src.UserId)
-            .Map(i => i.ImageUrl, src => src.ImageUrl)
-            .Map(i => i.Type, src => src.Type);
+            .ConstructUsing(src => new ImageModel(
+                src.Id,
+                src.UserId,
+                src.Type,
+                ConvertToMemoryStream(src.File),
+                src.File.ContentType
+            ));
+    }
+
+    private static MemoryStream ConvertToMemoryStream(IFormFile file)
+    {
+        if (file is null || file.Length == 0)
+        {
+            throw new NotFoundException("File doesn't exists", null!);
+        }
+        var memoryStream = new MemoryStream();
+        using (var input = file.OpenReadStream())
+        {
+            input.CopyTo(memoryStream);
+        }
+        memoryStream.Position = 0;
+        return memoryStream;
     }
 }

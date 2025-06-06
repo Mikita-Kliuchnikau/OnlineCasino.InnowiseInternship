@@ -7,6 +7,8 @@ using UsersManagementService.DAL.Context;
 using UsersManagementService.DAL.Options;
 using Microsoft.Extensions.Options;
 using UsersManagementService.DAL.Interfaces.Repositories;
+using UsersManagementService.DAL.Interfaces.Services;
+using UsersManagementService.DAL.Services;
 
 namespace UsersManagementService.DAL.DI;
 
@@ -15,6 +17,7 @@ public static class DependencyInjection
     public static IServiceCollection AddDAL(this IServiceCollection services, IConfiguration configuration)
     {
         services.ConfigureOptions<DatabaseOptionsSetup>();
+        services.ConfigureOptions<BlobStorageOptionsSetup>();
 
         services.AddDbContext<UsersDbContext>((serviceProvider ,options) =>
         {
@@ -30,6 +33,7 @@ public static class DependencyInjection
         });
         services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddScoped<IImagesRepository, ImagesRepository>();
+        services.AddSingleton<IAzureBlobService, AzureBlobService>();
         return services;
     }
 }

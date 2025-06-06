@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Serilog.Context;
 using System.Net;
-using static UsersManagementService.Presentation.Constants.MediaTypeConstants;
+using static UsersManagementService.Common.Constants.MediaTypeConstants;
 
 namespace UsersManagementService.Presentation.Middleware;
 
@@ -15,7 +15,7 @@ public class ExceptionMiddleware(
         {
             await next.Invoke(context);
         }
-        catch (Exception ex)
+                catch (Exception ex)
         {
             using (LogContext.PushProperty("Error", ex.Message, true))
             {

@@ -12,7 +12,6 @@ public static class ImagesMappingConfig
         TypeAdapterConfig<ImageModel, ImageEntity>.NewConfig()
             .Map(i => i.Id, src => src.Id)
             .Map(i => i.UserId, src => src.UserId)
-            .Map(i => i.ImageUrl, src => src.ImageUrl)
             .Map(i => i.Type, src => src.Type);
 
         TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
