@@ -1,5 +1,4 @@
 ﻿using FluentValidation.TestHelper;
-using NSubstitute;
 using UsersManagementService.BLL.Validators.UsersValidators;
 using static UsersManagementService.BLL.UnitTests.TestEntities.TestUserEntities;
 
@@ -19,21 +18,6 @@ public class UsersServiceValidationTests
 
         // Assert
         result.ShouldNotHaveAnyValidationErrors();
-    }
-
-    [Fact]
-    public async Task Should_Have_Error_When_Id_Is_Empty()
-    {
-        // Arrange
-        var invalidModel = CreateModel with { Id = Guid.Empty };
-        
-        var validator = new CreateUserModelValidator();
-
-        // Act
-        var result = await validator.TestValidateAsync(invalidModel);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(c => c.Id);
     }
 
     [Fact]
@@ -246,7 +230,7 @@ public class UsersServiceValidationTests
     [InlineData(1)]
     [InlineData(10)]
     [InlineData(100)]
-    public async Task Should_Pass_When_PageNumber_And_PageSize_Are_ValidAsync(int validValue)
+    public async Task Should_Pass_When_PageNumber_And_PageSize_Are_Valid(int validValue)
     {
         // Arrange
         var query = GetPagedQuery with { PageNumber = validValue, PageSize = validValue };
@@ -263,7 +247,7 @@ public class UsersServiceValidationTests
     [InlineData(0)]
     [InlineData(-1)]
     [InlineData(-100)]
-    public async Task Should_Have_Error_When_PageNumber_Is_InvalidAsync(int invalidValue)
+    public async Task Should_Have_Error_When_PageNumber_Is_Invalid(int invalidValue)
     {
         // Arrange
         var query = GetPagedQuery with { PageNumber = invalidValue };
@@ -280,7 +264,7 @@ public class UsersServiceValidationTests
     [InlineData(0)]
     [InlineData(-1)]
     [InlineData(-100)]
-    public async Task Should_Have_Error_When_PageSize_Is_InvalidAsync(int invalidValue)
+    public async Task Should_Have_Error_When_PageSize_Is_Invalid(int invalidValue)
     {
         // Arrange
         var query = GetPagedQuery with { PageSize = invalidValue };

@@ -8,8 +8,6 @@ public class ImageModelValidator : AbstractValidator<ImageModel>
 {
     public ImageModelValidator()
     {
-        RuleFor(u => u.Id)
-            .BaseIdRules();
         RuleFor(u => u.UserId)
             .BaseIdRules();
     }

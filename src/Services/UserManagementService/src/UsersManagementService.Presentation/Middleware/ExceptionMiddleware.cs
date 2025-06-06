@@ -15,7 +15,7 @@ public class ExceptionMiddleware(
         {
             await next.Invoke(context);
         }
-                catch (Exception ex)
+        catch (Exception ex)
         {
             using (LogContext.PushProperty("Error", ex.Message, true))
             {

@@ -13,9 +13,9 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user,
         CancellationToken cancellationToken = default)
     {
-        if (!await IsUserUniqeAsync(user.Id, user.AuthId, user.Username, user.Email, cancellationToken))
+        if (!await IsUserUniqeAsync(user.AuthId, user.Username, user.Email, cancellationToken))
         {
-            throw new InvalidOperationException($"User {@user} already exists.");
+            throw new InvalidOperationException($"User already exists.");
         }
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
@@ -94,17 +94,15 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
     }
 
     public async Task<bool> IsUserUniqeAsync(
-        Guid? id = null, 
-        Guid? authId = null, 
-        string? username = null, 
-        string? email = null, 
+        Guid authId, 
+        string username, 
+        string email, 
         CancellationToken cancellationToken = default)
     {
         return !await context.Users.AnyAsync(u =>
-            (id != null && u.Id == id) ||
-            (authId != null && u.AuthId == authId) ||
-            (username != null && u.Username == username) ||
-            (email != null && u.Email == email), 
+            u.AuthId == authId ||
+            u.Username == username ||
+            u.Email == email, 
             cancellationToken);
     }
 

@@ -4,12 +4,6 @@ using UsersManagementService.Presentation.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var azureAccountConnectionString = Environment.GetEnvironmentVariable("AZURE_ACCOUNT_CONNECTION_STRING");
-if (!string.IsNullOrEmpty(azureAccountConnectionString))
-{
-    builder.Configuration["ConnectionStrings:AzureBlobStorage"] = azureAccountConnectionString;
-}
-
 builder.Services.AddDependencies(builder.Configuration);
 
 builder.Services.AddControllers();

@@ -4,7 +4,7 @@ namespace UsersManagementService.Presentation.Models;
 
 public class UserDto
 {
-    required public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.Empty;
     required public Guid AuthId { get; set; }
     required public string Username { get; set; }
     required public string Email { get; set; }

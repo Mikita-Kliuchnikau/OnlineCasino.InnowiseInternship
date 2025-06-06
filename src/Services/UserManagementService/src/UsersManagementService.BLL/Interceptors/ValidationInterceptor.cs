@@ -51,7 +51,8 @@ public class ValidationInterceptor(
         var validationResult = task?.GetAwaiter().GetResult();
         if (validationResult is null || !validationResult.IsValid)
         {
-            throw new ValidationException($"Validation failed for {method.Name}", validationResult?.Errors);
+            logger.LogError("Validation failed for {ValidationName}, {@Model}, {@Errors}", method.Name, model, validationResult?.Errors);
+            throw new ValidationException(validationResult?.Errors);
         }
         logger.LogInformation("Completed validation {ValidationName}, {@Model}", method.Name, model);
 

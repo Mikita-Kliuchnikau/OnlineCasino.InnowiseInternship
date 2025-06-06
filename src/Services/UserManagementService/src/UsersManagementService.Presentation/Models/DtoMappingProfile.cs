@@ -10,7 +10,6 @@ public static class DtoMappingProfile
     public static void AddDtoMappingConfig(this IServiceCollection services)
     {
         TypeAdapterConfig<UserDto, CreateUserModel>.NewConfig()
-            .Map(u => u.Id, src => src.Id)
             .Map(u => u.AuthId, src => src.AuthId)
             .Map(u => u.Username, src => src.Username)
             .Map(u => u.Email, src => src.Email);
@@ -32,7 +31,6 @@ public static class DtoMappingProfile
 
         TypeAdapterConfig<ImageDto, ImageModel>.NewConfig()
             .ConstructUsing(src => new ImageModel(
-                src.Id,
                 src.UserId,
                 src.Type,
                 ConvertToMemoryStream(src.File),

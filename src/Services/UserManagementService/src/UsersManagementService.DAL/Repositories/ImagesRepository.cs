@@ -36,11 +36,6 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
         return id;
     }
 
-    public async Task<bool> IsImageUniqeAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return !await context.Images.AnyAsync(u => u.Id == id, cancellationToken);
-    }
-
     public async Task<bool> DoesImageExistAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await context.Images.AnyAsync(u => u.Id == id, cancellationToken);

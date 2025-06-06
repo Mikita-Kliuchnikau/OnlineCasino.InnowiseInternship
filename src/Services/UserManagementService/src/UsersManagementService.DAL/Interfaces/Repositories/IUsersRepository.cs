@@ -16,10 +16,9 @@ public interface IUsersRepository
     Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<bool> IsUserUniqeAsync(
-        Guid? id = null,
-        Guid? authId = null,
-        string? username = null,
-        string? email = null,
+        Guid authId,
+        string username,
+        string email,
         CancellationToken cancellationToken = default);
 
     Task<bool> DoesUserExistAsync(Guid id, CancellationToken cancellationToken = default);

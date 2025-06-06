@@ -8,8 +8,6 @@ public class CreateUserModelValidator : AbstractValidator <CreateUserModel>
 {
     public CreateUserModelValidator()
     {
-        RuleFor(u => u.Id)
-            .BaseIdRules();
         RuleFor(u => u.AuthId)
             .BaseIdRules();
         RuleFor(u => u.Username)

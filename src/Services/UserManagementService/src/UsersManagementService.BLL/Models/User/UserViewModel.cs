@@ -1,9 +1,11 @@
-﻿using UsersManagementService.Common.Enums;
+﻿using UsersManagementService.BLL.Models.Image;
+using UsersManagementService.Common.Enums;
 
 namespace UsersManagementService.BLL.Models.User;
 
 public record UserViewModel(
     Guid Id,
+    Guid AuthId,
     string Username,
     string Email,
     decimal Balance,
@@ -16,4 +18,5 @@ public record UserViewModel(
     string? LastName = null,
     DateOnly? BirthDate = null,
     string? PassportNumber = null,
-    string? IdentificationNumber = null);
+    string? IdentificationNumber = null,
+    IEnumerable<ImageViewModel>? Images = null);
