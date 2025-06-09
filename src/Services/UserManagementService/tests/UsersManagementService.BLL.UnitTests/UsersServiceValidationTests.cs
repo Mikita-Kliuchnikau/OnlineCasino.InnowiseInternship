@@ -56,7 +56,7 @@ public class UsersServiceValidationTests
     [InlineData("")]
     [InlineData("not-an-email")]
     [InlineData("user@")]
-    public async Task Should_Have_Error_When_DeletedEmail_Is_Invalid(string email)
+    public async Task Should_Have_Error_When_Email_Is_Invalid(string email)
     {
         // Arrange
         var invalidModel = CreateModel with { Email = email };
