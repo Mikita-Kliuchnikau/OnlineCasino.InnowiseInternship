@@ -41,7 +41,7 @@ jobs:
           dotnet tool install --global dotnet-coverage
       - name: Build and analyze
         env:
-          AZURE_ACCOUNT_CONNECTION_STRING: ${{ secrets.AZURE_ACCOUNT_CONNECTION_STRING }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           .sonar/scanner/dotnet-sonarscanner begin /k:"Mikita-Kliuchnikau_OnlineCasino.InnowiseInternship" /o:"mikita-kliuchnikau" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet build --configuration Release
