@@ -9,8 +9,7 @@ public class BlobStorageOptionsSetup(IConfiguration configuration)
 {
     public void Configure(BlobStorageOptions options)
     {
-        var connectionString = configuration.GetConnectionString(ImagesBlobStorageConnectionStringName) 
-            ?? Environment.GetEnvironmentVariable(AzureAccountEnvConnectionStringName);
+        var connectionString = configuration.GetConnectionString(ImagesBlobStorageConnectionStringName);
         options.ConnectionString = connectionString!;
         configuration.GetSection(ConfigurationSectionName).Bind(options);
     }

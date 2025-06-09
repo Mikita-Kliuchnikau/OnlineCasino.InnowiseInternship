@@ -27,7 +27,7 @@ namespace UsersManagementService.BLL.Services
                 cancellationToken);
 
             logger.LogInformation(
-                "Complited request {RequestName} blob storage with result {@Result}",
+                "Complited blob storage request {RequestName} with result {@Result}",
                 nameof(blobService.UploadImageAsync),
                 imageUrl);
 
