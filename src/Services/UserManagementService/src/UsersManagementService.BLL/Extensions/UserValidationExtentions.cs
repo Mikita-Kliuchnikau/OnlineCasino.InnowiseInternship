@@ -14,7 +14,7 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .NotEqual(Guid.Empty)
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredId));
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredId) ?? "Required id");
     }
 
     public static IRuleBuilderOptions<T, string> BaseStringRules<T>(
@@ -22,7 +22,7 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .Must(value => !string.IsNullOrWhiteSpace(value))
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField));
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField) ?? "Required field");
     }
 
     public static IRuleBuilderOptions<T, string> BaseNamesRules<T>(
@@ -30,9 +30,9 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField))
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField) ?? "Required field")
             .MaximumLength(50)
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationMaxLength));
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationMaxLength) ?? "String too long");
     }
 
     public static IRuleBuilderOptions<T, K> BaseNumberRules<T, K>(
@@ -40,11 +40,11 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField))
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField) ?? "Required field")
             .GreaterThanOrEqualTo(K.One)
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationNoPositiveNumber))
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationNoPositiveNumber) ?? "Number must be positive")
             .Must(number =>(number % K.One == K.Zero))
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationNoIntegerNumber));
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationNoIntegerNumber) ?? "Number must be integer");
     }
 
     public static IRuleBuilderOptions<T, string> BaseEmailRules<T>(
@@ -52,8 +52,8 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField))
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField) ?? "Required field")
             .EmailAddress()
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationInvalidEmail));
+            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationInvalidEmail) ?? "Email is invalid");
     }
 }
