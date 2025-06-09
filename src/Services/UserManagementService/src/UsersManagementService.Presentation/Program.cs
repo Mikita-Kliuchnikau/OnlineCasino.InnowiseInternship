@@ -1,4 +1,5 @@
 using Serilog;
+using System.Text.Json.Serialization;
 using UsersManagementService.Presentation.DI;
 using UsersManagementService.Presentation.Middleware;
 
@@ -6,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencies(builder.Configuration);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 builder.Services.AddSwaggerGen();
 

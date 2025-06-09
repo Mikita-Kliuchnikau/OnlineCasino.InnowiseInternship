@@ -15,7 +15,7 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
     {
         if (!await IsUserUniqeAsync(user.AuthId, user.Username, user.Email, cancellationToken))
         {
-            throw new InvalidOperationException($"User already exists.");
+            throw new InvalidOperationException($"User already exists");
         }
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
@@ -86,7 +86,19 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
             throw new NotFoundException(nameof(user), user.Id);
         }
 
-        context.Users.Update(user);
+        await context.Users.ExecuteUpdateAsync(u => u
+            .SetProperty(u => u.Username, user.Username)
+            .SetProperty(u => u.Email, user.Email)
+            .SetProperty(u => u.Balance, user.Balance)
+            .SetProperty(u => u.VerificationStatus, user.VerificationStatus)
+            .SetProperty(u => u.IsBanned, user.IsBanned)
+            .SetProperty(u => u.FirstName, user.FirstName)
+            .SetProperty(u => u.SecondName, user.SecondName)
+            .SetProperty(u => u.LastName, user.LastName)
+            .SetProperty(u => u.BirthDate, user.BirthDate)
+            .SetProperty(u => u.PassportNumber, user.PassportNumber)
+            .SetProperty(u => u.IdentificationNumber, user.IdentificationNumber), 
+            cancellationToken: cancellationToken);
 
         await context.SaveChangesAsync(cancellationToken);
 

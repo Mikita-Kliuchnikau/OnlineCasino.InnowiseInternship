@@ -7,9 +7,8 @@ namespace UsersManagementService.IntegrationTests.TestEntities;
 public static class UserTestEntities
 {
     public static readonly Guid BaseTestGuid = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6");
-    public static readonly UserDto UpdateUserDto = new()
+    public static readonly UpdateUserDto UpdateUserDto = new()
     {
-        Id = BaseTestGuid,
         AuthId = BaseTestGuid,
         Username = "user",
         Email = "test@gmail.com",
@@ -20,7 +19,7 @@ public static class UserTestEntities
         SecondName = "SecondName",
         LastName = "LastName"
     };
-    public static readonly UserDto CreateUserDto = new()
+    public static readonly CreateUserDto CreateUserDto = new()
     {
         AuthId = BaseTestGuid,
         Username = "user",
@@ -36,6 +35,5 @@ public static class UserTestEntities
                 Balance: 0,
                 VerificationStatus: VerificationStatus.UnVerified,
                 IsBanned: false,
-                IsDeleted: false,
                 CreatedAt: DateTime.UtcNow)]);
 }

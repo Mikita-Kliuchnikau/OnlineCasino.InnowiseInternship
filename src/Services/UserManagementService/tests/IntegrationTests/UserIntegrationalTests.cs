@@ -5,7 +5,6 @@ using UsersManagementService.BLL.Models.User;
 using static UsersManagementService.IntegrationTests.TestEntities.UserTestEntities;
 using static UsersManagementService.IntegrationTests.TestEntities.ImageTestEntities;
 using static UsersManagementService.IntegrationTests.Constants.EndpointsUrls;
-using UsersManagementService.Presentation.Models;
 using UsersManagementService.Common.Enums;
 
 namespace UsersManagementService.IntegrationTests;
@@ -48,9 +47,8 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
         // Arrange
         var response = await factory.HttpClient.PostAsJsonAsync(BaseUserUrl, CreateUserDto);
         var guid = await response.Content.ReadFromJsonAsync<Guid>();
-        var UpdateUserDto = new UserDto 
+        var UpdateUserDto = new Presentation.Models.UpdateUserDto 
         {
-            Id = guid,
             AuthId = BaseTestGuid,
             Username = "user",
             Email = "test@gmail.com",
@@ -61,7 +59,7 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
             SecondName = "SecondName",
             LastName = "LastName"
         };
-        var httpResponse = await factory.HttpClient.PutAsJsonAsync(BaseUserUrl, UpdateUserDto);
+        var httpResponse = await factory.HttpClient.PutAsJsonAsync(BaseUserUrl + $"/{guid}", UpdateUserDto);
 
         // Act
         var apiResponse = await httpResponse.Content.ReadFromJsonAsync<Guid>();
@@ -75,7 +73,7 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
     {
         // Arrange
         // Act
-        var httpResponse = await factory.HttpClient.PutAsJsonAsync(BaseUserUrl, UpdateUserDto);
+        var httpResponse = await factory.HttpClient.PutAsJsonAsync(BaseUserUrl + $"/{BaseTestGuid}", UpdateUserDto);
 
         // Assert
         httpResponse.StatusCode.Should().Be((System.Net.HttpStatusCode)StatusCodes.Status500InternalServerError);

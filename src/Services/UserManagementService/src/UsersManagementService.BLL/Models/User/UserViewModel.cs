@@ -11,7 +11,6 @@ public record UserViewModel(
     decimal Balance,
     VerificationStatus VerificationStatus,
     bool IsBanned,
-    bool IsDeleted,
     DateTime CreatedAt,
     string? FirstName = null,
     string? SecondName = null,
