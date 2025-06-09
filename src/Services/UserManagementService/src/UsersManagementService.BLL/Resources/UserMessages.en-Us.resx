@@ -135,4 +135,7 @@
   <data name="ValidationRequiredId" xml:space="preserve">
     <value>Id is required</value>
   </data>
+  <data name="ValidationUserNotUnique" xml:space="preserve">
+    <value>User not unique</value>
+  </data>
 </root>

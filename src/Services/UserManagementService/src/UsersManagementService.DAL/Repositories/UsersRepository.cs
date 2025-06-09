@@ -13,7 +13,7 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user,
         CancellationToken cancellationToken = default)
     {
-        if (!await IsUserUniqeAsync(user.AuthId, user.Username, user.Email, cancellationToken))
+        if (!await IsUserUniqueAsync(user.AuthId, user.Username, user.Email, cancellationToken))
         {
             throw new InvalidOperationException($"User already exists");
         }
@@ -105,7 +105,7 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         return user.Id;
     }
 
-    public async Task<bool> IsUserUniqeAsync(
+    public async Task<bool> IsUserUniqueAsync(
         Guid authId, 
         string username, 
         string email, 

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using Serilog.Context;
 using System.Net;
 using static UsersManagementService.Common.Constants.MediaTypeConstants;
@@ -33,6 +35,10 @@ public class ExceptionMiddleware(
     {
         var (statusCode, message) = ex switch
         {
+            DbUpdateException => (HttpStatusCode.InternalServerError, 
+                ex.InnerException is NpgsqlException exception && exception.SqlState == "23503" 
+                    ? "User not found" 
+                    : ex.Message),
             _ => (HttpStatusCode.InternalServerError, ex.Message)
         };
 

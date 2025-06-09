@@ -8,4 +8,5 @@ public static class UserKeys
     public const string ValidationRequiredId = "ValidationRequiredId";
     public const string ValidationNoIntegerNumber = "ValidationNoIntegerNumber";
     public const string ValidationNoPositiveNumber = "ValidationNoPositiveNumber";
+    public const string ValidationUserNotUnique = "ValidationUserNotUnique";
 }

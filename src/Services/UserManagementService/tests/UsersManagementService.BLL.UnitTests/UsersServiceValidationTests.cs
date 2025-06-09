@@ -1,4 +1,5 @@
 ﻿using FluentValidation.TestHelper;
+using NSubstitute;
 using UsersManagementService.BLL.Validators.UsersValidators;
 using static UsersManagementService.BLL.UnitTests.TestEntities.TestUserEntities;
 
@@ -11,7 +12,9 @@ public class UsersServiceValidationTests
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
     {
         // Arrange
-        var validator = new CreateUserModelValidator();
+        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(true);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(CreateModel);
@@ -21,12 +24,26 @@ public class UsersServiceValidationTests
     }
 
     [Fact]
+    public async Task Should_Have_Error_When_User_IsNot_Unique()
+    {
+        // Arrange
+        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(false);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
+        // Act
+        var result = await validator.TestValidateAsync(CreateModel);
+        // Assert
+        result.ShouldHaveValidationErrorFor(c => c);
+    }
+
+    [Fact]
     public async Task Should_Have_Error_When_AuthId_Is_Empty()
     {
         // Arrange
+        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(true);
         var invalidModel = CreateModel with { AuthId = Guid.Empty };
-
-        var validator = new CreateUserModelValidator();
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -43,8 +60,9 @@ public class UsersServiceValidationTests
     {
         // Arrange
         var invalidModel = CreateModel with { Email = email };
-
-        var validator = new CreateUserModelValidator();
+        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(true);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);

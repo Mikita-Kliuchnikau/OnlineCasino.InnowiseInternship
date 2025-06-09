@@ -12,15 +12,8 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
         ImageEntity image, 
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            await context.Images.AddAsync(image, cancellationToken);
-            await context.SaveChangesAsync(cancellationToken);
-        }
-        catch (DbUpdateException)
-        {
-            throw new NotFoundException(nameof(image.User), image.UserId);
-        }
+        await context.Images.AddAsync(image, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return image.Id;
     }

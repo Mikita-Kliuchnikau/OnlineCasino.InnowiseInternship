@@ -113,5 +113,14 @@ namespace UsersManagementService.BLL.Resources {
                 return ResourceManager.GetString("ValidationRequiredId", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationUserNotUnique {
+            get {
+                return ResourceManager.GetString("ValidationUserNotUnique", resourceCulture);
+            }
+        }
     }
 }
