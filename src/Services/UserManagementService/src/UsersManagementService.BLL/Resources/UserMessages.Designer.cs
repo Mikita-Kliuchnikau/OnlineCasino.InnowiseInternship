@@ -97,6 +97,15 @@ namespace UsersManagementService.BLL.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ValidationNotUniqueUser {
+            get {
+                return ResourceManager.GetString("ValidationNotUniqueUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field is required.
         /// </summary>
         public static string ValidationRequiredField {
@@ -111,15 +120,6 @@ namespace UsersManagementService.BLL.Resources {
         public static string ValidationRequiredId {
             get {
                 return ResourceManager.GetString("ValidationRequiredId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string ValidationUserNotUnique {
-            get {
-                return ResourceManager.GetString("ValidationUserNotUnique", resourceCulture);
             }
         }
     }
