@@ -23,6 +23,6 @@ public class CreateUserModelValidator : AbstractValidator<CreateUserModel>
             .MustAsync(async (model, cancellationToken) =>
             {
                 return await repository.IsUserUniqueAsync(model.AuthId, model.Username, model.Email, cancellationToken);
-            }).WithMessage(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser));
+            }).WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser));
     }
 }

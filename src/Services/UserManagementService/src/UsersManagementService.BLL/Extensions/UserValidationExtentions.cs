@@ -14,7 +14,7 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .NotEqual(Guid.Empty)
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredId));
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationRequiredId)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationRequiredId));
     }
 
     public static IRuleBuilderOptions<T, string> BaseStringRules<T>(
@@ -22,7 +22,7 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .Must(value => !string.IsNullOrWhiteSpace(value))
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField));
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationRequiredField)) ? "Message not found": resourceHelper.GetValue(UserKeys.ValidationRequiredField));
     }
 
     public static IRuleBuilderOptions<T, string> BaseNamesRules<T>(
@@ -30,9 +30,9 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField))
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationRequiredField)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationRequiredField))
             .MaximumLength(50)
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationMaxLength));
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationMaxLength)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationMaxLength));
     }
 
     public static IRuleBuilderOptions<T, K> BaseNumberRules<T, K>(
@@ -40,11 +40,11 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField))
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationRequiredField)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationRequiredField))
             .GreaterThanOrEqualTo(K.One)
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationNoPositiveNumber))
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationNoPositiveNumber)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationNoPositiveNumber))
             .Must(number =>(number % K.One == K.Zero))
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationNoIntegerNumber));
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationNoIntegerNumber)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationNoIntegerNumber));
     }
 
     public static IRuleBuilderOptions<T, string> BaseEmailRules<T>(
@@ -52,8 +52,8 @@ public static class UserValidationExtentions
     {
         return ruleBuilder
             .NotEmpty()
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationRequiredField))
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationRequiredField)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationRequiredField))
             .EmailAddress()
-            .WithMessage(resourceHelper.GetValue(UserKeys.ValidationInvalidEmail));
+            .WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationInvalidEmail)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationInvalidEmail));
     }
 }
