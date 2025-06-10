@@ -4,6 +4,7 @@ using UsersManagementService.BLL.Models.User;
 using UsersManagementService.BLL.Resources;
 using UsersManagementService.Common.Helpers;
 using UsersManagementService.DAL.Interfaces.Repositories;
+using static UsersManagementService.BLL.Constants.ValidationConstants;
 
 namespace UsersManagementService.BLL.Validators.UsersValidators;
 
@@ -23,6 +24,6 @@ public class CreateUserModelValidator : AbstractValidator<CreateUserModel>
             .MustAsync(async (model, cancellationToken) =>
             {
                 return await repository.IsUserUniqueAsync(model.AuthId, model.Username, model.Email, cancellationToken);
-            }).WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser)) ? "Message not found" : resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser));
+            }).WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser)) ? MessageNotFound : resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser));
     }
 }
