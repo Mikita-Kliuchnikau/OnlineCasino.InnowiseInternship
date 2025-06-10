@@ -4,7 +4,7 @@ using UsersManagementService.BLL.Models.User;
 using UsersManagementService.BLL.Resources;
 using UsersManagementService.Common.Helpers;
 using UsersManagementService.DAL.Interfaces.Repositories;
-using static UsersManagementService.BLL.Constants.ValidationConstants;
+using static UsersManagementService.BLL.Constants.ValidationError;
 
 namespace UsersManagementService.BLL.Validators.UsersValidators;
 

@@ -2,7 +2,7 @@
 using System.Numerics;
 using UsersManagementService.BLL.Resources;
 using UsersManagementService.Common.Helpers;
-using static UsersManagementService.BLL.Constants.ValidationConstants;
+using static UsersManagementService.BLL.Constants.ValidationError;
 
 namespace UsersManagementService.BLL.Extensions;
 
