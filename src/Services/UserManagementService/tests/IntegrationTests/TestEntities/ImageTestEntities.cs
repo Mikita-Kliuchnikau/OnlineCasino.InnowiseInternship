@@ -8,20 +8,11 @@ namespace UsersManagementService.IntegrationTests.TestEntities;
 
 public static class ImageTestEntities
 {
-    private static readonly ImageDto ImageDto = new()
+    public static readonly ImageDto BaseImageDto = new()
     {
-        Id = BaseTestGuid,
         UserId = BaseTestGuid,
         Type = ImageType.Default,
         File = TestFile
-    };
-
-    public static readonly MultipartFormDataContent ImageRequest = new()
-    {
-            { new StringContent(ImageDto.Id.ToString()), "Id" },
-            { new StringContent(ImageDto.UserId.ToString()), "UserId" },
-            { new StringContent(((int) ImageDto.Type).ToString()), "Type" },
-            { new StreamContent(ImageDto.File.OpenReadStream()), "File", ImageDto.File.FileName }
     };
 
     private static IFormFile? _file;

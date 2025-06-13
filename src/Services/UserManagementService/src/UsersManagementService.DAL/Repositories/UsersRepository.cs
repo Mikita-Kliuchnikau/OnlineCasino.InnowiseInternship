@@ -13,9 +13,9 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user,
         CancellationToken cancellationToken = default)
     {
-        if (!await IsUserUniqeAsync(user.Id, user.AuthId, user.Username, user.Email, cancellationToken))
+        if (!await IsUserUniqueAsync(user.AuthId, user.Username, user.Email, cancellationToken))
         {
-            throw new InvalidOperationException($"User {@user} already exists.");
+            throw new InvalidOperationException($"User already exists");
         }
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
@@ -86,25 +86,35 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
             throw new NotFoundException(nameof(user), user.Id);
         }
 
-        context.Users.Update(user);
+        await context.Users.ExecuteUpdateAsync(u => u
+            .SetProperty(u => u.Username, user.Username)
+            .SetProperty(u => u.Email, user.Email)
+            .SetProperty(u => u.Balance, user.Balance)
+            .SetProperty(u => u.VerificationStatus, user.VerificationStatus)
+            .SetProperty(u => u.IsBanned, user.IsBanned)
+            .SetProperty(u => u.FirstName, user.FirstName)
+            .SetProperty(u => u.SecondName, user.SecondName)
+            .SetProperty(u => u.LastName, user.LastName)
+            .SetProperty(u => u.BirthDate, user.BirthDate)
+            .SetProperty(u => u.PassportNumber, user.PassportNumber)
+            .SetProperty(u => u.IdentificationNumber, user.IdentificationNumber), 
+            cancellationToken: cancellationToken);
 
         await context.SaveChangesAsync(cancellationToken);
 
         return user.Id;
     }
 
-    public async Task<bool> IsUserUniqeAsync(
-        Guid? id = null, 
-        Guid? authId = null, 
-        string? username = null, 
-        string? email = null, 
+    public async Task<bool> IsUserUniqueAsync(
+        Guid authId, 
+        string username, 
+        string email, 
         CancellationToken cancellationToken = default)
     {
         return !await context.Users.AnyAsync(u =>
-            (id != null && u.Id == id) ||
-            (authId != null && u.AuthId == authId) ||
-            (username != null && u.Username == username) ||
-            (email != null && u.Email == email), 
+            u.AuthId == authId ||
+            u.Username == username ||
+            u.Email == email, 
             cancellationToken);
     }
 

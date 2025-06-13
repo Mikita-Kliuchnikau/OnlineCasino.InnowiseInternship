@@ -10,7 +10,6 @@ public static class ImagesMappingConfig
     public static void AddImagesMappingConfig(this IServiceCollection services)
     {
         TypeAdapterConfig<ImageModel, ImageEntity>.NewConfig()
-            .Map(i => i.Id, src => src.Id)
             .Map(i => i.UserId, src => src.UserId)
             .Map(i => i.Type, src => src.Type);
 

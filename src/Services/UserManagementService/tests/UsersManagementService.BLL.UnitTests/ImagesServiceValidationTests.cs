@@ -20,20 +20,6 @@ public class ImagesServiceValidationTests
     }
 
     [Fact]
-    public async Task Should_Have_Error_When_Id_Is_Empty()
-    {
-        // Arrange
-        var invalidModel = ImageModel with { Id = Guid.Empty };
-        var validator = new ImageModelValidator();
-
-        // Act
-        var result = await validator.TestValidateAsync(invalidModel);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Id);
-    }
-
-    [Fact]
     public async Task Should_Have_Error_When_UserId_Is_Empty()
     {
         // Arrange
