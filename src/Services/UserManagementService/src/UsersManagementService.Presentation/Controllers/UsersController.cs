@@ -28,16 +28,16 @@ public class UsersController(IUsersService usersService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Guid> Create([FromBody] UserDto user, CancellationToken cancellationToken = default)
+    public async Task<Guid> Create([FromBody] CreateUserDto user, CancellationToken cancellationToken = default)
     {
         var userModel = user.Adapt<CreateUserModel>();
         return await usersService.CreateUserAsync(userModel, cancellationToken);
     }
 
-    [HttpPut]
-    public async Task<Guid> Update([FromBody] UserDto user, CancellationToken cancellationToken = default)
+    [HttpPut("{id}")]
+    public async Task<Guid> Update(Guid id, [FromBody] UpdateUserDto user, CancellationToken cancellationToken = default)
     {
-        var userModel = user.Adapt<UpdateUserModel>();
+        var userModel = user.Adapt<UpdateUserModel>() with { Id = id };
         return await usersService.UpdateUserAsync(userModel, cancellationToken);
     }
 

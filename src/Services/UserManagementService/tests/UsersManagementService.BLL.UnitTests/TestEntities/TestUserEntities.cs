@@ -9,13 +9,14 @@ namespace UsersManagementService.BLL.UnitTests.TestEntities;
 
 public static class TestUserEntities
 {
-    public static readonly CreateUserModel CreateModel = new(Guid.NewGuid(), Guid.NewGuid(), "user", "User@email.com");
-    public static readonly Guid DeleteModel = Guid.NewGuid();
+    public static readonly Guid BaseGuid = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6");
+    public static readonly CreateUserModel CreateModel = new(BaseGuid, "user", "User@email.com");
+    public static readonly Guid DeleteModel = BaseGuid;
     public static readonly UpdateUserModel UpdateModel = new(
-        Id: Guid.NewGuid(), AuthId: Guid.NewGuid(), Username: "user", Email: "user@email.com", Balance: 0,
+        Id: BaseGuid, AuthId: BaseGuid, Username: "user", Email: "user@email.com", Balance: 0,
         VerificationStatus: VerificationStatus.UnVerified, IsBanned: false, FirstName: "user",
         SecondName: "user", LastName: "user", PassportNumber: "123456789", IdentificationNumber: "987654321");
-    public static readonly Guid GetQuery = Guid.NewGuid();
+    public static readonly Guid GetQuery = BaseGuid;
     public static readonly GetPagedUsersQuery GetPagedQuery = new(1, 10);
 
     public static readonly ILogger<UsersService> _loggerMock = Substitute.For<ILogger<UsersService>>();

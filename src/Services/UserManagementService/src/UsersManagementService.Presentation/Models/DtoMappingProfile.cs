@@ -9,14 +9,12 @@ public static class DtoMappingProfile
 {
     public static void AddDtoMappingConfig(this IServiceCollection services)
     {
-        TypeAdapterConfig<UserDto, CreateUserModel>.NewConfig()
-            .Map(u => u.Id, src => src.Id)
+        TypeAdapterConfig<CreateUserDto, CreateUserModel>.NewConfig()
             .Map(u => u.AuthId, src => src.AuthId)
             .Map(u => u.Username, src => src.Username)
             .Map(u => u.Email, src => src.Email);
 
-        TypeAdapterConfig<UserDto, UpdateUserModel>.NewConfig()
-            .Map(u => u.Id, src => src.Id)
+        TypeAdapterConfig<UpdateUserDto, UpdateUserModel>.NewConfig()
             .Map(u => u.AuthId, src => src.AuthId)
             .Map(u => u.Username, src => src.Username)
             .Map(u => u.Email, src => src.Email)
@@ -28,11 +26,10 @@ public static class DtoMappingProfile
             .Map(u => u.LastName, src => src.LastName)
             .Map(u => u.BirthDate, src => src.BirthDate)
             .Map(u => u.PassportNumber, src => src.PassportNumber)
-            .Map(u => u.IdentificationNumber, src => src.VerificationStatus);
+            .Map(u => u.IdentificationNumber, src => src.IdentificationNumber);
 
         TypeAdapterConfig<ImageDto, ImageModel>.NewConfig()
             .ConstructUsing(src => new ImageModel(
-                src.Id,
                 src.UserId,
                 src.Type,
                 ConvertToMemoryStream(src.File),

@@ -8,7 +8,5 @@ public interface IImagesRepository
 
     Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<bool> IsImageUniqeAsync(Guid id, CancellationToken cancellationToken = default);
-
     Task<bool> DoesImageExistAsync(Guid id, CancellationToken cancellationToken = default);
 }

@@ -12,7 +12,9 @@ public class UsersServiceValidationTests
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
     {
         // Arrange
-        var validator = new CreateUserModelValidator();
+        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(true);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(CreateModel);
@@ -22,27 +24,26 @@ public class UsersServiceValidationTests
     }
 
     [Fact]
-    public async Task Should_Have_Error_When_Id_Is_Empty()
+    public async Task Should_Have_Error_When_User_IsNot_Unique()
     {
         // Arrange
-        var invalidModel = CreateModel with { Id = Guid.Empty };
-        
-        var validator = new CreateUserModelValidator();
-
+        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(false);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
         // Act
-        var result = await validator.TestValidateAsync(invalidModel);
-
+        var result = await validator.TestValidateAsync(CreateModel);
         // Assert
-        result.ShouldHaveValidationErrorFor(c => c.Id);
+        result.ShouldHaveValidationErrorFor(c => c);
     }
 
     [Fact]
     public async Task Should_Have_Error_When_AuthId_Is_Empty()
     {
         // Arrange
+        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(true);
         var invalidModel = CreateModel with { AuthId = Guid.Empty };
-
-        var validator = new CreateUserModelValidator();
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -55,12 +56,13 @@ public class UsersServiceValidationTests
     [InlineData("")]
     [InlineData("not-an-email")]
     [InlineData("user@")]
-    public async Task Should_Have_Error_When_DeletedEmail_Is_Invalid(string email)
+    public async Task Should_Have_Error_When_Email_Is_Invalid(string email)
     {
         // Arrange
         var invalidModel = CreateModel with { Email = email };
-
-        var validator = new CreateUserModelValidator();
+        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(true);
+        var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
         var result = await validator.TestValidateAsync(invalidModel);
@@ -246,7 +248,7 @@ public class UsersServiceValidationTests
     [InlineData(1)]
     [InlineData(10)]
     [InlineData(100)]
-    public async Task Should_Pass_When_PageNumber_And_PageSize_Are_ValidAsync(int validValue)
+    public async Task Should_Pass_When_PageNumber_And_PageSize_Are_Valid(int validValue)
     {
         // Arrange
         var query = GetPagedQuery with { PageNumber = validValue, PageSize = validValue };
@@ -263,7 +265,7 @@ public class UsersServiceValidationTests
     [InlineData(0)]
     [InlineData(-1)]
     [InlineData(-100)]
-    public async Task Should_Have_Error_When_PageNumber_Is_InvalidAsync(int invalidValue)
+    public async Task Should_Have_Error_When_PageNumber_Is_Invalid(int invalidValue)
     {
         // Arrange
         var query = GetPagedQuery with { PageNumber = invalidValue };
@@ -280,7 +282,7 @@ public class UsersServiceValidationTests
     [InlineData(0)]
     [InlineData(-1)]
     [InlineData(-100)]
-    public async Task Should_Have_Error_When_PageSize_Is_InvalidAsync(int invalidValue)
+    public async Task Should_Have_Error_When_PageSize_Is_Invalid(int invalidValue)
     {
         // Arrange
         var query = GetPagedQuery with { PageSize = invalidValue };

@@ -20,23 +20,14 @@ namespace UsersManagementService.BLL.Services
                 nameof(CreateImageAsync),
                 image);
 
-            if ( await imagesRepository.DoesImageExistAsync(image.Id, cancellationToken))
-            {
-                logger.LogError(
-                    "Request {RequestName} failed. Image with id {@id} aready exists",
-                    nameof(CreateImageAsync),
-                    image.Id);
-                throw new InvalidOperationException($"Image with id {image.Id} already exists.");
-            }
-
             var imageUrl = await blobService.UploadImageAsync(
                 image.Stream,
-                image.Id.ToString("N"),
+                Guid.NewGuid().ToString("N"), 
                 image.ContentType,
                 cancellationToken);
 
             logger.LogInformation(
-                "Complited request {RequestName} blob storage with result {@Result}",
+                "Complited blob storage request {RequestName} with result {@Result}",
                 nameof(blobService.UploadImageAsync),
                 imageUrl);
 
