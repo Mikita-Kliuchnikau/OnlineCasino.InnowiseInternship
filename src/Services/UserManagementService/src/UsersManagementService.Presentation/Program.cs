@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text.Json.Serialization;
+using UsersManagementService.Presentation.AuthScopes;
 using UsersManagementService.Presentation.DI;
 using UsersManagementService.Presentation.Middleware;
 using static UsersManagementService.Presentation.Constants.AuthConstants;
@@ -56,7 +57,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     options.Audience = builder.Configuration.GetSection(ConfigurationSectionName).GetSection(AudienceKey).Value!;
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("ban:users", policy => policy.Requirements.Add(new HasScopeRequirement("ban:users", domain)));
 
 var app = builder.Build();
 

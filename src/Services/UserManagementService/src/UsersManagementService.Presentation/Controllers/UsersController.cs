@@ -53,6 +53,7 @@ public class UsersController(IUsersService usersService) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<Guid> Delete(Guid id, CancellationToken cancellationToken = default)
     {
         return await usersService.DeleteUserAsync(id, cancellationToken);
