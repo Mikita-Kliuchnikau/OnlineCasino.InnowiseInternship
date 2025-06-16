@@ -4,12 +4,11 @@ namespace UsersManagementService.BLL.Models.User;
 
 public record UpdateUserModel(
     Guid Id, 
-    Guid AuthId,
+    string AuthId,
     string Username,
     string Email,
     decimal Balance,
     VerificationStatus VerificationStatus,
-    bool IsBanned,
     string? FirstName = null,
     string? SecondName = null,
     string? LastName = null,

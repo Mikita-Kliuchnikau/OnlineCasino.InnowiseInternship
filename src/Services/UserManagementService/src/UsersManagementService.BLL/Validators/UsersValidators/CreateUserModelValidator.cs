@@ -15,7 +15,7 @@ public class CreateUserModelValidator : AbstractValidator<CreateUserModel>
     public CreateUserModelValidator(IUsersRepository repository)
     {
         RuleFor(u => u.AuthId)
-            .BaseIdRules();
+            .BaseStringRules();
         RuleFor(u => u.Username)
             .BaseNamesRules();
         RuleFor(u => u.Email)
@@ -23,7 +23,7 @@ public class CreateUserModelValidator : AbstractValidator<CreateUserModel>
         RuleFor(u => u)
             .MustAsync(async (model, cancellationToken) =>
             {
-                return await repository.IsUserUniqueAsync(model.AuthId, model.Username, model.Email, cancellationToken);
+                return await repository.IsUniqueAsync(model.AuthId, model.Username, model.Email, cancellationToken);
             }).WithMessage(string.IsNullOrEmpty(resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser)) ? MessageNotFound : resourceHelper.GetValue(UserKeys.ValidationNotUniqueUser));
     }
 }

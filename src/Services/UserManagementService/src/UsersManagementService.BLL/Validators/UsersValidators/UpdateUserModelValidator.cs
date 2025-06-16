@@ -11,7 +11,7 @@ public class UpdateUserModelValidator : AbstractValidator<UpdateUserModel>
         RuleFor(u => u.Id)
             .BaseIdRules();
         RuleFor(u => u.AuthId)
-            .BaseIdRules();
+            .BaseStringRules();
         RuleFor(u => u.Username)
             .BaseNamesRules();
         RuleFor(u => u.Email)

@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UsersManagementService.BLL.Interfaces.Services;
 using UsersManagementService.BLL.Models.Image;
@@ -9,6 +10,7 @@ namespace UsersManagementService.Presentation.Controllers;
 
 [Produces(MediaTypeConstants.Json)]
 [Route("api/[controller]")]
+[Authorize]
 public class ImagesController(IImagesService imagesService) : ControllerBase
 {
     [HttpPost]

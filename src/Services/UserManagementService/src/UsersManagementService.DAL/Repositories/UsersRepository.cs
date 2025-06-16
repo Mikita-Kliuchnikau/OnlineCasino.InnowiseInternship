@@ -13,7 +13,7 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user,
         CancellationToken cancellationToken = default)
     {
-        if (!await IsUserUniqueAsync(user.AuthId, user.Username, user.Email, cancellationToken))
+        if (!await IsUniqueAsync(user.AuthId, user.Username, user.Email, cancellationToken))
         {
             throw new InvalidOperationException($"User already exists");
         }
@@ -81,7 +81,7 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user,
         CancellationToken cancellationToken = default)
     {
-        if (!await DoesUserExistAsync(user.Id, cancellationToken))
+        if (!await DoesExistAsync(user.Id, cancellationToken))
         {
             throw new NotFoundException(nameof(user), user.Id);
         }
@@ -91,7 +91,6 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
             .SetProperty(u => u.Email, user.Email)
             .SetProperty(u => u.Balance, user.Balance)
             .SetProperty(u => u.VerificationStatus, user.VerificationStatus)
-            .SetProperty(u => u.IsBanned, user.IsBanned)
             .SetProperty(u => u.FirstName, user.FirstName)
             .SetProperty(u => u.SecondName, user.SecondName)
             .SetProperty(u => u.LastName, user.LastName)
@@ -105,20 +104,36 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         return user.Id;
     }
 
-    public async Task<bool> IsUserUniqueAsync(
-        Guid authId, 
+    public async Task<Guid> BanAsync(
+        Guid id,
+        bool isBanned,
+        CancellationToken cancellationToken = default)
+    {
+        var user = await context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(user), id);
+        }
+        await context.Users.ExecuteUpdateAsync(u => u
+            .SetProperty(u => u.IsBanned, isBanned),
+            cancellationToken: cancellationToken);
+        return user.Id;
+    }
+
+    public async Task<bool> IsUniqueAsync(
+        string authId, 
         string username, 
         string email, 
         CancellationToken cancellationToken = default)
     {
         return !await context.Users.AnyAsync(u =>
-            u.AuthId == authId ||
-            u.Username == username ||
-            u.Email == email, 
+            u.AuthId.Equals(authId) ||
+            u.Username.Equals(username) ||
+            u.Email.Equals(email), 
             cancellationToken);
     }
 
-    public async Task<bool> DoesUserExistAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> DoesExistAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await context.Users.AnyAsync(u => u.Id == id, cancellationToken);
     }

@@ -1,6 +1,6 @@
 ﻿namespace UsersManagementService.BLL.Models.User;
 
 public record CreateUserModel(
-    Guid AuthId, 
+    string AuthId, 
     string Username, 
     string Email);

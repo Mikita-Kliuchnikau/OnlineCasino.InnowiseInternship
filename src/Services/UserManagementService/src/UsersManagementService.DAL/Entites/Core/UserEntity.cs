@@ -6,7 +6,7 @@ namespace UsersManagementService.DAL.Entites.Core;
 public class UserEntity : IHasTimestamps, ISoftDeletable
 {
     public Guid Id { get; set; }
-    public Guid AuthId { get; set; }
+    public string AuthId { get; set; } = string.Empty;
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public decimal Balance { get; set; } = 0;

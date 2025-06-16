@@ -12,7 +12,7 @@ public class UsersServiceValidationTests
     public async Task Should_Not_Have_Error_When_All_Fields_Are_Valid()
     {
         // Arrange
-        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _usersRepositoryMock.IsUniqueAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(true);
         var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
@@ -27,7 +27,7 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_User_IsNot_Unique()
     {
         // Arrange
-        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _usersRepositoryMock.IsUniqueAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(false);
         var validator = new CreateUserModelValidator(_usersRepositoryMock);
         // Act
@@ -40,9 +40,9 @@ public class UsersServiceValidationTests
     public async Task Should_Have_Error_When_AuthId_Is_Empty()
     {
         // Arrange
-        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _usersRepositoryMock.IsUniqueAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(true);
-        var invalidModel = CreateModel with { AuthId = Guid.Empty };
+        var invalidModel = CreateModel with { AuthId = string.Empty };
         var validator = new CreateUserModelValidator(_usersRepositoryMock);
 
         // Act
@@ -60,7 +60,7 @@ public class UsersServiceValidationTests
     {
         // Arrange
         var invalidModel = CreateModel with { Email = email };
-        _usersRepositoryMock.IsUserUniqueAsync(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+        _usersRepositoryMock.IsUniqueAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(true);
         var validator = new CreateUserModelValidator(_usersRepositoryMock);
 

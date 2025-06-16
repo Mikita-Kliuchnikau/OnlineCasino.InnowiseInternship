@@ -5,7 +5,7 @@ namespace UsersManagementService.BLL.Models.User;
 
 public record UserViewModel(
     Guid Id,
-    Guid AuthId,
+    string AuthId,
     string Username,
     string Email,
     decimal Balance,
