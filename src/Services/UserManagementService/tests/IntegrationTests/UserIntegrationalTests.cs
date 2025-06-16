@@ -40,7 +40,7 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
         var _ = await client.PostAsJsonAsync(BaseUserUrl, CreateUserDto);
 
         // Act
-        var httpResponse = await factory.HttpClient.PostAsJsonAsync(BaseUserUrl, CreateUserDto);
+        var httpResponse = await client.PostAsJsonAsync(BaseUserUrl, CreateUserDto);
 
         // Assert
         httpResponse.StatusCode.Should().Be((System.Net.HttpStatusCode)StatusCodes.Status500InternalServerError);
@@ -50,7 +50,9 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
     public async Task UpdateUser_ValidUser_ReturnsId()
     { 
         // Arrange
-        var response = await factory.HttpClient.PostAsJsonAsync(BaseUserUrl, CreateUserDto);
+        var client = factory.HttpClient;
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TokenType, Token);
+        var response = await client.PostAsJsonAsync(BaseUserUrl, CreateUserDto);
         var guid = await response.Content.ReadFromJsonAsync<Guid>();
         var UpdateUserDto = new Presentation.Models.UpdateUserDto 
         {
@@ -63,8 +65,6 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
             SecondName = "SecondName",
             LastName = "LastName"
         };
-        var client = factory.HttpClient;
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(TokenType, Token);
         var httpResponse = await client.PutAsJsonAsync(BaseUserUrl + $"/{guid}", UpdateUserDto);
 
         // Act
