@@ -6,9 +6,12 @@ namespace AuthService.Api.Extensions;
 
 public static class DIExtension
 {
-    public static IServiceCollection AddAuth0Authentication(this IServiceCollection services,
-        IOptions<Auth0Options> authOptions)
+    public static IServiceCollection AddAuth0Authentication(this IServiceCollection services)
     {
+        var authOptions = services
+            .BuildServiceProvider()
+            .GetRequiredService<IOptions<Auth0Options>>();
+
         services.AddAuth0WebAppAuthentication(options =>
         {
             options.Domain = authOptions.Value.Domain;

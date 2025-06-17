@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureOptions<Auth0OptionsSetup>();
 
-builder.Services.AddAuth0Authentication(Options.Create(new Auth0Options()));
+builder.Services.AddAuth0Authentication();
 
 builder.Services.AddHttpClient();
 
