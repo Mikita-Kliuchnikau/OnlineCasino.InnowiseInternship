@@ -2,6 +2,7 @@
 using Microsoft.OpenApi.Models;
 using UsersManagementService.Presentation.AuthScopes;
 using UsersManagementService.Presentation.Options;
+using static UsersManagementService.Presentation.Constants.AuthConstants;
 
 namespace UsersManagementService.Presentation.Extensions;
 
@@ -46,7 +47,7 @@ public static class DIExtensions
             .BuildServiceProvider()
             .GetRequiredService<IOptions<Auth0Options>>();
 
-        services.AddAuthentication("Bearer")
+        services.AddAuthentication(BearerTokenName)
             .AddJwtBearer(options =>
             {
                 options.Authority = authOptions.Value.Domain;
@@ -63,8 +64,8 @@ public static class DIExtensions
             .GetRequiredService<IOptions<Auth0Options>>();
 
         services.AddAuthorizationBuilder()
-            .AddPolicy("ban:users", policy =>
-                policy.Requirements.Add(new HasScopeRequirement("ban:users", authOptions.Value.Domain)));
+            .AddPolicy(BanUserPolicy, policy =>
+                policy.Requirements.Add(new HasScopeRequirement(BanUserPolicy, authOptions.Value.Domain)));
         return services;
     }
 }
