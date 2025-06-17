@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text.Json.Serialization;
-using UsersManagementService.Presentation.AuthScopes;
 using UsersManagementService.Presentation.DI;
+using UsersManagementService.Presentation.Extensions;
 using UsersManagementService.Presentation.Middleware;
-using static UsersManagementService.Presentation.Constants.AuthConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,48 +14,14 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "UsersManagementService", Version = "v1.0.0" });
-
-    var securitySchema = new OpenApiSecurityScheme
-    {
-        Description = "Using the Authorization header with the Bearer scheme.",
-        Name = "Authorization",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        Reference = new OpenApiReference
-        {
-            Type = ReferenceType.SecurityScheme,
-            Id = "Bearer"
-        }
-    };
-
-    c.AddSecurityDefinition("Bearer", securitySchema);
-
-    var securityRequirement = new OpenApiSecurityRequirement
-    {
-        { securitySchema, [ "Bearer" ] }
-    };
-    c.AddSecurityRequirement(securityRequirement);
-});
+builder.Services.AddSwagger();
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddJwtAuthentication();
 
-var domain = $"https://{builder.Configuration.GetSection(ConfigurationSectionName).GetSection(DomainKey).Value!}";
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(options =>
-{
-    options.Authority = domain;
-    options.Audience = builder.Configuration.GetSection(ConfigurationSectionName).GetSection(AudienceKey).Value!;
-});
-
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("ban:users", policy => policy.Requirements.Add(new HasScopeRequirement("ban:users", domain)));
+builder.Services.AddAuthorizationPolicies();
 
 var app = builder.Build();
 
