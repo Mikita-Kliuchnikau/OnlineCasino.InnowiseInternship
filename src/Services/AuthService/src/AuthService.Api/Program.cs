@@ -1,23 +1,15 @@
-using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication;
-using static AuthService.Api.Constants.ConfigurationConstans;
 using static AuthService.Api.Constants.UrlConstants;
 using static AuthService.Api.Constants.Common;
+using AuthService.Api.Extensions;
+using AuthService.Api.Options;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureOptions<Auth0OptionsSetup>();
 
-var _domain = builder.Configuration.GetSection(ConfigurationSectionName).GetSection(DomainKey).Value!;
-var _clientId = builder.Configuration.GetSection(ConfigurationSectionName).GetSection(ClientIdKey).Value!;
-var _clientSecret = builder.Configuration.GetSection(ConfigurationSectionName).GetSection(ClientSecretKey).Value!;
-
-builder.Services.AddAuth0WebAppAuthentication(options =>
-{
-    options.Domain = _domain;
-    options.ClientId = _clientId;
-    options.ClientSecret = _clientSecret;
-});
+builder.Services.AddAuth0Authentication(Options.Create(new Auth0Options()));
 
 builder.Services.AddHttpClient();
 
@@ -25,13 +17,10 @@ var app = builder.Build();
 
 app.UseAuthentication();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.MapGet("/login", (HttpContext httpContext, string redirectUrl = "https://localhost:7041") =>
+app.MapGet("/login", (HttpContext httpContext, IOptions<Auth0Options> options, string redirectUrl) =>
 {
-    var domain = _domain;
-    var clientId = _clientId;
+    var domain = options.Value.Domain;
+    var clientId = options.Value.ClientId;
     var responseType = ResponseType;
     var scope = RequestScope;
 
@@ -44,10 +33,10 @@ app.MapGet("/login", (HttpContext httpContext, string redirectUrl = "https://loc
     return Results.Ok(loginUrl);
 });
 
-app.MapGet("/signup", (HttpContext httpContext, string redirectUrl = "https://localhost:7041") =>
+app.MapGet("/signup", (HttpContext httpContext, IOptions<Auth0Options> options, string redirectUrl) =>
 {
-    var domain = _domain;
-    var clientId = _clientId;
+    var domain = options.Value.Domain;
+    var clientId = options.Value.ClientId;
     var responseType = ResponseType;
     var scope = RequestScope;
 
@@ -61,12 +50,12 @@ app.MapGet("/signup", (HttpContext httpContext, string redirectUrl = "https://lo
     return Results.Ok(signupUrl);
 });
 
-app.MapGet("/logout", async (HttpContext httpContext, string redirectUrl) =>
+app.MapGet("/logout", async (HttpContext httpContext, IOptions<Auth0Options> options, string redirectUrl) =>
 {
     await httpContext.SignOutAsync();
 
-    var domain = _domain;
-    var clientId = _clientId;
+    var domain = options.Value.Domain;
+    var clientId = options.Value.ClientId;
 
     var logoutUrl = string.Format(BaseLogoutUrl, domain,
         Uri.EscapeDataString(clientId),

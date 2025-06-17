@@ -10,5 +10,4 @@ public static class UrlConstants
     public static readonly string BaseLogoutUrl = "https://{0}/v2/logout" +
                                                   "?client_id={1}" +
                                                   "&returnTo={2}";
-    public const string BaseUsersApiUrl = "https://localhost:7228/api/Users";
 }
