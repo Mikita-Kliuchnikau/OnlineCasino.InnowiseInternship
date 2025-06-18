@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using UsersManagementService.Presentation.AuthScopes;
 using UsersManagementService.Presentation.Options;
@@ -25,15 +26,15 @@ public static class DIExtensions
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Id = JwtBearerDefaults.AuthenticationScheme
                 }
             };
 
-            c.AddSecurityDefinition("Bearer", securitySchema);
+            c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securitySchema);
 
             var securityRequirement = new OpenApiSecurityRequirement
             {
-                { securitySchema, [ "Bearer" ] }
+                { securitySchema, [JwtBearerDefaults.AuthenticationScheme] }
             };
             c.AddSecurityRequirement(securityRequirement);
         });
@@ -47,12 +48,17 @@ public static class DIExtensions
             .BuildServiceProvider()
             .GetRequiredService<IOptions<Auth0Options>>();
 
-        services.AddAuthentication(BearerTokenName)
-            .AddJwtBearer(options =>
-            {
-                options.Authority = authOptions.Value.Domain;
-                options.Audience = authOptions.Value.Audience;
-            });
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.Authority = $"https://{authOptions.Value.Domain}";
+            options.Audience = authOptions.Value.Audience;
+            options.RequireHttpsMetadata = false;
+        });
         return services;
     }
 

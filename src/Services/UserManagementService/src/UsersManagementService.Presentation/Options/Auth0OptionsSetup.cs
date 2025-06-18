@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using UsersManagementService.DAL.Options;
 using static UsersManagementService.Presentation.Constants.AuthConstants;
 
 namespace UsersManagementService.Presentation.Options;

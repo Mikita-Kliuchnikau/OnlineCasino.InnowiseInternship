@@ -13,6 +13,7 @@ namespace UsersManagementService.Presentation.Controllers;
 public class UsersController(IUsersService usersService) : ControllerBase
 {
     [HttpGet]
+    [AllowAnonymous]
     public async Task<PagedUsersViewModel> Get(
         [FromQuery] int page, 
         [FromQuery] int pageSize, 
