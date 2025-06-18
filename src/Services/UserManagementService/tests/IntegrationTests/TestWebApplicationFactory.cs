@@ -16,9 +16,7 @@ using static UsersManagementService.IntegrationTests.Constants.EnvironmentVariab
 using static UsersManagementService.IntegrationTests.Constants.EndpointsUrls;
 using System.Net.Http.Headers;
 using Microsoft.Extensions.Configuration;
-using System.Net.Mime;
 using UsersManagementService.Common.Constants;
-
 namespace UsersManagementService.IntegrationTests;
 
 public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
@@ -67,17 +65,11 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
 
         _dbConnection = new NpgsqlConnection(_dbContainer.GetConnectionString());
 
+        GetAuth0ClientSecretFronConfiguration();
+        
         HttpClient = CreateClient();
 
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(AppsettingsKey, optional: false)
-            .AddUserSecrets<Program>(optional: true)
-            .Build();
-        _auth0ClientSecret = configuration[Auth0ClientSecretKey];
-
-        var (accessToken, tokenType) = await GetAcceessToken(cts.Token);
-        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+        await SetAccessToken(HttpClient, cts.Token);
 
         await _dbConnection.OpenAsync();
 
@@ -105,15 +97,16 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
         });
     }
 
-    private async Task<(string accessToken, string tokenType)> GetAcceessToken(CancellationToken cancellationToken = default)
+    private async Task SetAccessToken(HttpClient client, CancellationToken cancellationToken = default)
     {
         using var httpClient = new HttpClient();
         var requestUri = Auth0TestTokenUrl;
         var requestBody = new
         {
             client_id = Auth0ClientId,
-            client_secret = _auth0ClientSecret 
-                ?? Environment.GetEnvironmentVariable(EnvironmentAuth0ClientSecretKey),
+            client_secret = string.IsNullOrEmpty(_auth0ClientSecret) 
+                ? Environment.GetEnvironmentVariable(EnvironmentAuth0ClientSecretKey)
+                : _auth0ClientSecret,
             audience = Auth0ApiAudience,
             grant_type = "client_credentials"
         };
@@ -128,7 +121,18 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
         using var doc = JsonDocument.Parse(json);
         var accessToken = doc.RootElement.GetProperty("access_token").GetString();
         var tokenType = doc.RootElement.GetProperty("token_type").GetString();
-        return (accessToken, tokenType)!;
+
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType!, accessToken);
+    }
+
+    private void GetAuth0ClientSecretFronConfiguration()
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(AppsettingsKey, optional: false)
+            .AddUserSecrets<Program>(optional: true)
+            .Build();
+        _auth0ClientSecret = configuration[Auth0ClientSecretKey];
     }
 }
 
