@@ -12,7 +12,12 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Testcontainers.Azurite;
 using static UsersManagementService.Common.Constants.Environments;
-using static UsersManagementService.IntegrationTests.Constants.DbConnectionStrings;
+using static UsersManagementService.IntegrationTests.Constants.EnvironmentVariables;
+using static UsersManagementService.IntegrationTests.Constants.EndpointsUrls;
+using System.Net.Http.Headers;
+using Microsoft.Extensions.Configuration;
+using System.Net.Mime;
+using UsersManagementService.Common.Constants;
 
 namespace UsersManagementService.IntegrationTests;
 
@@ -33,6 +38,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
 
     private DbConnection _dbConnection = null!;
     private Respawner _respawner = null!;
+    private string? _auth0ClientSecret = string.Empty;
     public HttpClient HttpClient { get; private set; } = null!;
 
     public readonly JsonSerializerOptions JsonSerializerOptions = new()
@@ -43,8 +49,8 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        Environment.SetEnvironmentVariable(UsersDatabase, _dbContainer.GetConnectionString());
-        Environment.SetEnvironmentVariable(AzureBlobStorage, _blobContainer.GetConnectionString());
+        Environment.SetEnvironmentVariable(UsersDatabaseKey, _dbContainer.GetConnectionString());
+        Environment.SetEnvironmentVariable(AzureBlobStorageKey, _blobContainer.GetConnectionString());
         Environment.SetEnvironmentVariable(AspNetCoreEnvironment, TestEnvironment);
 
         builder.ConfigureTestServices(services =>
@@ -55,13 +61,23 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
 
     public async Task InitializeAsync()
     {
-        await _dbContainer.StartAsync();
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(60));
+        await _dbContainer.StartAsync(cts.Token);
         await _blobContainer.StartAsync(cts.Token);
 
         _dbConnection = new NpgsqlConnection(_dbContainer.GetConnectionString());
-        
+
         HttpClient = CreateClient();
+
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(AppsettingsKey, optional: false)
+            .AddUserSecrets<Program>(optional: true)
+            .Build();
+        _auth0ClientSecret = configuration[Auth0ClientSecretKey];
+
+        var (accessToken, tokenType) = await GetAcceessToken(cts.Token);
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
 
         await _dbConnection.OpenAsync();
 
@@ -87,6 +103,32 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
             DbAdapter = DbAdapter.Postgres,
             WithReseed = true
         });
+    }
+
+    private async Task<(string accessToken, string tokenType)> GetAcceessToken(CancellationToken cancellationToken = default)
+    {
+        using var httpClient = new HttpClient();
+        var requestUri = Auth0TestTokenUrl;
+        var requestBody = new
+        {
+            client_id = Auth0ClientId,
+            client_secret = _auth0ClientSecret 
+                ?? Environment.GetEnvironmentVariable(EnvironmentAuth0ClientSecretKey),
+            audience = Auth0ApiAudience,
+            grant_type = "client_credentials"
+        };
+        var content = new StringContent(
+            JsonSerializer.Serialize(requestBody),
+            System.Text.Encoding.UTF8,
+            MediaTypeConstants.Json
+        );
+        var response = await httpClient.PostAsync(requestUri, content, cancellationToken);
+        response.EnsureSuccessStatusCode();
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
+        using var doc = JsonDocument.Parse(json);
+        var accessToken = doc.RootElement.GetProperty("access_token").GetString();
+        var tokenType = doc.RootElement.GetProperty("token_type").GetString();
+        return (accessToken, tokenType)!;
     }
 }
 
