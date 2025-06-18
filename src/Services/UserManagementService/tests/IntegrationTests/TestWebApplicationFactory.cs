@@ -59,7 +59,6 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
 
     public async Task InitializeAsync()
     {
-        Console.WriteLine($"[DEBUG] AUTH0_TEST_CLIENT_SECRET: {Environment.GetEnvironmentVariable(EnvironmentAuth0ClientSecretKey)}");
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(60));
         await _dbContainer.StartAsync(cts.Token);
         await _blobContainer.StartAsync(cts.Token);
@@ -100,7 +99,6 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
 
     private async Task SetAccessToken(HttpClient client, CancellationToken cancellationToken = default)
     {
-        Console.WriteLine($"[DEBUG] AUTH0_TEST_CLIENT_SECRET: {Environment.GetEnvironmentVariable(EnvironmentAuth0ClientSecretKey)}");
         using var httpClient = new HttpClient();
         var requestUri = Auth0TestTokenUrl;
         var requestBody = new
