@@ -129,7 +129,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>, IAsyncL
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(AppsettingsKey, optional: false)
+            .AddJsonFile(AppsettingsKey, optional: true)
             .AddUserSecrets<Program>(optional: true)
             .Build();
         _auth0ClientSecret = configuration[Auth0ClientSecretKey];
