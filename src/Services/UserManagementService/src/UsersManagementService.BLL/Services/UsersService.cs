@@ -107,4 +107,11 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
 
         return result;
     }
+
+    [Validate(typeof(UserIdValidator))]
+    public virtual async Task<Guid> BanUserAsync(Guid id, bool isBanned, CancellationToken cancellationToken = default)
+    {
+        return await usersRepository.BanAsync(id, isBanned, cancellationToken);
+   
+    }
 }

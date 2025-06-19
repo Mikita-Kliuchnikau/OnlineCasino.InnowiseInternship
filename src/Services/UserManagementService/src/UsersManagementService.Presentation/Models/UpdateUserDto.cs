@@ -4,12 +4,11 @@ namespace UsersManagementService.Presentation.Models;
 
 public class UpdateUserDto
 {
-    public required Guid? AuthId { get; set; }
+    public required string? AuthId { get; set; }
     public required string? Username { get; set; }
     public required string? Email { get; set; }
     public decimal? Balance { get; set; }
     public VerificationStatus? VerificationStatus { get; set; }
-    public bool? IsBanned { get; set; }
     public string? FirstName { get; set; }
     public string? SecondName { get; set; }
     public string? LastName { get; set; }

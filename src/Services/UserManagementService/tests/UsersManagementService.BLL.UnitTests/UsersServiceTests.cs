@@ -98,7 +98,7 @@ public class UsersServiceTests
     {
         //Arrange
         _usersRepositoryMock.GetByIdAsync(Arg.Any<Guid>(), default)
-            .Returns(new UserEntity { Id = GetQuery, AuthId = Guid.NewGuid() });
+            .Returns(new UserEntity { Id = GetQuery, AuthId = "123" });
 
         var service = new UsersService(_usersRepositoryMock, _loggerMock);
 

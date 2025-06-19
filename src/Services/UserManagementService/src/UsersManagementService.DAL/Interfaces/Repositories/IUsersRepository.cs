@@ -15,11 +15,13 @@ public interface IUsersRepository
 
     Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<bool> IsUserUniqueAsync(
-        Guid authId,
+    Task<Guid> BanAsync(Guid id, bool isBanned, CancellationToken cancellationToken = default);
+
+    Task<bool> IsUniqueAsync(
+        string authId,
         string username,
         string email,
         CancellationToken cancellationToken = default);
 
-    Task<bool> DoesUserExistAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> DoesExistAsync(Guid id, CancellationToken cancellationToken = default);
 }

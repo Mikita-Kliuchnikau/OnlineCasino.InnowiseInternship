@@ -20,7 +20,6 @@ public static class DtoMappingProfile
             .Map(u => u.Email, src => src.Email)
             .Map(u => u.Balance, src => src.Balance)
             .Map(u => u.VerificationStatus, src => src.VerificationStatus)
-            .Map(u => u.IsBanned, src => src.IsBanned)
             .Map(u => u.FirstName, src => src.FirstName)
             .Map(u => u.SecondName, src => src.SecondName)
             .Map(u => u.LastName, src => src.LastName)

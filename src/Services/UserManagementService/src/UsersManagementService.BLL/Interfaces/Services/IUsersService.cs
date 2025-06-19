@@ -12,5 +12,7 @@ public interface IUsersService
 
     Task<Guid> UpdateUserAsync(UpdateUserModel user, CancellationToken cancellationToken = default);
 
+    Task<Guid> BanUserAsync(Guid id, bool isBanned, CancellationToken cancellationToken = default);
+
     Task<Guid> DeleteUserAsync(Guid id, CancellationToken cancellationToken = default);
 }

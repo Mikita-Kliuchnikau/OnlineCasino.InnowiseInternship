@@ -31,7 +31,7 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
     [Fact]
     public async Task CreateUser_UserAlreadyExists_ReturnsInternalServerError()
     {
-        // Arrange
+        // Arrangevar
         var _ = await factory.HttpClient.PostAsJsonAsync(BaseUserUrl, CreateUserDto);
 
         // Act
@@ -49,12 +49,11 @@ public class UserIntegrationalTests(TestWebApplicationFactory factory) : IClassF
         var guid = await response.Content.ReadFromJsonAsync<Guid>();
         var UpdateUserDto = new Presentation.Models.UpdateUserDto 
         {
-            AuthId = BaseTestGuid,
+            AuthId = "123",
             Username = "user",
             Email = "test@gmail.com",
             Balance = 199,
             VerificationStatus = VerificationStatus.Verified,
-            IsBanned = false,
             FirstName = "FirstName",
             SecondName = "SecondName",
             LastName = "LastName"
