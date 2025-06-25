@@ -1,24 +1,24 @@
 ﻿using GamingService.Core.Common;
 using GamingService.Core.Models.RoulettePlayerAggregate;
-using GamingService.Core.Primitives;
+using System.ComponentModel;
 
 namespace GamingService.Core.Models.SessionAggregate;
 
-public class RouletteBet : Entity
+public class RouletteBet
 {
     private RouletteBet(
-        Guid playerId,
+        RoulettePlayer player,
         Money betAmount,
         BetValues betValues,
-        RouletteBetType betType) : base(Guid.NewGuid())
+        RouletteBetType betType)
     {
-        PlayerId = playerId;
+        Player = player;
         BetAmount = betAmount;
         BetType = betType;
         BetValues = betValues;
     }
 
-    public Guid PlayerId { get; private init; } 
+    public RoulettePlayer Player { get; private init; } 
     
     public Money BetAmount { get; private init; }
 
@@ -26,20 +26,49 @@ public class RouletteBet : Entity
 
     public BetValues BetValues { get; private init; }
 
-    public BetStatus Status { get; set; } = BetStatus.Pending;
+    public BetStatus Status { get; private set; } = BetStatus.Pending;
 
     public static CreateBetResult Create(
-        Guid playerId,
+        RoulettePlayer player,
         Money betAmount,
         IEnumerable<string> keys,
         RouletteBetType betType)
     {
         var betValues = new BetValues(keys, betType);
-        if (betValues.Errors?.Count != 0)
+        var bet = new RouletteBet(player, betAmount, betValues, betType);
+        return betValues.Errors?.Count != 0 
+            ? new(bet, [.. betValues.Errors!]) 
+            : new(bet, []);
+    }
+
+    public static IEnumerable<CreateBetResult> Create(IEnumerable<(
+        RoulettePlayer player, 
+        Money betAmount, 
+        IEnumerable<string> values, 
+        RouletteBetType betType)> bets)
+    {
+        foreach (var (player, betAmount, values, betType) in bets)
         {
-            return new(null, [.. betValues.Errors!]);
+            var betValues = new BetValues(values, betType);
+            var bet = new RouletteBet(player, betAmount, betValues, betType);
+            yield return betValues.Errors?.Count != 0
+                ? new(bet, [.. betValues.Errors!])
+                : new(bet, []);
         }
-        var bet = new RouletteBet(playerId, betAmount, betValues, betType);
-        return new(bet, []);
+    }
+
+    public void ChangeStatus(BetStatus status)
+    {
+        Status = status switch
+        {
+            BetStatus.Pending => Status,
+            BetStatus.Won => Status == BetStatus.Pending ? BetStatus.Won : Status,
+            BetStatus.Lost => Status == BetStatus.Pending ? BetStatus.Lost : Status,
+            BetStatus.Cancelled => BetStatus.Cancelled,
+            _ => throw new InvalidEnumArgumentException(
+                nameof(status),
+                (int)status,
+                typeof(BetStatus))
+        };
     }
 }

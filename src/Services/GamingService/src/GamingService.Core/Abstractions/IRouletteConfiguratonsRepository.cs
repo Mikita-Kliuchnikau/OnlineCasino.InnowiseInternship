@@ -8,7 +8,5 @@ public interface IRouletteConfiguratonsRepository
 
     public Task<RouletteConfiguration> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-    public Task<RouletteConfiguration> GetByNameAsync(string name, CancellationToken cancellationToken = default);
-
     public Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 }

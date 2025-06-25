@@ -1,6 +1,6 @@
 ﻿namespace GamingService.Core.Models.SessionAggregate;
 
-public enum BetStatus // BetResult
+public enum BetStatus 
 {
     Pending = 0,
     Won = 1,

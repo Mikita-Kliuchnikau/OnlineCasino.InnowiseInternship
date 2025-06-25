@@ -1,10 +1,10 @@
 ﻿namespace GamingService.Core.Primitives;
 
-public abstract class Entity(Guid id) : IEquatable<Entity>
+public abstract class Entity : IEquatable<Entity>
 {
-    public Guid Id { get; } = id;
+    public string? Id { get; init; }
 
-    public bool Equals(Entity? other)
+    public virtual bool Equals(Entity? other)
     {
         if (other is null)
         {

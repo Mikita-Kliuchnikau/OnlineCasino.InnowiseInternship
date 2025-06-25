@@ -1,5 +1,6 @@
 ﻿using GamingService.Core.Models.RouletteConfigurationAggregate;
 using GamingService.Core.Primitives;
+using MongoDB.Bson;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,14 +16,12 @@ public class RouletteSession : Entity
         string serverSeed,
         string serverSeedHash,
         string clientSeed,
-        Nonce nonce,
-        int sessionResult,
-        RouletteConfiguration configuration) : base(Guid.NewGuid())
+        string sessionResult,
+        RouletteConfiguration configuration)
     {
         ServerSeed = serverSeed;
         ServerSeedHash = serverSeedHash;
         ClientSeed = clientSeed;
-        Nonce = nonce;
         SessionResult = sessionResult;
         Configuration = configuration;
     }
@@ -37,15 +36,13 @@ public class RouletteSession : Entity
 
     public string ClientSeed { get; private init; }
 
-    public Nonce Nonce { get; private init; }
-
-    public int SessionResult { get; private init; } 
+    public string SessionResult { get; private init; } 
 
     public RouletteConfiguration Configuration { get; private init; }
 
     public IReadOnlyList<RouletteBet>? Bets => _bets;
 
-    public static RouletteSession Create(string clientSeed, Nonce nonce, RouletteConfiguration configuration)
+    public static RouletteSession Create(string clientSeed, RouletteConfiguration configuration)
     {
         var serverSeed = GenerateSeed();
         var serverSeedHash = GenerateSeedHash(serverSeed);
@@ -53,31 +50,56 @@ public class RouletteSession : Entity
         {
             clientSeed = GenerateSeed();
         }
-        var sessionResult = ComputeResult(serverSeed, clientSeed, nonce);
-        return new RouletteSession(serverSeed, serverSeedHash, clientSeed, nonce, sessionResult, configuration);
+        var sessionResult = ComputeResult(serverSeed, clientSeed, configuration);
+        return new RouletteSession(serverSeed, serverSeedHash, clientSeed, sessionResult, configuration);
     }
 
-    public Guid CloseSession(IEnumerable<RouletteBet> bets)
+    public string CloseSession(IEnumerable<RouletteBet> bets)
     {
         foreach (var bet in bets)
         {
             ArgumentNullException.ThrowIfNull(bet);
 
-            if (bet.BetType == RouletteBetType.Basket && Configuration.RouletteGameType == RouletteGameType.EuropeanRoulette)
+            if (bet.Player.Balance.Currency != bet.BetAmount.Currency)
             {
-                bet.Status = BetStatus.Cancelled;
+                bet.ChangeStatus(BetStatus.Cancelled);
+                continue;
+            }
+            bet.Player.Balance.Amount.Value -= bet.BetAmount.Amount.Value;
+            
+            if (bet.Player.Balance.Amount.Value < 0)
+            {
+                bet.ChangeStatus(BetStatus.Cancelled);
+                continue;
+            }
+            if (bet.BetAmount.Amount.Value > Configuration.MaxBet.Value)
+            {
+                bet.ChangeStatus(BetStatus.Cancelled);  
+                continue;
+            }
+            if (bet.BetAmount.Amount.Value < Configuration.MinBet.Value)
+            {
+                bet.ChangeStatus(BetStatus.Cancelled);
+                continue;
+            }
+            if (bet.BetType == RouletteBetType.Basket && Configuration.RouletteGameType == RouletteGameType.European)
+            {
+                bet.ChangeStatus(BetStatus.Cancelled);
+                continue;
             }
 
-            if (bet.BetValues.Keys!.Contains("00") && Configuration.RouletteGameType == RouletteGameType.EuropeanRoulette)
+            if (bet.BetValues.Keys!.Contains("00") && Configuration.RouletteGameType == RouletteGameType.European)
             {
-                bet.Status = BetStatus.Cancelled;
+                bet.ChangeStatus(BetStatus.Cancelled);
+                continue;
             }
 
             if (bet.Status == BetStatus.Pending)
             {
-                bet.Status = bet.BetValues.Keys!.Contains(SessionResult.ToString())
+                var betStatus = bet.BetValues.Keys!.Contains(SessionResult.ToString())
                     ? BetStatus.Won
                     : BetStatus.Lost;
+                bet.ChangeStatus(betStatus);
             }
         }
         _bets.AddRange(bets);
@@ -87,12 +109,15 @@ public class RouletteSession : Entity
         return Id;
     }
 
-    private static int ComputeResult(string serverSeed, string clientSeed, Nonce nonce)
+    private static string ComputeResult(string serverSeed, string clientSeed, RouletteConfiguration configuration)
     {
-        var input = $"{serverSeed}:{clientSeed}:{nonce}";
+        var input = $"{serverSeed}:{clientSeed}";
         var hash = SHA256.HashData(Encoding.UTF8.GetBytes(input));
         int number = BitConverter.ToInt32(hash, 0);
-        return Math.Abs(number % 37);
+        var result = Math.Abs(number % configuration.RouletteGameType.NumberOfPossibleBets);
+        return result == RouletteGameType.American.NumberOfPossibleBets
+            ? "00"
+            : result.ToString();
     }
 
     private static string GenerateSeed()
@@ -107,13 +132,4 @@ public class RouletteSession : Entity
         var hash = SHA256.HashData(Encoding.UTF8.GetBytes(seed));
         return Convert.ToHexString(hash);
     }
-}
-
-public record Nonce(int Value)
-{
-    public static Nonce Create(int value)
-    {
-        return value < 0 ? throw new ArgumentOutOfRangeException(nameof(value)) : new Nonce(value);
-    }
-    public override string ToString() => Value.ToString();
 }

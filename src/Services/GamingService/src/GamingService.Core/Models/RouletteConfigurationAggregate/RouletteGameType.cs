@@ -1,7 +1,28 @@
-﻿namespace GamingService.Core.Models.RouletteConfigurationAggregate;
+﻿using GamingService.Core.Primitives;
 
-public enum RouletteGameType
+namespace GamingService.Core.Models.RouletteConfigurationAggregate;
+
+public abstract class RouletteGameType(int value, RouletteType type)
+    : Enumeration<RouletteGameType>(value, type.ToString())
 {
-    AmericanRoulette = 0,
-    EuropeanRoulette = 1
+    public static readonly EuropeanRoulette European = new();
+    public static readonly AmericanRoulette American = new();
+
+    public abstract int NumberOfPossibleBets { get; }
+
+    public sealed class EuropeanRoulette : RouletteGameType
+    {
+        public EuropeanRoulette() : base(1, RouletteType.EuropeanRoulette)
+        {
+        }
+        public override int NumberOfPossibleBets => 37;
+    }
+
+    public sealed class AmericanRoulette : RouletteGameType
+    {
+        public AmericanRoulette() : base(2, RouletteType.AmericanRoulette)
+        {
+        }
+        public override int NumberOfPossibleBets => 38;
+    }
 }

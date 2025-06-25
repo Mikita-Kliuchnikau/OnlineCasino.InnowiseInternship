@@ -1,9 +1,9 @@
 ﻿using GamingService.Core.Common;
-using GamingService.Core.Primitives;
 
 namespace GamingService.Core.Models.RoulettePlayerAggregate;
 
-public class RoulettePlayer(Guid id, Money money) : Entity(id)
+public class RoulettePlayer(Guid id, Money money)
 {
+    public Guid Id { get; } = id;
     public Money Balance { get; set; } = money;
 }

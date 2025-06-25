@@ -6,14 +6,12 @@ namespace GamingService.Core.Models.RouletteConfigurationAggregate;
 public class RouletteConfiguration : Entity
 {
     private RouletteConfiguration(
-        string name,
-        string description,
+        string? description,
         RouletteGameType rouletteGameType,
         Currency currency,
         Amount minBet,
-        Amount maxBet) : base(Guid.NewGuid())
+        Amount maxBet)
     {
-        Name = name;
         Description = description;
         RouletteGameType = rouletteGameType;
         Currency = currency;
@@ -22,24 +20,18 @@ public class RouletteConfiguration : Entity
     }
 
     public static RouletteConfiguration Create(
-        string name,
-        string description,
+        string? description,
         RouletteGameType rouletteGameType,
         Currency currency,
         Amount minBet,
         Amount maxBet)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
-
-        ArgumentException.ThrowIfNullOrWhiteSpace(description);
-
         ArgumentOutOfRangeException.ThrowIfLessThan(maxBet.Value, minBet.Value);
 
-        return new RouletteConfiguration(name, description, rouletteGameType, currency, minBet, maxBet);
+        return new RouletteConfiguration(description, rouletteGameType, currency, minBet, maxBet);
     }
-    public string Name { get; }
 
-    public string Description { get; }
+    public string? Description { get; }
 
     public RouletteGameType RouletteGameType { get; }
     

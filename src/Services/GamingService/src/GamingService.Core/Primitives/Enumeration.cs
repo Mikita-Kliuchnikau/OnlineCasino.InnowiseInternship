@@ -20,7 +20,7 @@ public abstract class Enumeration<TEnum>(int value, string name) : IEquatable<TE
         return _enumerations.Values.FirstOrDefault(e => e.Name == name);
     }
 
-    public bool Equals(TEnum? other)
+    public virtual bool Equals(TEnum? other)
     {
         if (other is null)
         {
