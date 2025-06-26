@@ -4,16 +4,16 @@ namespace GamingService.Core.Models.SessionAggregate;
 
 public record BetValues
 {
-    private readonly List<string>? _keys = [];
-    private readonly List<string>? _errors = [];
+    private readonly List<string> _keys = [];
+    private readonly List<string> _errors = [];
 
     public BetValues(IEnumerable<string> betValues, RouletteBetType betType)
     {
-        if (betValues == null || !betValues.Any())
+        if (betValues is null || !betValues.Any())
         {
             _errors.Add(BetValuesCannotBeNullOrEmpty);
         }
-        if (betType == null)
+        if (betType is null)
         {
             _errors.Add(BetTypeCannotBeNull); 
         }
@@ -30,6 +30,25 @@ public record BetValues
             _keys.AddRange(betValues!);
         }
     }
+
     public IReadOnlyList<string>? Keys => _keys;
     public IReadOnlyList<string>? Errors => _errors;
+
+    public void AddErrors(string? error)
+    {
+        if (string.IsNullOrWhiteSpace(error))
+        {
+            return;
+        }
+        _errors.Add(error);
+    }
+
+    public void AddErrors(IEnumerable<string>? errors)
+    {
+        if (errors is null || !errors.Any())
+        {
+            return;
+        }
+        _errors.AddRange(errors);
+    }
 }

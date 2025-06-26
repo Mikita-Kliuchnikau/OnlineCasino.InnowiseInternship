@@ -28,20 +28,19 @@ public class RouletteBet
 
     public BetStatus Status { get; private set; } = BetStatus.Pending;
 
-    public static CreateBetResult Create(
+    public IReadOnlyList<string>? Errors => BetValues.Errors;
+
+    public static RouletteBet Create(
         RoulettePlayer player,
         Money betAmount,
         IEnumerable<string> keys,
         RouletteBetType betType)
     {
         var betValues = new BetValues(keys, betType);
-        var bet = new RouletteBet(player, betAmount, betValues, betType);
-        return betValues.Errors?.Count != 0 
-            ? new(bet, [.. betValues.Errors!]) 
-            : new(bet, []);
+        return new RouletteBet(player, betAmount, betValues, betType);
     }
 
-    public static IEnumerable<CreateBetResult> Create(IEnumerable<(
+    public static IEnumerable<RouletteBet> Create(IEnumerable<(
         RoulettePlayer player, 
         Money betAmount, 
         IEnumerable<string> values, 
@@ -50,11 +49,18 @@ public class RouletteBet
         foreach (var (player, betAmount, values, betType) in bets)
         {
             var betValues = new BetValues(values, betType);
-            var bet = new RouletteBet(player, betAmount, betValues, betType);
-            yield return betValues.Errors?.Count != 0
-                ? new(bet, [.. betValues.Errors!])
-                : new(bet, []);
+            yield return new RouletteBet(player, betAmount, betValues, betType);
         }
+    }
+
+    public void AddErrors(string? error)
+    {
+        BetValues.AddErrors(error);
+    }
+
+    public void AddErrors(IEnumerable<string>? errors)
+    {
+        BetValues.AddErrors(errors);
     }
 
     public void ChangeStatus(BetStatus status)

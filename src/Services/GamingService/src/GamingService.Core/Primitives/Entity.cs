@@ -1,8 +1,8 @@
 ﻿namespace GamingService.Core.Primitives;
 
-public abstract class Entity : IEquatable<Entity>
+public abstract class Entity(Id id) : IEquatable<Entity>
 {
-    public string? Id { get; init; }
+    public Id Id { get; } = id;
 
     public virtual bool Equals(Entity? other)
     {
@@ -36,6 +36,7 @@ public abstract class Entity : IEquatable<Entity>
 
     public override int GetHashCode()
     {
+        ArgumentNullException.ThrowIfNull(Id, nameof(Id));
         return Id.GetHashCode();
     }
 }

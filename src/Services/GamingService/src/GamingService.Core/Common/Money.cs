@@ -2,9 +2,9 @@
 
 public record Money(Currency Currency, Amount Amount);
 
-public sealed class Amount(decimal Value)
+public sealed class Amount(decimal value)
 {
-    public decimal Value { get; set; } = Value < 0 ? throw new ArgumentOutOfRangeException(nameof(Value)) : Value;
+    public decimal Value { get; set; } = value < 0 ? throw new ArgumentOutOfRangeException(nameof(value)) : value;
 }
 
 public enum Currency
