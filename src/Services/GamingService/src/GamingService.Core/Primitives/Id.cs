@@ -23,7 +23,7 @@ public class GuidId : Id
 
     public override bool Equals(object? obj)
     {
-        return obj is Guid && base.Equals(obj);
+        return obj is Guid objId && (Guid)Value == objId;
     }
 
     public override int GetHashCode()
@@ -48,7 +48,7 @@ public class MongoObjectId : Id
 
     public override bool Equals(object? obj)
     {
-        return obj is string && base.Equals(obj);
+        return obj is ObjectId objId && (ObjectId)Value == objId;
     }
     public override int GetHashCode()
     {
