@@ -1,6 +1,7 @@
 ﻿using GamingService.Core.Contracts;
+using GamingService.Core.Primitives;
 using MediatR;
 
 namespace GamingService.Core.Events;
 
-public record PlayersBalancesChangedDomainEvent(IReadOnlyList<PlayerBalanceChange> Changes) : INotification;
+public record PlayersBalancesChangedDomainEvent(Id SessionId) : INotification;

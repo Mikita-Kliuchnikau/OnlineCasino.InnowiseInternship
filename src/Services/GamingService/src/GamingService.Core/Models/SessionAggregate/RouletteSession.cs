@@ -1,6 +1,4 @@
-﻿using GamingService.Core.Contracts;
-using GamingService.Core.Events;
-using GamingService.Core.Models.RouletteConfigurationAggregate;
+﻿using GamingService.Core.Models.RouletteConfigurationAggregate;
 using GamingService.Core.Primitives;
 using MediatR;
 using System.Security.Cryptography;
@@ -126,26 +124,9 @@ public class RouletteSession : Entity
 
         Status = SessionStatus.Closed;
 
-        var changes = _bets?
-            .Where(BetType => BetType.Status == BetStatus.Won || BetType.Status == BetStatus.Lost)
-            .Select(bet => new PlayerBalanceChange(
-                bet.Player.Id,
-                bet.BetAmount.Currency,
-                bet.Status switch
-                {
-                    BetStatus.Lost => -bet.BetAmount.Amount.Value,
-                    BetStatus.Won => bet.BetAmount.Amount.Value * bet.BetType.WinningsMultiplier,
-                    _ => 0
-                }))
-            .ToList();
-
-        if (changes != null && changes.Count == 0)
-        {
-            var playersBalancesChangesEvent = new PlayersBalancesChangedDomainEvent(changes);
-
-            ArgumentNullException.ThrowIfNull(_mediator);
-            await _mediator.Publish(playersBalancesChangesEvent);
-        }
+        ArgumentNullException.ThrowIfNull(_mediator);
+        await _mediator.Publish(this.Id);
+        
         return this;
     }
 
