@@ -36,7 +36,7 @@ public abstract class Entity(Id id) : IEquatable<Entity>
 
     public override int GetHashCode()
     {
-        ArgumentNullException.ThrowIfNull(Id, nameof(Id));
+        ArgumentNullException.ThrowIfNull(Id);
         return Id.GetHashCode();
     }
 }

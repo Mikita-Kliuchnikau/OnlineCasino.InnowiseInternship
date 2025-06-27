@@ -1,5 +1,8 @@
-﻿using GamingService.Core.Models.RouletteConfigurationAggregate;
+﻿using GamingService.Core.Contracts;
+using GamingService.Core.Events;
+using GamingService.Core.Models.RouletteConfigurationAggregate;
 using GamingService.Core.Primitives;
+using MediatR;
 using System.Security.Cryptography;
 using System.Text;
 using static GamingService.Core.Constants.ErrorMessages;
@@ -10,6 +13,8 @@ public class RouletteSession : Entity
 {
     private const int SEED_BYTE_LENGTH = 32;
 
+    private readonly IMediator _mediator;
+
     private readonly List<RouletteBet> _bets = [];
 
     private RouletteSession(
@@ -18,13 +23,15 @@ public class RouletteSession : Entity
         string serverSeedHash,
         string clientSeed,
         RouletteSpinResult sessionResult,
-        RouletteConfiguration configuration) : base(id)
+        RouletteConfiguration configuration,
+        IMediator mediator) : base(id)
     {
         ServerSeed = serverSeed;
         ServerSeedHash = serverSeedHash;
         ClientSeed = clientSeed;
         SessionResult = sessionResult;
         Configuration = configuration;
+        _mediator = mediator;
     }
 
     public DateTime StartedAt { get; private init; } = DateTime.UtcNow;
@@ -43,7 +50,7 @@ public class RouletteSession : Entity
 
     public IReadOnlyList<RouletteBet>? Bets => _bets;
 
-    public static RouletteSession Create(Id id, string clientSeed, RouletteConfiguration configuration)
+    public static RouletteSession Create(Id id, string clientSeed, RouletteConfiguration configuration, IMediator mediator)
     {
         var serverSeed = GenerateSeed();
         var serverSeedHash = GenerateSeedHash(serverSeed);
@@ -53,10 +60,10 @@ public class RouletteSession : Entity
         }
         var source = $"{serverSeed}:{clientSeed}";
         var sessionResult = new RouletteSpinResult(source, configuration);
-        return new RouletteSession(id, serverSeed, serverSeedHash, clientSeed, sessionResult, configuration);
+        return new RouletteSession(id, serverSeed, serverSeedHash, clientSeed, sessionResult, configuration, mediator);
     }
 
-    public RouletteSession CloseSession(IEnumerable<RouletteBet> bets)
+    public async Task<RouletteSession> CloseSession(IEnumerable<RouletteBet> bets)
     {
         foreach (var bet in bets)
         {
@@ -119,6 +126,26 @@ public class RouletteSession : Entity
 
         Status = SessionStatus.Closed;
 
+        var changes = _bets?
+            .Where(BetType => BetType.Status == BetStatus.Won || BetType.Status == BetStatus.Lost)
+            .Select(bet => new PlayerBalanceChange(
+                bet.Player.Id,
+                bet.BetAmount.Currency,
+                bet.Status switch
+                {
+                    BetStatus.Lost => -bet.BetAmount.Amount.Value,
+                    BetStatus.Won => bet.BetAmount.Amount.Value * bet.BetType.WinningsMultiplier,
+                    _ => 0
+                }))
+            .ToList();
+
+        if (changes != null && changes.Count == 0)
+        {
+            var playersBalancesChangesEvent = new PlayersBalancesChangedDomainEvent(changes);
+
+            ArgumentNullException.ThrowIfNull(_mediator);
+            await _mediator.Publish(playersBalancesChangesEvent);
+        }
         return this;
     }
 
