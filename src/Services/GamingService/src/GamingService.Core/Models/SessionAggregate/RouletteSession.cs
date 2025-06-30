@@ -1,4 +1,5 @@
-﻿using GamingService.Core.Models.RouletteConfigurationAggregate;
+﻿using GamingService.Core.Events;
+using GamingService.Core.Models.RouletteConfigurationAggregate;
 using GamingService.Core.Primitives;
 using MediatR;
 using System.Security.Cryptography;
@@ -125,7 +126,7 @@ public class RouletteSession : Entity
         Status = SessionStatus.Closed;
 
         ArgumentNullException.ThrowIfNull(_mediator);
-        await _mediator.Publish(this.Id);
+        await _mediator.Publish(new PlayersBalancesChangedDomainEvent(this.Id));
         
         return this;
     }
