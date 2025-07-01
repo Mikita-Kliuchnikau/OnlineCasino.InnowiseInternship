@@ -7,7 +7,7 @@ namespace GamingService.Core.Models.RouletteConfigurationAggregate;
 public class RouletteConfiguration : Entity
 {
     private RouletteConfiguration(
-        Id id,
+        string id,
         RouletteGameType rouletteGameType,
         Currency currency,
         Amount minBet,
@@ -22,7 +22,7 @@ public class RouletteConfiguration : Entity
     }
 
     public static RouletteConfiguration Create(
-        Id id,
+        string id,
         RouletteGameType rouletteGameType,
         Currency currency,
         Amount minBet,

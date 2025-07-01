@@ -4,20 +4,19 @@ using GamingService.Core.Primitives;
 using MediatR;
 using System.Security.Cryptography;
 using System.Text;
-using static GamingService.Core.Constants.ErrorMessages;
 
 namespace GamingService.Core.Models.SessionAggregate;
 
 public class RouletteSession : Entity
 {
-    private const int SEED_BYTE_LENGTH = 32;
+    private const int SeedByteLength = 32;
 
     private readonly IMediator _mediator;
 
     private readonly List<RouletteBet> _bets = [];
 
     private RouletteSession(
-        Id id,
+        string id,
         string serverSeed,
         string serverSeedHash,
         string clientSeed,
@@ -49,7 +48,7 @@ public class RouletteSession : Entity
 
     public IReadOnlyList<RouletteBet>? Bets => _bets;
 
-    public static RouletteSession Create(Id id, string clientSeed, RouletteConfiguration configuration, IMediator mediator)
+    public static RouletteSession Create(string id, string clientSeed, RouletteConfiguration configuration, IMediator mediator)
     {
         var serverSeed = GenerateSeed();
         var serverSeedHash = GenerateSeedHash(serverSeed);
@@ -64,63 +63,8 @@ public class RouletteSession : Entity
 
     public async Task<RouletteSession> CloseSession(IEnumerable<RouletteBet> bets)
     {
-        foreach (var bet in bets)
-        {
-            ArgumentNullException.ThrowIfNull(bet);
+        bets.Validate(Configuration, SessionResult.Result);
 
-            if (bet.Errors?.Count != 0)
-            {
-                bet.ChangeStatus(BetStatus.Cancelled);
-                continue;
-            }
-            if (bet.Player.Balance.Currency != bet.BetAmount.Currency)
-            {
-                bet.ChangeStatus(BetStatus.Cancelled);
-                bet.AddErrors(BetCurrencyMismatch);
-                continue;
-            }
-            bet.Player.Balance.Amount.Value -= bet.BetAmount.Amount.Value;
-
-            if (bet.Player.Balance.Amount.Value < 0)
-            {
-                bet.ChangeStatus(BetStatus.Cancelled);
-                bet.AddErrors(PlayerBalanceInsufficient);
-                continue;
-            }
-            if (bet.BetAmount.Amount.Value > Configuration.MaxBet.Value)
-            {
-                bet.ChangeStatus(BetStatus.Cancelled);
-                bet.AddErrors(BetAmountExceedsMaxBet);
-                continue;
-            }
-            if (bet.BetAmount.Amount.Value < Configuration.MinBet.Value)
-            {
-                bet.ChangeStatus(BetStatus.Cancelled);
-                bet.AddErrors(BetAmountBelowMinBet);
-                continue;
-            }
-            if (bet.BetType == RouletteBetType.Basket && Configuration.RouletteGameType == RouletteGameType.European)
-            {
-                bet.ChangeStatus(BetStatus.Cancelled);
-                bet.AddErrors(BasketBetNotAllowed);
-                continue;
-            }
-
-            if (bet.BetValues.Keys!.Contains("00") && Configuration.RouletteGameType == RouletteGameType.European)
-            {
-                bet.ChangeStatus(BetStatus.Cancelled);
-                bet.AddErrors(BetValuesCannotContain00InEuropean);
-                continue;
-            }
-
-            if (bet.Status == BetStatus.Pending)
-            {
-                var betStatus = bet.BetValues.Keys!.Contains(SessionResult.ToString())
-                    ? BetStatus.Won
-                    : BetStatus.Lost;
-                bet.ChangeStatus(betStatus);
-            }
-        }
         _bets.AddRange(bets);
 
         Status = SessionStatus.Closed;
@@ -133,7 +77,7 @@ public class RouletteSession : Entity
 
     private static string GenerateSeed()
     {
-        var bytes = new byte[SEED_BYTE_LENGTH];
+        var bytes = new byte[SeedByteLength];
         RandomNumberGenerator.Fill(bytes);
         return Convert.ToHexString(bytes);
     }

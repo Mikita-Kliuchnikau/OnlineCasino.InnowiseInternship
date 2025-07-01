@@ -10,6 +10,7 @@ public static class ErrorMessages
     public const string PlayerBalanceInsufficient = "Player's balance is insufficient to place the bet";
     public const string BetAmountExceedsMaxBet = "Bet amount exceeds the maximum allowed bet";
     public const string BetAmountBelowMinBet = "Bet amount is below the minimum allowed bet";
-    public const string BasketBetNotAllowed = "Basket bet is not allowed in European roulette";
-    public const string BetValuesCannotContain00InEuropean = "Bet values cannot contain '00' in European roulette";
+    public const string BasketBetNotAllowedInEuropeanRoulette = "Basket bet is not allowed in European roulette";
+    public const string BetValuesCannotContain00InEuropeanRoulette = "Bet values cannot contain '00' in European roulette";
+    public const string BetStatusCannotBeChanged = "Bet status cannot be changed from {0} to {1}";
 }

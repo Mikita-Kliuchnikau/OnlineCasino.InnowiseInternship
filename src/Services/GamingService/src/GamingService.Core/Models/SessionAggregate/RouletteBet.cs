@@ -1,6 +1,6 @@
 ﻿using GamingService.Core.Common;
 using GamingService.Core.Models.RoulettePlayerAggregate;
-using System.ComponentModel;
+using static GamingService.Core.Constants.ErrorMessages;
 
 namespace GamingService.Core.Models.SessionAggregate;
 
@@ -17,6 +17,14 @@ public class RouletteBet
         BetType = betType;
         BetValues = betValues;
     }
+
+    private static readonly Dictionary<BetStatus, HashSet<BetStatus>> _statusTransitions = new()
+    {
+        { BetStatus.Pending, new() { BetStatus.Won, BetStatus.Lost, BetStatus.Cancelled } },
+        { BetStatus.Won, new() { BetStatus.Cancelled } },
+        { BetStatus.Lost, new() { BetStatus.Cancelled } },
+        { BetStatus.Cancelled, new() { } }
+    };
 
     public RoulettePlayer Player { get; private init; } 
     
@@ -63,18 +71,16 @@ public class RouletteBet
         BetValues.AddErrors(errors);
     }
 
-    public void ChangeStatus(BetStatus status)
+    public void ChangeStatus(BetStatus newStatus)
     {
-        Status = status switch
+        if (_statusTransitions.TryGetValue(Status, out var allowedStatuses)
+            && allowedStatuses.Contains(newStatus))
         {
-            BetStatus.Pending => Status,
-            BetStatus.Won => Status == BetStatus.Pending ? BetStatus.Won : Status,
-            BetStatus.Lost => Status == BetStatus.Pending ? BetStatus.Lost : Status,
-            BetStatus.Cancelled => BetStatus.Cancelled,
-            _ => throw new InvalidEnumArgumentException(
-                nameof(status),
-                (int)status,
-                typeof(BetStatus))
-        };
+            Status = newStatus;
+        }
+        else
+        {
+            throw new ArgumentException(string.Format(BetStatusCannotBeChanged, Status.ToString(), newStatus.ToString()));
+        }
     }
 }

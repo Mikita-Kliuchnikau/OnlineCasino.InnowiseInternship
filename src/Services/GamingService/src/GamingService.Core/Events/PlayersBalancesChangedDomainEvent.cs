@@ -4,4 +4,4 @@ using MediatR;
 
 namespace GamingService.Core.Events;
 
-public record PlayersBalancesChangedDomainEvent(Id SessionId) : INotification;
+public record PlayersBalancesChangedDomainEvent(string SessionId) : INotification;
