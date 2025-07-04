@@ -1,5 +1,4 @@
 ﻿using GamingService.Core.Common;
-using GamingService.Core.Models.RoulettePlayerAggregate;
 using static GamingService.Core.Constants.ErrorMessages;
 
 namespace GamingService.Core.Models.SessionAggregate;
@@ -7,12 +6,12 @@ namespace GamingService.Core.Models.SessionAggregate;
 public class RouletteBet
 {
     private RouletteBet(
-        RoulettePlayer player,
+        string playerId,
         Money betAmount,
         BetValues betValues,
         RouletteBetType betType)
     {
-        Player = player;
+        PlayerId = playerId;
         BetAmount = betAmount;
         BetType = betType;
         BetValues = betValues;
@@ -26,7 +25,7 @@ public class RouletteBet
         { BetStatus.Cancelled, new() { } }
     };
 
-    public RoulettePlayer Player { get; private init; } 
+    public string PlayerId { get; private init; } 
     
     public Money BetAmount { get; private init; }
 
@@ -39,36 +38,49 @@ public class RouletteBet
     public IReadOnlyList<string>? Errors => BetValues.Errors;
 
     public static RouletteBet Create(
-        RoulettePlayer player,
+        string playerId,
         Money betAmount,
         IEnumerable<string> keys,
         RouletteBetType betType)
     {
         var betValues = new BetValues(keys, betType);
-        return new RouletteBet(player, betAmount, betValues, betType);
+        var rouletteBet = new RouletteBet( playerId, betAmount, betValues, betType);
+
+        if (betAmount.Currency == Currency.InvalidCurrency)
+        {
+            rouletteBet.AddErrors(BetCurrencyUnsupported);
+        }
+        if (betAmount.Amount.Value <= 0)
+        {
+            rouletteBet.AddErrors(BetAmountMustBeGreaterThanZero);
+        }
+        return rouletteBet;
     }
 
-    public static IEnumerable<RouletteBet> Create(IEnumerable<(
-        RoulettePlayer player, 
-        Money betAmount, 
-        IEnumerable<string> values, 
-        RouletteBetType betType)> bets)
+    public static IEnumerable<RouletteBet> Create(
+        IEnumerable<(
+            string playerId,
+            Money betAmount,
+            IEnumerable<string> values,
+            RouletteBetType betType
+        )> bets)
     {
-        foreach (var (player, betAmount, values, betType) in bets)
+        foreach (var (playerId, betAmount, values, betType) in bets)
         {
-            var betValues = new BetValues(values, betType);
-            yield return new RouletteBet(player, betAmount, betValues, betType);
+            yield return Create(playerId, betAmount, values, betType);
         }
     }
 
     public void AddErrors(string? error)
     {
         BetValues.AddErrors(error);
+        ChangeStatus(BetStatus.Cancelled);
     }
 
     public void AddErrors(IEnumerable<string>? errors)
     {
         BetValues.AddErrors(errors);
+        ChangeStatus(BetStatus.Cancelled);
     }
 
     public void ChangeStatus(BetStatus newStatus)
@@ -80,7 +92,7 @@ public class RouletteBet
         }
         else
         {
-            throw new ArgumentException(string.Format(BetStatusCannotBeChanged, Status.ToString(), newStatus.ToString()));
+            Status = BetStatus.Cancelled;
         }
     }
 }

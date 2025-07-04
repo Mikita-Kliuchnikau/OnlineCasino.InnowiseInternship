@@ -5,6 +5,7 @@ namespace GamingService.Core.Models.SessionAggregate;
 public abstract class RouletteBetType(int value, BetType type)
     : Enumeration<RouletteBetType>(value, type.ToString())
 {
+    public static readonly RouletteBetType Default = new DefaultBet();
     public static readonly RouletteBetType StraightUp = new StraightUpBet();
     public static readonly RouletteBetType Split = new SplitBet();
     public static readonly RouletteBetType Street = new StreetBet();
@@ -23,6 +24,15 @@ public abstract class RouletteBetType(int value, BetType type)
     public abstract int WinningsMultiplier { get; }
 
     public abstract int NumberOfValues { get; }
+
+    public sealed class DefaultBet : RouletteBetType
+    {
+        public DefaultBet() : base(0, BetType.Default)
+        {
+        }
+        public override int WinningsMultiplier => 0;
+        public override int NumberOfValues => 0;
+    }
 
     public sealed class StraightUpBet : RouletteBetType
     {

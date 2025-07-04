@@ -1,7 +1,7 @@
-﻿using GamingService.Core.Events;
+﻿using GamingService.Core.Abstractions;
+using GamingService.Core.Events;
 using GamingService.Core.Models.RouletteConfigurationAggregate;
 using GamingService.Core.Primitives;
-using MediatR;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -11,25 +11,25 @@ public class RouletteSession : Entity
 {
     private const int SeedByteLength = 32;
 
-    private readonly IMediator _mediator;
+    private readonly IDomainEventPublisher _domainEventPublisher;
 
     private readonly List<RouletteBet> _bets = [];
 
     private RouletteSession(
-        string id,
         string serverSeed,
         string serverSeedHash,
         string clientSeed,
         RouletteSpinResult sessionResult,
         RouletteConfiguration configuration,
-        IMediator mediator) : base(id)
+        IDomainEventPublisher domainEventPublisher,
+        string id) : base(id)
     {
         ServerSeed = serverSeed;
         ServerSeedHash = serverSeedHash;
         ClientSeed = clientSeed;
         SessionResult = sessionResult;
         Configuration = configuration;
-        _mediator = mediator;
+        _domainEventPublisher = domainEventPublisher;
     }
 
     public DateTime StartedAt { get; private init; } = DateTime.UtcNow;
@@ -48,7 +48,7 @@ public class RouletteSession : Entity
 
     public IReadOnlyList<RouletteBet>? Bets => _bets;
 
-    public static RouletteSession Create(string id, string clientSeed, RouletteConfiguration configuration, IMediator mediator)
+    public static RouletteSession Create(string clientSeed, RouletteConfiguration configuration, IDomainEventPublisher domainEventPublisher, string id = null!)
     {
         var serverSeed = GenerateSeed();
         var serverSeedHash = GenerateSeedHash(serverSeed);
@@ -58,20 +58,18 @@ public class RouletteSession : Entity
         }
         var source = $"{serverSeed}:{clientSeed}";
         var sessionResult = new RouletteSpinResult(source, configuration);
-        return new RouletteSession(id, serverSeed, serverSeedHash, clientSeed, sessionResult, configuration, mediator);
+        return new RouletteSession(serverSeed, serverSeedHash, clientSeed, sessionResult, configuration, domainEventPublisher, id);
     }
 
-    public async Task<RouletteSession> CloseSession(IEnumerable<RouletteBet> bets)
+    public async Task<RouletteSession> CloseSession(IEnumerable<RouletteBet> bets, IPlayersRepository playersRepository)
     {
-        bets.Validate(Configuration, SessionResult.Result);
+        await bets.Validate(Configuration, SessionResult.Result, playersRepository);
 
         _bets.AddRange(bets);
 
         Status = SessionStatus.Closed;
 
-        ArgumentNullException.ThrowIfNull(_mediator);
-        await _mediator.Publish(new PlayersBalancesChangedDomainEvent(this.Id));
-        
+        await _domainEventPublisher.Publish(new PlayersBalancesChangedDomainEvent(Id));
         return this;
     }
 

@@ -1,6 +1,4 @@
-﻿using GamingService.Core.Contracts;
-using GamingService.Core.Primitives;
-using MediatR;
+﻿using MediatR;
 
 namespace GamingService.Core.Events;
 

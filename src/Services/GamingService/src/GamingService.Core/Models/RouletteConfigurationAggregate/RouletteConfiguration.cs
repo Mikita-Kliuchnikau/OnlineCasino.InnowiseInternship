@@ -7,12 +7,12 @@ namespace GamingService.Core.Models.RouletteConfigurationAggregate;
 public class RouletteConfiguration : Entity
 {
     private RouletteConfiguration(
-        string id,
         RouletteGameType rouletteGameType,
         Currency currency,
         Amount minBet,
         Amount maxBet,
-        HashAlgorithm? engine) : base(id)
+        HashAlgorithm? engine,
+        string id) : base(id)
     {
         RouletteGameType = rouletteGameType;
         Currency = currency;
@@ -22,16 +22,16 @@ public class RouletteConfiguration : Entity
     }
 
     public static RouletteConfiguration Create(
-        string id,
         RouletteGameType rouletteGameType,
         Currency currency,
         Amount minBet,
         Amount maxBet,
-        HashAlgorithm? engine)
+        HashAlgorithm? engine,
+        string id = null!)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(maxBet.Value, minBet.Value);
 
-        return new RouletteConfiguration(id, rouletteGameType, currency, minBet, maxBet, engine);
+        return new RouletteConfiguration(rouletteGameType, currency, minBet, maxBet, engine, id);
     }
 
     public RouletteGameType RouletteGameType { get; }
