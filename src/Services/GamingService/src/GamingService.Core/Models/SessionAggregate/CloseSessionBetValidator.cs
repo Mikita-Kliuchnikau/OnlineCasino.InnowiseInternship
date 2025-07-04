@@ -40,12 +40,12 @@ public static class CloseSessionBetValidator
                 continue;
             }
 
-            var IsPlayerBalanceInsufficient = !await playersRepository.IsDeductedFormPlayersBalanceAsync(
+            var isPlayerBalanceInsufficient = !await playersRepository.IsDeductedFormPlayersBalanceAsync(
                     bet.PlayerId,
                     bet.BetAmount.Amount.Value,
                     cancellationToken);
 
-            if (bet.Errors?.Count > 0 && IsPlayerBalanceInsufficient)
+            if (bet.Errors?.Count > 0 && isPlayerBalanceInsufficient)
             {
                 bet.AddErrors(PlayerBalanceInsufficient);
             }
