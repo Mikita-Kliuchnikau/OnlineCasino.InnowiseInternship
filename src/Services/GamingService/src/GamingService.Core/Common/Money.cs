@@ -4,7 +4,7 @@ public record Money(Currency Currency, Amount Amount);
 
 public sealed class Amount(decimal value)
 {
-    public decimal Value { get; set; } = value < 0 ? 0 : value;
+    public decimal Value { get; set; } = Math.Max(0, value);
 }
 
 public enum Currency

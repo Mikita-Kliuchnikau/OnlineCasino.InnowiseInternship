@@ -1,6 +1,5 @@
 ﻿using GamingService.Core.Abstractions;
 using GamingService.Core.Models.RouletteConfigurationAggregate;
-using System.Threading;
 using static GamingService.Core.Constants.ErrorMessages;
 
 namespace GamingService.Core.Models.SessionAggregate;
@@ -41,10 +40,12 @@ public static class CloseSessionBetValidator
                 continue;
             }
 
-            if (bet.Errors?.Count > 0 && !await playersRepository.IsDeductedFormPlayersBalanceAsync(
+            var IsPlayerBalanceInsufficient = !await playersRepository.IsDeductedFormPlayersBalanceAsync(
                     bet.PlayerId,
                     bet.BetAmount.Amount.Value,
-                    cancellationToken))
+                    cancellationToken);
+
+            if (bet.Errors?.Count > 0 && IsPlayerBalanceInsufficient)
             {
                 bet.AddErrors(PlayerBalanceInsufficient);
             }
