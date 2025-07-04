@@ -13,19 +13,19 @@ public record BetValues
         {
             _errors.Add(BetValuesCannotBeNullOrEmpty);
         }
-        if (betType is null)
+        else
         {
-            _errors.Add(BetTypeCannotBeNull); 
-        }
-        if (_errors.Count == 0)
-        {
-            if (betValues!.AreBetValuesOutOfRange())
+            if (betType == RouletteBetType.Default)
+            {
+                _errors.Add(BetTypeNotFound);
+            }
+            if (betValues.AreBetValuesOutOfRange())
             {
                 _errors.Add(BetValuesValidRange);
             }
-            if (betValues!.IsBetCountMismatch(betType!))
+            if (betValues.IsBetCountMismatch(betType))
             {
-                _errors.Add(string.Format(BetValuesDoesNotMatchTheType, betType!.Name, betType.NumberOfValues));
+                _errors.Add(string.Format(BetValuesDoesNotMatchTheType, betType.Name, betType.NumberOfValues));
             }
             _keys.AddRange(betValues!);
         }

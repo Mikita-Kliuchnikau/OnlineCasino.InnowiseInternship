@@ -2,6 +2,7 @@
 
 public enum BetType
 {
+    Default = 0,
     StraightUp,
     Split,
     Street,
