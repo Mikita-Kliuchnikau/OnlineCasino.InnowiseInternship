@@ -1,0 +1,26 @@
+﻿using GamingService.Core.Abstractions;
+using GamingService.Core.Events;
+using GamingService.Core.Models.SessionAggregate;
+using MediatR;
+
+namespace GamingService.Application.Events;
+
+public class PlayersBalancesChangedDomainEventHandler(
+    IPlayersBalancesChangedIntegrationEventPublisher publisher,
+    ISessionsRepository sessionsRepository)
+    : INotificationHandler<PlayersBalancesChangedDomainEvent>
+{
+    public async Task Handle(PlayersBalancesChangedDomainEvent notification, CancellationToken cancellationToken)
+    {
+        var session = await sessionsRepository.GetByIdAsync(notification.SessionId, cancellationToken);
+        var winningBets = session.Bets?
+            .Where(bet => bet.Status == BetStatus.Won)
+            .Select(bet => (bet.PlayerId, bet.BetAmount.Amount.Value * bet.BetType.WinningsMultiplier))
+            .ToList();
+        if (winningBets != null && winningBets.Count != 0)
+        {
+            var integrationEvent = new PlayersBalancesChangedIntegrationEvent(winningBets);
+            await publisher.PublishAsync(integrationEvent, cancellationToken);
+        }
+    }
+}
