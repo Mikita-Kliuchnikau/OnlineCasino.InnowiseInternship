@@ -1,4 +1,5 @@
-﻿using GamingService.Core.Events;
+﻿using GamingService.Core.Abstractions;
+using GamingService.Core.Events;
 using GamingService.Core.Models.RouletteConfigurationAggregate;
 using GamingService.Core.Primitives;
 using MediatR;
@@ -16,13 +17,13 @@ public class RouletteSession : Entity
     private readonly List<RouletteBet> _bets = [];
 
     private RouletteSession(
-        string id,
         string serverSeed,
         string serverSeedHash,
         string clientSeed,
         RouletteSpinResult sessionResult,
         RouletteConfiguration configuration,
-        IMediator mediator) : base(id)
+        IMediator mediator,
+        string id) : base(id)
     {
         ServerSeed = serverSeed;
         ServerSeedHash = serverSeedHash;
@@ -48,7 +49,7 @@ public class RouletteSession : Entity
 
     public IReadOnlyList<RouletteBet>? Bets => _bets;
 
-    public static RouletteSession Create(string id, string clientSeed, RouletteConfiguration configuration, IMediator mediator)
+    public static RouletteSession Create(string clientSeed, RouletteConfiguration configuration, IMediator mediator, string id = null!)
     {
         var serverSeed = GenerateSeed();
         var serverSeedHash = GenerateSeedHash(serverSeed);
@@ -58,20 +59,18 @@ public class RouletteSession : Entity
         }
         var source = $"{serverSeed}:{clientSeed}";
         var sessionResult = new RouletteSpinResult(source, configuration);
-        return new RouletteSession(id, serverSeed, serverSeedHash, clientSeed, sessionResult, configuration, mediator);
+        return new RouletteSession(serverSeed, serverSeedHash, clientSeed, sessionResult, configuration, mediator, id);
     }
 
-    public async Task<RouletteSession> CloseSession(IEnumerable<RouletteBet> bets)
+    public async Task<RouletteSession> CloseSession(IEnumerable<RouletteBet> bets, IPlayersRepository playersRepository)
     {
-        bets.Validate(Configuration, SessionResult.Result);
+        await bets.Validate(Configuration, SessionResult.Result, playersRepository);
 
         _bets.AddRange(bets);
 
         Status = SessionStatus.Closed;
 
-        ArgumentNullException.ThrowIfNull(_mediator);
-        await _mediator.Publish(new PlayersBalancesChangedDomainEvent(this.Id));
-        
+        await _mediator.Publish(new PlayersBalancesChangedDomainEvent(Id));
         return this;
     }
 
