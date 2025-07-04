@@ -9,4 +9,4 @@ public record CreateRouletteConfigurationCommand(
     string Currency,
     decimal MinBet,
     decimal MaxBet,
-    HashAlgorithm? Engine = null) : IRequest<RouletteConfigurationVm>;
+    HashAlgorithm? Engine = null) : IRequest<RouletteConfigurationViewModel>;

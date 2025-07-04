@@ -4,7 +4,7 @@ using GamingService.Core.Models.RouletteConfigurationAggregate;
 
 namespace GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
 
-public record RouletteConfigurationVm(
+public record RouletteConfigurationViewModel(
     string Id,
     string RouletteType,
     string Currency,
@@ -14,18 +14,18 @@ public record RouletteConfigurationVm(
 {
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<RouletteConfiguration, RouletteConfigurationVm>()
-            .ForMember(configVm => configVm.Id,
+        profile.CreateMap<RouletteConfiguration, RouletteConfigurationViewModel>()
+            .ForMember(configViewModel => configViewModel.Id,
                 opt => opt.MapFrom(config => config.Id))
-            .ForMember(configVm => configVm.RouletteType,
+            .ForMember(configViewModel => configViewModel.RouletteType,
                 opt => opt.MapFrom(config => config.RouletteGameType.Name))
-            .ForMember(configVm => configVm.Currency,
+            .ForMember(configViewModel => configViewModel.Currency,
                 opt => opt.MapFrom(config => config.Currency.ToString()))
-            .ForMember(configVm => configVm.MinBet,
+            .ForMember(configViewModel => configViewModel.MinBet,
                 opt => opt.MapFrom(config => config.MinBet.Value))
-            .ForMember(configVm => configVm.MaxBet,
+            .ForMember(configViewModel => configViewModel.MaxBet,
                 opt => opt.MapFrom(config => config.MaxBet.Value))
-            .ForMember(configVm => configVm.Engine,
+            .ForMember(configViewModel => configViewModel.Engine,
                 opt => opt.MapFrom(config => config.Engine.GetType().Name));
     }
 }

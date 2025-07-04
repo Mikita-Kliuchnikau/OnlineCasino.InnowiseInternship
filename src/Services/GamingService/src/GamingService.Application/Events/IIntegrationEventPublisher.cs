@@ -1,6 +1,6 @@
 ﻿namespace GamingService.Application.Events;
 
-public interface IPlayersBalancesChangedIntegrationEventPublisher
+public interface IIntegrationEventPublisher
 {
     Task PublishAsync<TIntegrationEvent>(TIntegrationEvent @event, CancellationToken cancellationToken);
 }

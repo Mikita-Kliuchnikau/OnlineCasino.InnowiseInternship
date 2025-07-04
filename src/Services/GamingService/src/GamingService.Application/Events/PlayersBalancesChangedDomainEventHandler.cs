@@ -1,4 +1,4 @@
-﻿using GamingService.Core.Abstractions;
+﻿ using GamingService.Core.Abstractions;
 using GamingService.Core.Events;
 using GamingService.Core.Models.SessionAggregate;
 using MediatR;
@@ -6,20 +6,20 @@ using MediatR;
 namespace GamingService.Application.Events;
 
 public class PlayersBalancesChangedDomainEventHandler(
-    IPlayersBalancesChangedIntegrationEventPublisher publisher,
+    IIntegrationEventPublisher publisher,
     ISessionsRepository sessionsRepository)
     : INotificationHandler<PlayersBalancesChangedDomainEvent>
 {
     public async Task Handle(PlayersBalancesChangedDomainEvent notification, CancellationToken cancellationToken)
     {
         var session = await sessionsRepository.GetByIdAsync(notification.SessionId, cancellationToken);
-        var winningBets = session.Bets?
-            .Where(bet => bet.Status == BetStatus.Won)
-            .Select(bet => (bet.PlayerId, bet.BetAmount.Amount.Value * bet.BetType.WinningsMultiplier))
-            .ToList();
+        var winningBets = session.Bets?.Where(bet => bet.Status == BetStatus.Won).ToList();
         if (winningBets != null && winningBets.Count != 0)
         {
-            var integrationEvent = new PlayersBalancesChangedIntegrationEvent(winningBets);
+            var integrationEventPayload = winningBets
+                .Select(bet => new PlayersBalancesChangedEventPayload(bet.PlayerId, bet.BetWinnings.Value))
+                .ToList();
+            var integrationEvent = new PlayersBalancesChangedIntegrationEvent(integrationEventPayload);
             await publisher.PublishAsync(integrationEvent, cancellationToken);
         }
     }

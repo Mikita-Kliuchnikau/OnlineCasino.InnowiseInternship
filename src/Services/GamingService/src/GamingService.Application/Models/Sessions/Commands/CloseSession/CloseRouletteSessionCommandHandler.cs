@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using GamingService.Application.Models.Sessions.Queries.GetSessionDetails;
 using GamingService.Core.Abstractions;
-using GamingService.Core.Common;
 using GamingService.Core.Models.SessionAggregate;
 using MediatR;
 using static GamingService.Core.Constants.ErrorMessages;
@@ -12,34 +11,22 @@ public class CloseRouletteSessionCommandHandler(
     ISessionsRepository sessionsRepository,
     IPlayersRepository playersRepository,
     IMapper mapper)
-    : IRequestHandler<CloseRouletteSessionCommand, RouletteSessionVm>
+    : IRequestHandler<CloseRouletteSessionCommand, RouletteSessionViewModel>
 {
-    public async Task<RouletteSessionVm> Handle(CloseRouletteSessionCommand request, CancellationToken cancellationToken)
+    public async Task<RouletteSessionViewModel> Handle(CloseRouletteSessionCommand request, CancellationToken cancellationToken)
     {
         var session = await sessionsRepository.GetByIdAsync(request.SessionId, cancellationToken)
             ?? throw new ArgumentException(string.Format(SessionNotFound, request.SessionId));
 
-        var betValues = request.Bets.Select(bet =>
-        {
-            var rouletteBetType = Enum.TryParse(bet.betType, out BetType betType)
-                ? RouletteBetType.FromName(betType.ToString()) ?? RouletteBetType.Default
-                : RouletteBetType.Default;
+        var rouletteBets = mapper.Map<IEnumerable<RouletteBet>>(request.Bets)
+            .ToList();
 
-            return (
-                bet.playerId,
-                new Money(
-                    Enum.TryParse(bet.Currency, out Currency currency) ? currency : Currency.InvalidCurrency,
-                    new Amount(bet.betAmount)),
-                bet.betValues,
-                rouletteBetType
-            );
-        });
-
-        var rouletteBets = RouletteBet.Create(betValues);
-
-        foreach (var playerId in rouletteBets
+        var playersId = rouletteBets
             .Select(bet => bet.PlayerId)
-            .Distinct())
+            .Distinct()
+            .ToList();
+
+        foreach (var playerId in playersId)
         {
             if (!await playersRepository.IsExistAsync(playerId, cancellationToken))
             {
@@ -50,10 +37,10 @@ public class CloseRouletteSessionCommandHandler(
             }
         }
 
-        session = await session.CloseSession(rouletteBets.Select(bet => bet), playersRepository);
+        session = await session.CloseSession(rouletteBets, playersRepository);
 
         await sessionsRepository.UpdateAsync(session, cancellationToken);
 
-        return mapper.Map<RouletteSessionVm>(session);
+        return mapper.Map<RouletteSessionViewModel>(session);
     }
 }

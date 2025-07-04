@@ -3,7 +3,7 @@ using GamingService.Core.Models.SessionAggregate;
 
 namespace GamingService.Application.Models.Sessions.Queries.GetSessionDetails;
 
-public record RouletteBetVm(
+public record RouletteBetViewModel(
         string PlayerId,
         decimal BetAmount,
         string Currency,
@@ -12,16 +12,16 @@ public record RouletteBetVm(
 {
     public void Mapping(AutoMapper.Profile profile)
     {
-        profile.CreateMap<RouletteBet, RouletteBetVm>()
-            .ForMember(betVm => betVm.PlayerId,
+        profile.CreateMap<RouletteBet, RouletteBetViewModel>()
+            .ForMember(betViewModel => betViewModel.PlayerId,
                 opt => opt.MapFrom(bet => bet.PlayerId))
-            .ForMember(betVm => betVm.BetAmount,
+            .ForMember(betViewModel => betViewModel.BetAmount,
                 opt => opt.MapFrom(bet => bet.BetAmount.Amount.Value))
-            .ForMember(betVm => betVm.Currency,
+            .ForMember(betViewModel => betViewModel.Currency,
                 opt => opt.MapFrom(bet => bet.BetAmount.Currency.ToString()))
-            .ForMember(betVm => betVm.Errors,
+            .ForMember(betViewModel => betViewModel.Errors,
                 opt => opt.MapFrom(bet => bet.Errors))
-            .ForMember(betVm => betVm.RouletteBetType,
+            .ForMember(betViewModel => betViewModel.RouletteBetType,
                 opt => opt.MapFrom(bet => bet.BetType.Name));
     }
 }

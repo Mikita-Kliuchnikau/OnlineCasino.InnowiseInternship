@@ -8,14 +8,15 @@ using static GamingService.Core.Constants.ErrorMessages;
 namespace GamingService.Application.Models.Sessions.Commands.CreateSession;
 
 public class CreateRouletteSessionCommandHandler(IRouletteConfiguratonsRepository rouletteConfiguration, ISessionsRepository sessionRepository, IDomainEventPublisher domainEventPublisher, IMapper mapper) 
-    : IRequestHandler<CreateRouletteSessionCommand, RouletteSessionVm>
+    : IRequestHandler<CreateRouletteSessionCommand, RouletteSessionViewModel>
 {
-    public async Task<RouletteSessionVm> Handle(CreateRouletteSessionCommand request, CancellationToken cancellationToken)
+    public async Task<RouletteSessionViewModel> Handle(CreateRouletteSessionCommand request, CancellationToken cancellationToken)
     {
         var configuration = await rouletteConfiguration.GetByIdAsync(request.ConfigurationId, cancellationToken)
             ?? throw new ArgumentException(string.Format(ConfigurationNotFound, request.ConfigurationId));
 
         var session = RouletteSession.Create(request.ClientSeed, configuration, domainEventPublisher);
-        return mapper.Map<RouletteSessionVm>(await sessionRepository.CreateAsync(session, cancellationToken));
+        session = await sessionRepository.CreateAsync(session, cancellationToken);
+        return mapper.Map<RouletteSessionViewModel>(session);
     }
 }
