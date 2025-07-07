@@ -29,6 +29,8 @@ public class RouletteBet
     
     public Money BetAmount { get; private init; }
 
+    public Amount BetWinnings { get; private set; } = new(0);
+
     public RouletteBetType BetType { get; private init; }
 
     public BetValues BetValues { get; private init; }
@@ -89,6 +91,11 @@ public class RouletteBet
             && allowedStatuses.Contains(newStatus))
         {
             Status = newStatus;
+
+            if (Status == BetStatus.Won)
+            {
+                BetWinnings = new Amount(BetAmount.Amount.Value * BetType.WinningsMultiplier);
+            }
         }
         else
         {
