@@ -31,9 +31,7 @@ public class RouletteConfiguration : Entity
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(maxBet.Value, minBet.Value);
 
-#pragma warning disable SYSLIB0045
         var hashAlgorithm = HashAlgorithm.Create(hashAlgorithmName) ?? SHA256.Create();
-#pragma warning restore SYSLIB004
 
         return new RouletteConfiguration(rouletteGameType, currency, minBet, maxBet, hashAlgorithm, id);
     }

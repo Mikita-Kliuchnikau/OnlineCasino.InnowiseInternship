@@ -3,7 +3,6 @@ using GamingService.Core.Primitives;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
-[assembly: InternalsVisibleTo("GamingService.DataAccess")]
 
 namespace GamingService.Core.Models.SessionAggregate;
 
@@ -28,7 +27,7 @@ public class RouletteSession : Entity
         ConfigurationId = configurationId;
     }
 
-    internal RouletteSession(
+    public RouletteSession(
         Guid id,
         DateTime startedAt,
         SessionStatus status,
