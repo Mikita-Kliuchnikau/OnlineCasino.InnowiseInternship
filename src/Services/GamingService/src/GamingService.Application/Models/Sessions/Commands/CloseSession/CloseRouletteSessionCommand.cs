@@ -26,9 +26,5 @@ public record CloseRouletteSessionCommand(
                 rouletteBetType
             );
         });
-
-        profile.CreateMap<CloseRouletteSessionCommand, IEnumerable<RouletteBet>>().ConvertUsing(
-            command => RouletteBet.Create(betValues)
-        );
     }
 }

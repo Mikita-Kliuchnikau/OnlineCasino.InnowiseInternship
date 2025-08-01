@@ -8,8 +8,9 @@ public class DeleteRouletteConfigurationCommandHandler(IRouletteConfiguratonsRep
 {
     public async Task<string> Handle(DeleteRouletteConfigurationCommand request, CancellationToken cancellationToken)
     {
-        return await repository.DeleteAsync(
-            request.Id,
+        var result = await repository.DeleteAsync(
+            Guid.Parse(request.Id),
             cancellationToken);
+        return result.ToString();
     }
 }

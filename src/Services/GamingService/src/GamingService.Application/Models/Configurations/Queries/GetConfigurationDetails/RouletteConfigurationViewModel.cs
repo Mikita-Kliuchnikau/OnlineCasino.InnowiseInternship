@@ -24,8 +24,6 @@ public record RouletteConfigurationViewModel(
             .ForMember(configViewModel => configViewModel.MinBet,
                 opt => opt.MapFrom(config => config.MinBet.Value))
             .ForMember(configViewModel => configViewModel.MaxBet,
-                opt => opt.MapFrom(config => config.MaxBet.Value))
-            .ForMember(configViewModel => configViewModel.Engine,
-                opt => opt.MapFrom(config => config.Engine.GetType().Name));
+                opt => opt.MapFrom(config => config.MaxBet.Value));
     }
 }

@@ -6,7 +6,7 @@ namespace GamingService.Core.Models.SessionAggregate;
 public class RouletteBet
 {
     private RouletteBet(
-        string playerId,
+        Guid playerId,
         Money betAmount,
         BetValues betValues,
         RouletteBetType betType)
@@ -25,7 +25,7 @@ public class RouletteBet
         { BetStatus.Cancelled, new() { } }
     };
 
-    public string PlayerId { get; private init; } 
+    public Guid PlayerId { get; private init; } 
     
     public Money BetAmount { get; private init; }
 
@@ -40,7 +40,7 @@ public class RouletteBet
     public IReadOnlyList<string>? Errors => BetValues.Errors;
 
     public static RouletteBet Create(
-        string playerId,
+        Guid playerId,
         Money betAmount,
         IEnumerable<string> keys,
         RouletteBetType betType)
@@ -61,7 +61,7 @@ public class RouletteBet
 
     public static IEnumerable<RouletteBet> Create(
         IEnumerable<(
-            string playerId,
+            Guid playerId,
             Money betAmount,
             IEnumerable<string> values,
             RouletteBetType betType

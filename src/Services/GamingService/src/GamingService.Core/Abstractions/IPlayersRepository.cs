@@ -1,11 +1,13 @@
-﻿namespace GamingService.Core.Abstractions;
+﻿using GamingService.Core.Contracts;
+
+namespace GamingService.Core.Abstractions;
 
 public interface IPlayersRepository
 {
-    Task<bool> IsExistAsync(string id, CancellationToken cancellationToken = default);
+    Task<PlayersRepositoryResponse> ExistsAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task<bool> IsDeductedFormPlayersBalanceAsync(
-        string userId,
+    Task<PlayersRepositoryResponse> DeductedFormPlayersBalanceAsync(
+        Guid userId,
         decimal betAmount,
         CancellationToken cancellationToken = default);
 }

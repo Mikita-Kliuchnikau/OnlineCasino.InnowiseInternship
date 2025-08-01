@@ -10,12 +10,13 @@ namespace GamingService.Application.Models.Sessions.Commands.CloseSession;
 public class CloseRouletteSessionCommandHandler(
     ISessionsRepository sessionsRepository,
     IPlayersRepository playersRepository,
+    IRouletteConfiguratonsRepository configuratonsRepository,
     IMapper mapper)
     : IRequestHandler<CloseRouletteSessionCommand, RouletteSessionViewModel>
 {
     public async Task<RouletteSessionViewModel> Handle(CloseRouletteSessionCommand request, CancellationToken cancellationToken)
     {
-        var session = await sessionsRepository.GetByIdAsync(request.SessionId, cancellationToken)
+        var session = await sessionsRepository.GetByIdAsync(Guid.Parse(request.SessionId), cancellationToken)
             ?? throw new ArgumentException(string.Format(SessionNotFound, request.SessionId));
 
         var rouletteBets = mapper.Map<IEnumerable<RouletteBet>>(request.Bets)
@@ -28,7 +29,8 @@ public class CloseRouletteSessionCommandHandler(
 
         foreach (var playerId in playersId)
         {
-            if (!await playersRepository.IsExistAsync(playerId, cancellationToken))
+            var isExists = await playersRepository.ExistsAsync(playerId, cancellationToken);
+            if (!isExists.Value)
             {
                 foreach (var bet in rouletteBets.Where(b => b.PlayerId == playerId))
                 {
@@ -37,9 +39,9 @@ public class CloseRouletteSessionCommandHandler(
             }
         }
 
-        session = await session.CloseSession(rouletteBets, playersRepository);
+        session = await session.CloseSession(rouletteBets, playersRepository, configuratonsRepository);
 
-        await sessionsRepository.UpdateAsync(session, cancellationToken);
+        await sessionsRepository.CloseAsync(session, cancellationToken);
 
         return mapper.Map<RouletteSessionViewModel>(session);
     }

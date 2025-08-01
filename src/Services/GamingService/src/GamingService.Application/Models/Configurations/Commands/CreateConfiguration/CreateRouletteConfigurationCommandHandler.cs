@@ -18,7 +18,7 @@ public class CreateRouletteConfigurationCommandHandler(IRouletteConfiguratonsRep
             Enum.Parse<Currency>(request.Currency),
             new Amount(request.MinBet),
             new Amount(request.MaxBet),
-            request.Engine);
+            request.Engine!.ToString()!);
 
         configuration = await repository.CreateAsync(configuration, cancellationToken);
         return mapper.Map<RouletteConfigurationViewModel>(configuration);

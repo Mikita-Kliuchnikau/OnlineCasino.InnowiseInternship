@@ -9,7 +9,7 @@ public class GetRouletteSessionDetailsQueryHandler(ISessionsRepository repositor
 {
     public async Task<RouletteSessionViewModel> Handle(GetRouletteSessionDetailsQuery request, CancellationToken cancellationToken)
     {
-        var session = await repository.GetByIdAsync(request.SessionId, cancellationToken)
+        var session = await repository.GetByIdAsync(Guid.Parse(request.SessionId), cancellationToken)
             ?? throw new ArgumentException($"Session with id {request.SessionId} not found", nameof(request));
         return mapper.Map<RouletteSessionViewModel>(session);
     }

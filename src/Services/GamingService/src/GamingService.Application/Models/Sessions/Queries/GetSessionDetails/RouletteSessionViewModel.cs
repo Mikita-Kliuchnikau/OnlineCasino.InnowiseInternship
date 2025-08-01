@@ -18,21 +18,19 @@ public record RouletteSessionViewModel(
     public void Mapping(Profile profile)
     {
         profile.CreateMap<RouletteSession, RouletteSessionViewModel>()
-            .ForMember(sessionViewModel => sessionViewModel.Id, 
+            .ForMember(sessionViewModel => sessionViewModel.Id,
                 opt => opt.MapFrom(session => session.Id))
-            .ForMember(sessionViewModel => sessionViewModel.StartedAt, 
+            .ForMember(sessionViewModel => sessionViewModel.StartedAt,
                 opt => opt.MapFrom(session => session.StartedAt))
-            .ForMember(sessionViewModel => sessionViewModel.ServerSeed, 
+            .ForMember(sessionViewModel => sessionViewModel.ServerSeed,
                 opt => opt.MapFrom(session => session.ServerSeed))
-            .ForMember(sessionViewModel => sessionViewModel.ServerSeedHash, 
+            .ForMember(sessionViewModel => sessionViewModel.ServerSeedHash,
                 opt => opt.MapFrom(session => session.ServerSeedHash))
-            .ForMember(sessionViewModel => sessionViewModel.ClientSeed, 
+            .ForMember(sessionViewModel => sessionViewModel.ClientSeed,
                 opt => opt.MapFrom(session => session.ClientSeed))
-            .ForMember(sessionViewModel => sessionViewModel.SessionResult, 
+            .ForMember(sessionViewModel => sessionViewModel.SessionResult,
                 opt => opt.MapFrom(session => session.SessionResult.Result))
             .ForMember(sessionViewModel => sessionViewModel.Bets,
-                opt => opt.MapFrom(session => session.Bets))
-            .ForMember(sessionViewModel => sessionViewModel.Configuration, 
-                opt => opt.MapFrom(session => session.Configuration));
+                opt => opt.MapFrom(session => session.Bets));
     }
 }
