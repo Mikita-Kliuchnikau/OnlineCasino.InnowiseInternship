@@ -1,7 +1,7 @@
 ﻿using GamingService.Core.Common;
 using GamingService.Core.Models.SessionAggregate;
 using AutoMapper;
-using GamingService.Mapping.Interfaces;
+using GamingService.Application.Common.Mapping;
 
 namespace GamingService.Application.Models.Sessions.Commands.CloseSession;
 

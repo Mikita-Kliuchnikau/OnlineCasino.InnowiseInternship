@@ -1,4 +1,4 @@
-﻿using GamingService.Mapping;
+﻿using GamingService.Application.Common.Mapping;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 

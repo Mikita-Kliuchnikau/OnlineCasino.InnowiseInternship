@@ -1,5 +1,5 @@
-﻿using GamingService.Core.Contracts;
-using GamingService.Mapping.Interfaces;
+﻿using GamingService.Application.Common.Mapping;
+using GamingService.Core.Contracts;
 using MediatR;
 
 namespace GamingService.Application.Models.Sessions.Queries.GetSessionList;

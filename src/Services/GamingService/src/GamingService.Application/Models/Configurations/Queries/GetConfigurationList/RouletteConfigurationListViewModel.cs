@@ -1,6 +1,6 @@
-﻿using GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
+﻿using GamingService.Application.Common.Mapping;
+using GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
 using GamingService.Core.Contracts;
-using GamingService.Mapping.Interfaces;
 
 namespace GamingService.Application.Models.Configurations.Queries.GetConfigurationList;
 

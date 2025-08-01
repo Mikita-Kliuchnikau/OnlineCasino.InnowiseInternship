@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using GamingService.Application.Common.Mapping;
 using GamingService.Application.Models.Sessions.Queries.GetSessionDetails;
 using GamingService.Core.Contracts;
-using GamingService.Mapping.Interfaces;
 
 namespace GamingService.Application.Models.Sessions.Queries.GetSessionList;
 

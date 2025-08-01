@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using GamingService.Application.Common.Mapping;
 using GamingService.Core.Models.SessionAggregate;
-using GamingService.Mapping.Interfaces;
 
 namespace GamingService.Application.Models.Sessions.Queries.GetSessionDetails;
 
