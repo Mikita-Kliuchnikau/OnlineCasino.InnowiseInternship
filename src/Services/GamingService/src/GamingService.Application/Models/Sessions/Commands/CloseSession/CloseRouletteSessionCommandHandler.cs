@@ -10,15 +10,16 @@ namespace GamingService.Application.Models.Sessions.Commands.CloseSession;
 public class CloseRouletteSessionCommandHandler(
     ISessionsRepository sessionsRepository,
     IPlayersRepository playersRepository,
-    IMapper mapper)
-    : IRequestHandler<CloseRouletteSessionCommand, RouletteSessionViewModel>
+    IRouletteConfiguratonsRepository configuratonsRepository,
+    IMapper mapper) : IRequestHandler<CloseRouletteSessionCommand, RouletteSessionResultViewModel>
 {
-    public async Task<RouletteSessionViewModel> Handle(CloseRouletteSessionCommand request, CancellationToken cancellationToken)
+    public async Task<RouletteSessionResultViewModel> Handle(CloseRouletteSessionCommand request, CancellationToken cancellationToken)
     {
         var session = await sessionsRepository.GetByIdAsync(request.SessionId, cancellationToken)
             ?? throw new ArgumentException(string.Format(SessionNotFound, request.SessionId));
 
-        var rouletteBets = mapper.Map<IEnumerable<RouletteBet>>(request.Bets)
+        var rouletteBets = request.Bets
+            .Select(bet => mapper.Map<RouletteBet>(bet))
             .ToList();
 
         var playersId = rouletteBets
@@ -28,19 +29,24 @@ public class CloseRouletteSessionCommandHandler(
 
         foreach (var playerId in playersId)
         {
-            if (!await playersRepository.IsExistAsync(playerId, cancellationToken))
+            var isExists = await playersRepository.ExistsAsync(playerId, cancellationToken);
+            if (!isExists.Value)
             {
                 foreach (var bet in rouletteBets.Where(b => b.PlayerId == playerId))
                 {
-                    bet.AddErrors(PlayerNotFound);
+                    var errorMessage = string.IsNullOrWhiteSpace(isExists.ErrorMessage)
+                            ? string.Format(PlayerNotFound, playerId)
+                            : isExists.ErrorMessage;
+
+                    bet.AddErrors(errorMessage);
                 }
             }
         }
 
-        session = await session.CloseSession(rouletteBets, playersRepository);
+        session = await session.CloseSession(rouletteBets, playersRepository, configuratonsRepository);
 
-        await sessionsRepository.UpdateAsync(session, cancellationToken);
+        await sessionsRepository.CloseAsync(session, cancellationToken);
 
-        return mapper.Map<RouletteSessionViewModel>(session);
+        return mapper.Map<RouletteSessionResultViewModel>(session);
     }
 }

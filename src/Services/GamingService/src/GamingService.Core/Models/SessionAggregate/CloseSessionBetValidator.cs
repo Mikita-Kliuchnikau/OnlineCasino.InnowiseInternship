@@ -14,40 +14,38 @@ public static class CloseSessionBetValidator
     {
         foreach (var bet in bets)
         {
-            if (bet.Errors?.Count != 0)
-            {
-                bet.ChangeStatus(BetStatus.Cancelled);
-                continue;
-            }
             if (bet.BetAmount.Amount.Value > configuration.MaxBet.Value)
             {
                 bet.AddErrors(BetAmountExceedsMaxBet);
-                continue;
             }
             if (bet.BetAmount.Amount.Value < configuration.MinBet.Value)
             {
                 bet.AddErrors(BetAmountBelowMinBet);
-                continue;
             }
             if (bet.BetType == RouletteBetType.Basket && configuration.RouletteGameType == RouletteGameType.European)
             {
                 bet.AddErrors(BasketBetNotAllowedInEuropeanRoulette);
-                continue;
             }
             if (bet.BetValues.Keys!.Contains("00") && configuration.RouletteGameType == RouletteGameType.European)
             {
                 bet.AddErrors(BetValuesCannotContain00InEuropeanRoulette);
-                continue;
             }
 
-            var isPlayerBalanceInsufficient = !await playersRepository.IsDeductedFormPlayersBalanceAsync(
+            if (bet.Errors?.Count == 0)
+            {
+                var isPlayerBalanceInsufficient = await playersRepository.DeductedFormPlayersBalanceAsync(
                     bet.PlayerId,
                     bet.BetAmount.Amount.Value,
                     cancellationToken);
 
-            if (bet.Errors?.Count > 0 && isPlayerBalanceInsufficient)
-            {
-                bet.AddErrors(PlayerBalanceInsufficient);
+                var errorMessage = string.IsNullOrWhiteSpace(isPlayerBalanceInsufficient.ErrorMessage)
+                    ? PlayerBalanceInsufficient
+                    : isPlayerBalanceInsufficient.ErrorMessage;
+
+                if (!isPlayerBalanceInsufficient.Value)
+                {
+                    bet.AddErrors(errorMessage);
+                }
             }
 
             if (bet.Status == BetStatus.Pending)

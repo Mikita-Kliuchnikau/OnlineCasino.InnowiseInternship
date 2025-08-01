@@ -4,12 +4,13 @@ using MediatR;
 namespace GamingService.Application.Models.Configurations.Commands.DeleteConfiguration;
 
 public class DeleteRouletteConfigurationCommandHandler(IRouletteConfiguratonsRepository repository) 
-    : IRequestHandler<DeleteRouletteConfigurationCommand, string>
+    : IRequestHandler<DeleteRouletteConfigurationCommand, Guid>
 {
-    public async Task<string> Handle(DeleteRouletteConfigurationCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(DeleteRouletteConfigurationCommand request, CancellationToken cancellationToken)
     {
-        return await repository.DeleteAsync(
+        var result = await repository.DeleteAsync(
             request.Id,
             cancellationToken);
+        return result;
     }
 }

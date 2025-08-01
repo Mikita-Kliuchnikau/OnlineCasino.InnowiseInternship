@@ -2,6 +2,6 @@
 
 public enum RouletteType
 {
-    EuropeanRoulette = 1,
-    AmericanRoulette = 2
+    European = 0,
+    American = 1
 }

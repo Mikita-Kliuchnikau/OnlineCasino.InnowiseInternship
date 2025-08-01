@@ -1,23 +1,22 @@
 ﻿using AutoMapper;
-using GamingService.Application.Common.Mapping;
-using GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
 using GamingService.Core.Models.SessionAggregate;
+using GamingService.Mapping.Interfaces;
 
 namespace GamingService.Application.Models.Sessions.Queries.GetSessionDetails;
 
-public record RouletteSessionViewModel(
-    string Id, 
-    DateTime StartedAt,
-    string ServerSeed,
-    string ServerSeedHash,
-    string ClientSeed,
-    string SessionResult,
-    IEnumerable<RouletteBetViewModel> Bets,
-    RouletteConfigurationViewModel Configuration) : IMapWith<RouletteSession>
+public class RouletteSessionResultViewModel : IMapWith<RouletteSession>
 {
+    public Guid Id { get; set; }
+    public DateTime StartedAt { get; set; }
+    public string ServerSeed { get; set; } = string.Empty;
+    public string ServerSeedHash { get; set; } = string.Empty;
+    public string ClientSeed { get; set; } = string.Empty;
+    public string SessionResult { get; set; } = string.Empty;
+    public IEnumerable<RouletteBetViewModel> Bets { get; set; } = [];
+    public Guid ConfigurationId { get; set; }
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<RouletteSession, RouletteSessionViewModel>()
+        profile.CreateMap<RouletteSession, RouletteSessionResultViewModel>()
             .ForMember(sessionViewModel => sessionViewModel.Id, 
                 opt => opt.MapFrom(session => session.Id))
             .ForMember(sessionViewModel => sessionViewModel.StartedAt, 
@@ -32,7 +31,7 @@ public record RouletteSessionViewModel(
                 opt => opt.MapFrom(session => session.SessionResult.Result))
             .ForMember(sessionViewModel => sessionViewModel.Bets,
                 opt => opt.MapFrom(session => session.Bets))
-            .ForMember(sessionViewModel => sessionViewModel.Configuration, 
-                opt => opt.MapFrom(session => session.Configuration));
+            .ForMember(sessionViewModel => sessionViewModel.ConfigurationId, 
+                opt => opt.MapFrom(session => session.ConfigurationId));
     }
 }

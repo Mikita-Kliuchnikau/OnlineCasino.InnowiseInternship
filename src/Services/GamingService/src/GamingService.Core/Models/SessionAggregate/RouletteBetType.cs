@@ -27,7 +27,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class DefaultBet : RouletteBetType
     {
-        public DefaultBet() : base(0, BetType.Default)
+        public DefaultBet() : base((int)BetType.Default, BetType.Default)
         {
         }
         public override int WinningsMultiplier => 0;
@@ -36,7 +36,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class StraightUpBet : RouletteBetType
     {
-        public StraightUpBet() : base(1, BetType.StraightUp)
+        public StraightUpBet() : base((int)BetType.StraightUp, BetType.StraightUp)
         {
         }
         public override int WinningsMultiplier => 36;
@@ -45,7 +45,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class SplitBet : RouletteBetType
     {
-        public SplitBet() : base(2, BetType.Split)
+        public SplitBet() : base((int)BetType.Split, BetType.Split)
         {
         }
         public override int WinningsMultiplier => 18;
@@ -54,7 +54,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class StreetBet : RouletteBetType
     {
-        public StreetBet() : base(3, BetType.Street)
+        public StreetBet() : base((int)BetType.Street, BetType.Street)
         {
         }
         public override int WinningsMultiplier => 12;
@@ -63,7 +63,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class CornerBet : RouletteBetType
     {
-        public CornerBet() : base(4, BetType.Corner)
+        public CornerBet() : base((int)BetType.Corner, BetType.Corner)
         {
         }
         public override int WinningsMultiplier => 9;
@@ -72,7 +72,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class BasketBet : RouletteBetType
     {
-        public BasketBet() : base(13, BetType.Basket)
+        public BasketBet() : base((int)BetType.Basket, BetType.Basket)
         {
         }
         public override int WinningsMultiplier => 7;
@@ -81,7 +81,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class LineBet : RouletteBetType
     {
-        public LineBet() : base(5, BetType.Line)
+        public LineBet() : base((int)BetType.Line, BetType.Line)
         {
         }
         public override int WinningsMultiplier => 6;
@@ -90,7 +90,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class ColumnBet : RouletteBetType
     {
-        public ColumnBet() : base(6, BetType.Column)
+        public ColumnBet() : base((int)BetType.Column, BetType.Column)
         {
         }
         public override int WinningsMultiplier => 3;
@@ -99,7 +99,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class DozenBet : RouletteBetType
     {
-        public DozenBet() : base(7, BetType.Dozen)
+        public DozenBet() : base((int)BetType.Dozen, BetType.Dozen)
         {
         }
         public override int WinningsMultiplier => 3;
@@ -108,7 +108,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class RedBet : RouletteBetType
     {
-        public RedBet() : base(8, BetType.Red)
+        public RedBet() : base((int)BetType.Red, BetType.Red)
         {
         }
         public override int WinningsMultiplier => 2;
@@ -117,7 +117,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class BlackBet : RouletteBetType
     {
-        public BlackBet() : base(8, BetType.Black)
+        public BlackBet() : base((int)BetType.Black, BetType.Black)
         {
         }
         public override int WinningsMultiplier => 2;
@@ -126,7 +126,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class EvenBet : RouletteBetType
     {
-        public EvenBet() : base(9, BetType.Even)
+        public EvenBet() : base((int)BetType.Even, BetType.Even)
         {
         }
         public override int WinningsMultiplier => 2;
@@ -135,7 +135,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class OddBet : RouletteBetType
     {
-        public OddBet() : base(10, BetType.Odd)
+        public OddBet() : base((int)BetType.Odd, BetType.Odd)
         {
         }
         public override int WinningsMultiplier => 2;
@@ -144,7 +144,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class LowBet : RouletteBetType
     {
-        public LowBet() : base(11, BetType.Low)
+        public LowBet() : base((int)BetType.Low, BetType.Low)
         {
         }
         public override int WinningsMultiplier => 2;
@@ -153,7 +153,7 @@ public abstract class RouletteBetType(int value, BetType type)
 
     public sealed class HighBet : RouletteBetType
     {
-        public HighBet() : base(12, BetType.High)
+        public HighBet() : base((int)BetType.High, BetType.High)
         {
         }
         public override int WinningsMultiplier => 2;

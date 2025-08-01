@@ -12,7 +12,7 @@ public abstract class RouletteGameType(int value, RouletteType type)
 
     public sealed class EuropeanRoulette : RouletteGameType
     {
-        public EuropeanRoulette() : base(1, RouletteType.EuropeanRoulette)
+        public EuropeanRoulette() : base(1, RouletteType.European)
         {
         }
         public override int NumberOfPossibleBets => 37;
@@ -20,7 +20,7 @@ public abstract class RouletteGameType(int value, RouletteType type)
 
     public sealed class AmericanRoulette : RouletteGameType
     {
-        public AmericanRoulette() : base(2, RouletteType.AmericanRoulette)
+        public AmericanRoulette() : base(2, RouletteType.American)
         {
         }
         public override int NumberOfPossibleBets => 38;

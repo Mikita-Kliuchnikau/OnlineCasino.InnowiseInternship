@@ -1,3 +1,0 @@
-﻿namespace GamingService.Application.Events;
-
-public record PlayersBalancesChangedIntegrationEvent(IEnumerable<PlayersBalancesChangedEventPayload> BalancesLambda);
