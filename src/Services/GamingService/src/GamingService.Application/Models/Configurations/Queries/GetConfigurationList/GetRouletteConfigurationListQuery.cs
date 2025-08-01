@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using GamingService.Application.Common.Mapping;
 using GamingService.Core.Contracts;
+using GamingService.Mapping.Interfaces;
 using MediatR;
 
 namespace GamingService.Application.Models.Configurations.Queries.GetConfigurationList;

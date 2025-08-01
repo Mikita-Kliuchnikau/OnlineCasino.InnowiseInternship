@@ -3,6 +3,7 @@ using GamingService.Core.Primitives;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+[assembly: InternalsVisibleTo("GamingService.DataAccess")]
 
 namespace GamingService.Core.Models.SessionAggregate;
 

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 
-namespace GamingService.Application.Common.Mapping;
+namespace GamingService.Mapping.Interfaces;
 
 public interface IMapWith<T>
 {
-    void Mapping(Profile profile) =>
+    virtual void Mapping(Profile profile) =>
         profile.CreateMap(typeof(T), GetType());
 }

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using GamingService.Mapping.Interfaces;
 using System.Reflection;
 
-namespace GamingService.Application.Common.Mapping;
+namespace GamingService.Mapping;
 
 public class AssemblyMappingProfile : Profile
 {

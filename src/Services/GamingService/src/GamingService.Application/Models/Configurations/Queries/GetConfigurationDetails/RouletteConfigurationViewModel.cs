@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using GamingService.Application.Common.Mapping;
 using GamingService.Core.Common;
 using GamingService.Core.Extentions;
 using GamingService.Core.Models.RouletteConfigurationAggregate;
+using GamingService.Mapping.Interfaces;
 
 namespace GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
 
