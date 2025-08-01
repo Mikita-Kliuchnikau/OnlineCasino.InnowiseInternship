@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using GamingService.Application.Common.Mapping;
 using GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
 using GamingService.Core.Common;
 using GamingService.Core.Models.RouletteConfigurationAggregate;
+using GamingService.Mapping.Interfaces;
 using MediatR;
 using static GamingService.Core.Constants.ErrorMessages;
 

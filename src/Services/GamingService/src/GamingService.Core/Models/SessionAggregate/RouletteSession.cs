@@ -1,6 +1,5 @@
 ﻿using GamingService.Core.Abstractions;
 using GamingService.Core.Primitives;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 
