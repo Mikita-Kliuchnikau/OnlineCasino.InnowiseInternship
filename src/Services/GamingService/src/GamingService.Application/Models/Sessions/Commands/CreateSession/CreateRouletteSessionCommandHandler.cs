@@ -15,7 +15,8 @@ public class CreateRouletteSessionCommandHandler(
 {
     public async Task<RouletteSessionSummaryViewModel> Handle(CreateRouletteSessionCommand request, CancellationToken cancellationToken)
     {
-        if (!await configurationRepository.ExistsAsync(request.ConfigurationId, cancellationToken))
+        var isExists = !await configurationRepository.ExistsAsync(request.ConfigurationId, cancellationToken);
+        if (!isExists)
         {
             throw new ArgumentException(string.Format(ConfigurationNotFound, request.ConfigurationId));
         }

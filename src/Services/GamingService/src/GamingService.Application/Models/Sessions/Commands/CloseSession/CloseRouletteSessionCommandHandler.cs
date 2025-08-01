@@ -29,14 +29,14 @@ public class CloseRouletteSessionCommandHandler(
 
         foreach (var playerId in playersId)
         {
-            var existsResult = await playersRepository.ExistsAsync(playerId, cancellationToken);
-            if (!existsResult.Value)
+            var isExists = await playersRepository.ExistsAsync(playerId, cancellationToken);
+            if (!isExists.Value)
             {
                 foreach (var bet in rouletteBets.Where(b => b.PlayerId == playerId))
                 {
-                    var errorMessage = string.IsNullOrWhiteSpace(existsResult.ErrorMessage)
+                    var errorMessage = string.IsNullOrWhiteSpace(isExists.ErrorMessage)
                             ? string.Format(PlayerNotFound, playerId)
-                            : existsResult.ErrorMessage;
+                            : isExists.ErrorMessage;
 
                     bet.AddErrors(errorMessage);
                 }
