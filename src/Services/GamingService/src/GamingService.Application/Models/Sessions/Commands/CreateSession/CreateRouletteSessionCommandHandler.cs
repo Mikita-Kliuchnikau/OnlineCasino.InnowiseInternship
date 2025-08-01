@@ -10,7 +10,6 @@ namespace GamingService.Application.Models.Sessions.Commands.CreateSession;
 public class CreateRouletteSessionCommandHandler(
     IRouletteConfiguratonsRepository rouletteConfiguration, 
     ISessionsRepository sessionRepository, 
-    IDomainEventPublisher domainEventPublisher, 
     IMapper mapper) 
     : IRequestHandler<CreateRouletteSessionCommand, RouletteSessionViewModel>
 {
