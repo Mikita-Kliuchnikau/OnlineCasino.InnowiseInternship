@@ -1,17 +1,20 @@
 ﻿using AutoMapper;
-using GamingService.Application.Common.Mapping;
+using GamingService.Core.Common;
+using GamingService.Core.Extentions;
 using GamingService.Core.Models.RouletteConfigurationAggregate;
+using GamingService.Mapping.Interfaces;
 
 namespace GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
 
-public record RouletteConfigurationViewModel(
-    string Id,
-    string RouletteType,
-    string Currency,
-    decimal MinBet,
-    decimal MaxBet,
-    string Engine) : IMapWith<RouletteConfiguration>
+public class RouletteConfigurationViewModel : IMapWith<RouletteConfiguration>
 {
+    public Guid Id { get; set; }
+    public string RouletteType { get; set; } = string.Empty;
+    public Currency Currency { get; set; }
+    public Amount MinBet { get; set; } = new(0);
+    public Amount MaxBet { get; set; } = new(0);
+    public string HashAlgorithm { get; set; } = string.Empty;
+
     public void Mapping(Profile profile)
     {
         profile.CreateMap<RouletteConfiguration, RouletteConfigurationViewModel>()
@@ -20,10 +23,12 @@ public record RouletteConfigurationViewModel(
             .ForMember(configViewModel => configViewModel.RouletteType,
                 opt => opt.MapFrom(config => config.RouletteGameType.Name))
             .ForMember(configViewModel => configViewModel.Currency,
-                opt => opt.MapFrom(config => config.Currency.ToString()))
+                opt => opt.MapFrom(config => config.Currency))
             .ForMember(configViewModel => configViewModel.MinBet,
-                opt => opt.MapFrom(config => config.MinBet.Value))
+                opt => opt.MapFrom(config => config.MinBet))
             .ForMember(configViewModel => configViewModel.MaxBet,
-                opt => opt.MapFrom(config => config.MaxBet.Value));
+                opt => opt.MapFrom(config => config.MaxBet))
+            .ForMember(configViewModel => configViewModel.HashAlgorithm,
+                opt => opt.MapFrom(config => config.HashAlgorithm.GetHashAlgorithmName()));
     }
 }

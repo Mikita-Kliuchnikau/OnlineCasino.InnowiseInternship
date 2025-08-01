@@ -2,4 +2,4 @@
 
 namespace GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
 
-public record GetRouletteConfigurationDetailsQuery(string Id) : IRequest<RouletteConfigurationViewModel>;
+public record GetRouletteConfigurationDetailsQuery(Guid Id) : IRequest<RouletteConfigurationViewModel>;

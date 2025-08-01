@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using GamingService.Core.Abstractions;
+using GamingService.Core.Contracts;
 using MediatR;
 
 namespace GamingService.Application.Models.Sessions.Queries.GetSessionList;
 
 public class GetRouletteSessionListQueryHandler(ISessionsRepository repository, IMapper mapper) 
-    : IRequestHandler<GetRouletteSessionListQuery, GetRouletteSessionListViewModel>
+    : IRequestHandler<GetRouletteSessionListQuery, RouletteSessionListViewModel>
 {
-    public async Task<GetRouletteSessionListViewModel> Handle(GetRouletteSessionListQuery request, CancellationToken cancellationToken)
+    public async Task<RouletteSessionListViewModel> Handle(GetRouletteSessionListQuery request, CancellationToken cancellationToken)
     {
-        var pagedSessions = await repository.GetPagedAsync(request.Filter, cancellationToken);
-        return mapper.Map<GetRouletteSessionListViewModel>(pagedSessions);
+        var filter = mapper.Map<PagedRouletteSessionsFilter>(request);
+        var pagedSessions = await repository.GetPagedAsync(filter, cancellationToken);
+        return mapper.Map<RouletteSessionListViewModel>(pagedSessions);
     }
 }
