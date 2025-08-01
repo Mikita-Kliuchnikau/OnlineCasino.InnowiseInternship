@@ -5,15 +5,16 @@ using GamingService.Core.Contracts;
 
 namespace GamingService.Application.Models.Sessions.Queries.GetSessionList;
 
-public record GetRouletteSessionListViewModel(
-    IReadOnlyList<RouletteSessionViewModel>? Sessions,
-    int TotalCount,
-    int PageNumber,
-    int PageSize) : IMapWith<PagedRouletteSessionsProjection>
+public class RouletteSessionListViewModel : IMapWith<PagedRouletteSessionsProjection>
 {
+    public IReadOnlyList<RouletteSessionResultViewModel>? Sessions { get; set; }
+    public int TotalCount { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
+
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<PagedRouletteSessionsProjection, GetRouletteSessionListViewModel>()
+        profile.CreateMap<PagedRouletteSessionsProjection, RouletteSessionListViewModel>()
             .ForMember(sessionListViewModel => sessionListViewModel.Sessions, 
                 opt => opt.MapFrom(projection => projection.Sessions))
             .ForMember(sessionListViewModel => sessionListViewModel.TotalCount,

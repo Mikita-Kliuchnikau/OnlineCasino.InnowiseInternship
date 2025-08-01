@@ -11,15 +11,15 @@ public class CloseRouletteSessionCommandHandler(
     ISessionsRepository sessionsRepository,
     IPlayersRepository playersRepository,
     IRouletteConfiguratonsRepository configuratonsRepository,
-    IMapper mapper)
-    : IRequestHandler<CloseRouletteSessionCommand, RouletteSessionViewModel>
+    IMapper mapper) : IRequestHandler<CloseRouletteSessionCommand, RouletteSessionResultViewModel>
 {
-    public async Task<RouletteSessionViewModel> Handle(CloseRouletteSessionCommand request, CancellationToken cancellationToken)
+    public async Task<RouletteSessionResultViewModel> Handle(CloseRouletteSessionCommand request, CancellationToken cancellationToken)
     {
-        var session = await sessionsRepository.GetByIdAsync(Guid.Parse(request.SessionId), cancellationToken)
+        var session = await sessionsRepository.GetByIdAsync(request.SessionId, cancellationToken)
             ?? throw new ArgumentException(string.Format(SessionNotFound, request.SessionId));
 
-        var rouletteBets = mapper.Map<IEnumerable<RouletteBet>>(request.Bets)
+        var rouletteBets = request.Bets
+            .Select(bet => mapper.Map<RouletteBet>(bet))
             .ToList();
 
         var playersId = rouletteBets
@@ -34,7 +34,11 @@ public class CloseRouletteSessionCommandHandler(
             {
                 foreach (var bet in rouletteBets.Where(b => b.PlayerId == playerId))
                 {
-                    bet.AddErrors(PlayerNotFound);
+                    var errorMessage = string.IsNullOrWhiteSpace(isExists.ErrorMessage)
+                            ? string.Format(PlayerNotFound, playerId)
+                            : isExists.ErrorMessage;
+
+                    bet.AddErrors(errorMessage);
                 }
             }
         }
@@ -43,6 +47,6 @@ public class CloseRouletteSessionCommandHandler(
 
         await sessionsRepository.CloseAsync(session, cancellationToken);
 
-        return mapper.Map<RouletteSessionViewModel>(session);
+        return mapper.Map<RouletteSessionResultViewModel>(session);
     }
 }

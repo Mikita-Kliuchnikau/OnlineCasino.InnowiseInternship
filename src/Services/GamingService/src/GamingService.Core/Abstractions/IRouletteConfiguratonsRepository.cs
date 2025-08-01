@@ -12,4 +12,6 @@ public interface IRouletteConfiguratonsRepository
     public Task<PagedRouletteConfigurationsProjection> GetPagedAsync(PagedRouletteConfigurationsFilter filter, CancellationToken cancellationToken = default);
 
     public Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    public Task<bool> ExistsAsync (Guid id, CancellationToken cancellationToken = default);
 }

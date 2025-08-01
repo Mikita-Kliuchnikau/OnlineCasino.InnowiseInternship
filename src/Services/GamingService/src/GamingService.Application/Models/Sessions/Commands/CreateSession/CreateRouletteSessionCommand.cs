@@ -3,5 +3,5 @@ using MediatR;
 
 namespace GamingService.Application.Models.Sessions.Commands.CreateSession;
 
-public record CreateRouletteSessionCommand(string ConfigurationId, string ClientSeed) 
-    : IRequest<RouletteSessionViewModel>;
+public record CreateRouletteSessionCommand(Guid ConfigurationId, string ClientSeed) 
+    : IRequest<RouletteSessionSummaryViewModel>;

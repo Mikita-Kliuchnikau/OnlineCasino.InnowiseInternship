@@ -2,4 +2,4 @@
 
 namespace GamingService.Application.Models.Configurations.Commands.DeleteConfiguration;
 
-public record DeleteRouletteConfigurationCommand(string Id) : IRequest<string>;
+public record DeleteRouletteConfigurationCommand(Guid Id) : IRequest<Guid>;

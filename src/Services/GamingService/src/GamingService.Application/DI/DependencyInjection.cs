@@ -1,6 +1,4 @@
 ﻿using GamingService.Application.Common.Mapping;
-using GamingService.Core.Abstractions;
-using GamingService.Core.Events;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -15,7 +13,6 @@ public static class DependencyInjection
         {
             config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
         });
-        services.AddScoped<IDomainEventPublisher, MediatorDomainEventPublisher>();
         return services;
     }
 }
