@@ -33,7 +33,7 @@ jobs:
       - name: Replace tokens in nuget.config
         run: |
           sed -i "s|%GITHUB_ACTOR%|${{ github.actor }}|g" nuget.config
-          sed -i "s|%GITHUB_TOKEN%|${{ secrets.GITHUB_TOKEN }}|g" nuget.config
+          sed -i "s|%GITHUB_TOKEN%|${{ secrets.NUGET_PACKAGE_TOKEN }}|g" nuget.config
       - name: Install SonarQube Cloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: |
