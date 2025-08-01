@@ -15,8 +15,10 @@ public class CreateRouletteSessionCommandHandler(
 {
     public async Task<RouletteSessionSummaryViewModel> Handle(CreateRouletteSessionCommand request, CancellationToken cancellationToken)
     {
-        var _ = await configurationRepository.GetByIdAsync(request.ConfigurationId, cancellationToken)
-            ?? throw new ArgumentException(string.Format(ConfigurationNotFound, request.ConfigurationId));
+        if (!await configurationRepository.ExistsAsync(request.ConfigurationId, cancellationToken))
+        {
+            throw new ArgumentException(string.Format(ConfigurationNotFound, request.ConfigurationId));
+        }
 
         var session = await RouletteSession.Create(request.ClientSeed, request.ConfigurationId, configurationRepository);
         session = await sessionRepository.CreateAsync(session, cancellationToken);
