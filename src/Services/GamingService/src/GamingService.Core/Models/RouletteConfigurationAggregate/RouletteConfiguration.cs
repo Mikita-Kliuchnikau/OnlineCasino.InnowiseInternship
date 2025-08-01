@@ -11,14 +11,14 @@ public class RouletteConfiguration : Entity
         Currency currency,
         Amount minBet,
         Amount maxBet,
-        HashAlgorithm? engine,
-        string id) : base(id)
+        HashAlgorithm hashAlgorithm,
+        Guid? id) : base(id)
     {
         RouletteGameType = rouletteGameType;
         Currency = currency;
         MinBet = minBet;
         MaxBet = maxBet;
-        Engine = engine ?? SHA256.Create();
+        HashAlgorithm = hashAlgorithm;
     }
 
     public static RouletteConfiguration Create(
@@ -26,12 +26,16 @@ public class RouletteConfiguration : Entity
         Currency currency,
         Amount minBet,
         Amount maxBet,
-        HashAlgorithm? engine,
-        string id = null!)
+        string hashAlgorithmName,
+        Guid? id = null)
     {
         ArgumentOutOfRangeException.ThrowIfLessThan(maxBet.Value, minBet.Value);
 
-        return new RouletteConfiguration(rouletteGameType, currency, minBet, maxBet, engine, id);
+#pragma warning disable SYSLIB0045
+        var hashAlgorithm = HashAlgorithm.Create(hashAlgorithmName) ?? SHA256.Create();
+#pragma warning restore SYSLIB004
+
+        return new RouletteConfiguration(rouletteGameType, currency, minBet, maxBet, hashAlgorithm, id);
     }
 
     public RouletteGameType RouletteGameType { get; }
@@ -42,7 +46,7 @@ public class RouletteConfiguration : Entity
 
     public Amount MaxBet { get; }
 
-    public HashAlgorithm Engine { get; } 
+    public HashAlgorithm HashAlgorithm { get; } 
 
-    public bool IsActive { get; set; } = true;
+    public bool IsActive { get; private set; } = true;
 }

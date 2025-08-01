@@ -1,17 +1,15 @@
 ﻿using GamingService.Core.Abstractions;
-using GamingService.Core.Events;
-using GamingService.Core.Models.RouletteConfigurationAggregate;
 using GamingService.Core.Primitives;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+[assembly: InternalsVisibleTo("GamingService.DataAccess")]
 
 namespace GamingService.Core.Models.SessionAggregate;
 
 public class RouletteSession : Entity
 {
     private const int SeedByteLength = 32;
-
-    private readonly IDomainEventPublisher _domainEventPublisher;
 
     private readonly List<RouletteBet> _bets = [];
 
@@ -20,16 +18,35 @@ public class RouletteSession : Entity
         string serverSeedHash,
         string clientSeed,
         RouletteSpinResult sessionResult,
-        RouletteConfiguration configuration,
-        IDomainEventPublisher domainEventPublisher,
-        string id) : base(id)
+        Guid configurationId,
+        Guid? id) : base(id)
     {
         ServerSeed = serverSeed;
         ServerSeedHash = serverSeedHash;
         ClientSeed = clientSeed;
         SessionResult = sessionResult;
-        Configuration = configuration;
-        _domainEventPublisher = domainEventPublisher;
+        ConfigurationId = configurationId;
+    }
+
+    internal RouletteSession(
+        Guid id,
+        DateTime startedAt,
+        SessionStatus status,
+        string serverSeed,
+        string serverSeedHash,
+        string clientSeed,
+        string sessionResult,
+        Guid configurationId,
+        IEnumerable<RouletteBet> bets) : base(id)
+    {
+        StartedAt = startedAt;
+        Status = status;
+        ServerSeed = serverSeed;
+        ServerSeedHash = serverSeedHash;
+        ClientSeed = clientSeed;
+        SessionResult = new RouletteSpinResult(sessionResult);
+        ConfigurationId = configurationId;
+        _bets.AddRange(bets);
     }
 
     public DateTime StartedAt { get; private init; } = DateTime.UtcNow;
@@ -44,11 +61,15 @@ public class RouletteSession : Entity
 
     public RouletteSpinResult SessionResult { get; private init; } 
 
-    public RouletteConfiguration Configuration { get; private init; }
+    public Guid ConfigurationId { get; private set; }
 
     public IReadOnlyList<RouletteBet>? Bets => _bets;
 
-    public static RouletteSession Create(string clientSeed, RouletteConfiguration configuration, IDomainEventPublisher domainEventPublisher, string id = null!)
+    public static async Task<RouletteSession> Create(
+        string clientSeed,
+        Guid configurationId,
+        IRouletteConfiguratonsRepository configuratonsRepository,
+        Guid? id = null)
     {
         var serverSeed = GenerateSeed();
         var serverSeedHash = GenerateSeedHash(serverSeed);
@@ -57,19 +78,24 @@ public class RouletteSession : Entity
             clientSeed = GenerateSeed();
         }
         var source = $"{serverSeed}:{clientSeed}";
+
+        var configuration = await configuratonsRepository.GetByIdAsync(configurationId);
         var sessionResult = new RouletteSpinResult(source, configuration);
-        return new RouletteSession(serverSeed, serverSeedHash, clientSeed, sessionResult, configuration, domainEventPublisher, id);
+        return new RouletteSession(serverSeed, serverSeedHash, clientSeed, sessionResult, configurationId, id);
     }
 
-    public async Task<RouletteSession> CloseSession(IEnumerable<RouletteBet> bets, IPlayersRepository playersRepository)
+    public async Task<RouletteSession> CloseSession(
+        IEnumerable<RouletteBet> bets, 
+        IPlayersRepository playersRepository,
+        IRouletteConfiguratonsRepository configuratonsRepository)
     {
-        await bets.Validate(Configuration, SessionResult.Result, playersRepository);
+        var configuration = await configuratonsRepository.GetByIdAsync(ConfigurationId);
+        await bets.Validate(configuration, SessionResult.Result, playersRepository);
 
         _bets.AddRange(bets);
 
         Status = SessionStatus.Closed;
 
-        await _domainEventPublisher.Publish(new PlayersBalancesChangedDomainEvent(Id));
         return this;
     }
 

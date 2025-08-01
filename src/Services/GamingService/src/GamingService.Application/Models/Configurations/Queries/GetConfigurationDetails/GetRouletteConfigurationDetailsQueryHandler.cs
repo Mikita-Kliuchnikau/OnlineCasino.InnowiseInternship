@@ -9,7 +9,7 @@ public class GetRouletteConfigurationDetailsQueryHandler(IRouletteConfiguratonsR
 {
     public async Task<RouletteConfigurationViewModel> Handle(GetRouletteConfigurationDetailsQuery request, CancellationToken cancellationToken)
     {
-        var configuration = await configurationsRepository.GetByIdAsync(request.Id, cancellationToken);
+        var configuration = await configurationsRepository.GetByIdAsync(Guid.Parse(request.Id), cancellationToken);
         return mapper.Map<RouletteConfigurationViewModel>(configuration);
     }
 }

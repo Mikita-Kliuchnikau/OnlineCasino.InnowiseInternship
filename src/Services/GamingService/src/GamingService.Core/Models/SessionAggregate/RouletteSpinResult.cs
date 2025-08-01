@@ -8,13 +8,18 @@ public class RouletteSpinResult
 {
     public RouletteSpinResult(string source, RouletteConfiguration configuration)
     {
-        var engine = configuration.Engine ?? SHA256.Create();
+        var engine = configuration.HashAlgorithm ?? SHA256.Create();
         var hash = engine.ComputeHash(Encoding.UTF8.GetBytes(source));
         int number = BitConverter.ToInt32(hash, 0);
         var result = Math.Abs(number % configuration.RouletteGameType.NumberOfPossibleBets);
         Result = result == RouletteGameType.American.NumberOfPossibleBets 
             ? "00" 
             : result.ToString("D2");
+    }
+
+    internal RouletteSpinResult(string result)
+    {
+        Result = result;
     }
 
     public string Result { get; }

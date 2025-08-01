@@ -18,4 +18,5 @@ public static class ErrorMessages
     public const string PlayerBalanceInsufficient = "Player's balance is insufficient to place the bet";
     public const string SessionNotFound = "Session with id {0} not found";
     public const string ConfigurationNotFound = "Configuration {0} not found";
+    public const string RouletteTypeNotFound = "Roulette type {0} not found";
 }
