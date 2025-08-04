@@ -31,18 +31,19 @@ builder.Services.AddAuthorizationPolicies();
 
 var app = builder.Build();
 
-app.MapWhen(
+app.UseWhen(
     context => !context.Request.ContentType?.StartsWith(MediaTypeConstants.Grpc) ?? false,
     appBuilder =>
     {
-        app.UseExceptionMiddleware();
-        app.UseRequestLogContextMiddleware();
-        app.UseSerilogRequestLogging();
+        appBuilder.UseExceptionMiddleware();
+        appBuilder.UseRequestLogContextMiddleware();
+        appBuilder.UseSerilogRequestLogging();
 
-        app.UseAuthentication();
-        app.UseAuthorization();
+        appBuilder.UseAuthentication();
+        appBuilder.UseAuthorization();
     }
 );
+
 app.MapControllers();
 app.MapGrpcService<UsersGrpcService>();
 
