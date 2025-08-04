@@ -46,7 +46,7 @@ public static class DIExtensions
     {
         var authOptions = services
             .BuildServiceProvider()
-            .GetRequiredService<IOptions<Auth0Options>>();
+            .GetRequiredService<IOptions<Auth0Options>>().Value;
 
         services.AddAuthentication(options =>
         {
@@ -55,8 +55,8 @@ public static class DIExtensions
         })
         .AddJwtBearer(options =>
         {
-            options.Authority = $"https://{authOptions.Value.Domain}";
-            options.Audience = authOptions.Value.Audience;
+            options.Authority = $"https://{authOptions.Domain}";
+            options.Audience = authOptions.Audience;
             options.RequireHttpsMetadata = false;
         });
         return services;
@@ -67,11 +67,11 @@ public static class DIExtensions
     {
         var authOptions = services
             .BuildServiceProvider()
-            .GetRequiredService<IOptions<Auth0Options>>();
+            .GetRequiredService<IOptions<Auth0Options>>().Value;
 
         services.AddAuthorizationBuilder()
             .AddPolicy(BanUserPolicy, policy =>
-                policy.Requirements.Add(new HasScopeRequirement(BanUserPolicy, authOptions.Value.Domain)));
+                policy.Requirements.Add(new HasScopeRequirement(BanUserPolicy, authOptions.Domain)));
         return services;
     }
 }

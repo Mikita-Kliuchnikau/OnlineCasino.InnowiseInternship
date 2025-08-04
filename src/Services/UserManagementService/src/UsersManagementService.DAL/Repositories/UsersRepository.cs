@@ -77,27 +77,57 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
         UserEntity user,
         CancellationToken cancellationToken = default)
     {
-        if (!await DoesExistAsync(user.Id, cancellationToken))
+        if (!await ExistsAsync(user.Id, cancellationToken))
         {
             throw new NotFoundException(nameof(user), user.Id);
         }
 
-        await context.Users.ExecuteUpdateAsync(u => u
-            .SetProperty(u => u.Username, user.Username)
-            .SetProperty(u => u.Email, user.Email)
-            .SetProperty(u => u.Balance, user.Balance)
-            .SetProperty(u => u.VerificationStatus, user.VerificationStatus)
-            .SetProperty(u => u.FirstName, user.FirstName)
-            .SetProperty(u => u.SecondName, user.SecondName)
-            .SetProperty(u => u.LastName, user.LastName)
-            .SetProperty(u => u.BirthDate, user.BirthDate)
-            .SetProperty(u => u.PassportNumber, user.PassportNumber)
-            .SetProperty(u => u.IdentificationNumber, user.IdentificationNumber), 
-            cancellationToken: cancellationToken);
+        await context.Users
+            .Where(u => u.Id == user.Id)
+            .ExecuteUpdateAsync(u => u
+                .SetProperty(u => u.Username, user.Username)
+                .SetProperty(u => u.Email, user.Email)
+                .SetProperty(u => u.Balance, user.Balance)
+                .SetProperty(u => u.VerificationStatus, user.VerificationStatus)
+                .SetProperty(u => u.FirstName, user.FirstName)
+                .SetProperty(u => u.SecondName, user.SecondName)
+                .SetProperty(u => u.LastName, user.LastName)
+                .SetProperty(u => u.BirthDate, user.BirthDate)
+                .SetProperty(u => u.PassportNumber, user.PassportNumber)
+                .SetProperty(u => u.IdentificationNumber, user.IdentificationNumber), 
+                cancellationToken: cancellationToken);
 
         await context.SaveChangesAsync(cancellationToken);
 
         return user.Id;
+    }
+
+    public async Task<bool> TryChangeBalance(
+        Guid id,
+        decimal amount,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var user = await GetByIdAsync(id, cancellationToken);
+            var newBalance = user.Balance + amount;
+
+            if (newBalance < 0)
+            {
+                return false;
+            }
+
+            await context.Users
+                .Where(u => u.Id == id)
+                .ExecuteUpdateAsync(u => u
+                    .SetProperty(u => u.Balance, newBalance),
+                    cancellationToken: cancellationToken);
+            return true;
+        }
+        catch (NotFoundException)
+        {
+            return false;
+        }
     }
 
     public async Task<Guid> BanAsync(
@@ -129,7 +159,7 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
             cancellationToken);
     }
 
-    public async Task<bool> DoesExistAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await context.Users.AnyAsync(u => u.Id == id, cancellationToken);
     }

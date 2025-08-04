@@ -7,6 +7,9 @@ using UsersManagementService.BLL.Models.User;
 using Microsoft.Extensions.Logging;
 using UsersManagementService.BLL.Attributes;
 using UsersManagementService.BLL.Validators.UsersValidators;
+using Grpc.Core;
+using Azure.Core;
+using UsersManagementService.Common.Exceptions;
 
 namespace UsersManagementService.BLL.Services;
 
@@ -111,7 +114,62 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
     [Validate(typeof(UserIdValidator))]
     public virtual async Task<Guid> BanUserAsync(Guid id, bool isBanned, CancellationToken cancellationToken = default)
     {
-        return await usersRepository.BanAsync(id, isBanned, cancellationToken);
+        logger.LogInformation(
+            "Processing request {RequestName}, {@Model}",
+            nameof(UpdateUserAsync),
+            id);
+
+        var result = await usersRepository.BanAsync(id, isBanned, cancellationToken);
+
+        logger.LogInformation(
+            "Complited request {RequestName} with result {@Result}",
+            nameof(UpdateUserAsync),
+            result);
+
+        return result;
    
+    }
+
+    [Validate(typeof(UserIdValidator))]
+    public virtual async Task<bool> TryChangeUserBalanceAsync(Guid id, decimal amount, CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation(
+            "Processing request {RequestName}, {@Model}",
+            nameof(UpdateUserAsync),
+        id);
+
+        var userExists = await usersRepository.ExistsAsync(id, cancellationToken);
+
+        if (!userExists)
+        {
+            throw new NotFoundException();
+        }
+
+        var result = await usersRepository.TryChangeBalance(id, amount, cancellationToken);
+
+        logger.LogInformation(
+            "Complited request {RequestName} with result {@Result}",
+            nameof(UpdateUserAsync),
+            result);
+
+        return result;
+    }
+
+    [Validate(typeof(UserIdValidator))]
+    public virtual async Task<bool> ExistsUserAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation(
+            "Processing request {RequestName}, {@Model}",
+            nameof(ExistsUserAsync),
+            id);
+
+        var result = await usersRepository.ExistsAsync(id, cancellationToken);
+
+        logger.LogInformation(
+            "Complited request {RequestName} with result {@Result}",
+            nameof(ExistsUserAsync),
+            result);
+
+        return result;
     }
 }

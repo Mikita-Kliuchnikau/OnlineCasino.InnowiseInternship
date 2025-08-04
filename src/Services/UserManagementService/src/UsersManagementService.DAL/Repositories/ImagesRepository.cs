@@ -24,7 +24,7 @@ public class ImagesRepository(UsersDbContext context) : IImagesRepository
     {
         var image = await context.Images.FirstOrDefaultAsync(image => image.Id == id, cancellationToken);
 
-        if (image == null)
+        if (image is null)
         {
             throw new NotFoundException(nameof(image), id);
         }

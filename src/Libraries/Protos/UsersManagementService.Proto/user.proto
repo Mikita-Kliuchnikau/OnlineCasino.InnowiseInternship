@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "UsersManagementService.Grpc";
+
+import "google/protobuf/empty.proto";
+
+service UsersService {
+  rpc UserExists (UserExistsRequest) returns (google.protobuf.Empty);
+  rpc DeductedFromUserBalance (DeductedFromUserBalanceRequest) returns (google.protobuf.Empty);
+}
+
+message UserExistsRequest {
+	string messageId = 1;
+	string user_id = 2;
+}
+
+message DeductedFromUserBalanceRequest {
+	string messageId = 1;
+	string user_id = 2;
+	double amount = 3;
+}

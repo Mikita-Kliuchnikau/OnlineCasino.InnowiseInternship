@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using UsersManagementService.DAL.Interceptors;
-using UsersManagementService.DAL.Repositories;
-using UsersManagementService.DAL.Context;
-using UsersManagementService.DAL.Options;
 using Microsoft.Extensions.Options;
+using UsersManagementService.DAL.Context;
+using UsersManagementService.DAL.Interceptors;
 using UsersManagementService.DAL.Interfaces.Repositories;
 using UsersManagementService.DAL.Interfaces.Services;
+using UsersManagementService.DAL.Options;
+using UsersManagementService.DAL.Repositories;
 using UsersManagementService.DAL.Services;
 
 namespace UsersManagementService.DAL.DI;
