@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using UsersManagementService.BLL.DI;
+﻿using UsersManagementService.BLL.DI;
 using UsersManagementService.Presentation.gRPC.Interceptors;
 using UsersManagementService.Presentation.Models;
 using UsersManagementService.Presentation.Options;
@@ -16,6 +15,12 @@ public static class DependencyInjection
 
         services.ConfigureOptions<Auth0OptionsSetup>();
         services.ConfigureOptions<GrpcOptionsSetup>();
+
+        services.AddGrpc(opt =>
+        {
+            opt.Interceptors.Add<GrpcLoggingInterceptor>();
+            opt.Interceptors.Add<GrpcAuthenticationInterceptor>();
+        });
 
         return services;
     }

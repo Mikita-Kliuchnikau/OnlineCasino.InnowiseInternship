@@ -23,7 +23,7 @@
     <PackageReference Include="Respawn.Postgres" Version="1.0.15" />
     <PackageReference Include="Testcontainers.Azurite" Version="4.4.0" />
     <PackageReference Include="Testcontainers.PostgreSql" Version="4.4.0" />
-    <PackageReference Include="UsersManagementService.Proto" Version="1.0.0" />
+    <PackageReference Include="UsersManagementService.Proto" Version="1.1.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
   </ItemGroup>

@@ -44,7 +44,7 @@ public class PlayersRepository(UsersService.UsersServiceClient usersServiceClien
 
     public async Task<PlayersRepositoryResponse> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var request = new UserExistsRequest 
+        var request = new UserExistsRequest
         { 
             MessageId = Guid.NewGuid().ToString(),
             UserId = id.ToString() 
