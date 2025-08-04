@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using UsersManagementService.Common.Constants;
 using UsersManagementService.Presentation.AuthScopes;
+using UsersManagementService.Presentation.Middleware;
 using UsersManagementService.Presentation.Options;
 using static UsersManagementService.Presentation.Constants.AuthConstants;
 
@@ -73,5 +76,20 @@ public static class DIExtensions
             .AddPolicy(BanUserPolicy, policy =>
                 policy.Requirements.Add(new HasScopeRequirement(BanUserPolicy, authOptions.Domain)));
         return services;
+    }
+
+    public static IApplicationBuilder UseMiddleware(this IApplicationBuilder app)
+    {
+        app.UseWhen(
+            context => !context.Request.ContentType?.StartsWith(MediaTypeConstants.Grpc) ?? false,
+            appBuilder =>
+            {
+                appBuilder.UseExceptionMiddleware();
+                appBuilder.UseRequestLogContextMiddleware();
+                appBuilder.UseSerilogRequestLogging();
+                appBuilder.UseAuthentication();
+                appBuilder.UseAuthorization();
+            });
+        return app;
     }
 }
