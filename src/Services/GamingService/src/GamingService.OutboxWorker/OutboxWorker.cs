@@ -24,42 +24,40 @@ namespace GamingService.OutboxWorker
             using var scope = serviceProvider.CreateScope();
             var publisher = scope.ServiceProvider.GetRequiredService<IIntegrationEventPublisher>();
 
-            while (!stoppingToken.IsCancellationRequested)
+
+            var eventDocuments = await Collection
+                .Find(d => d.Status == Status.Pending)
+                .Limit(20)
+                .ToListAsync(stoppingToken);
+
+            var idsToUpdate = eventDocuments.Select(d => d.MessageId).ToList();
+            if (idsToUpdate.Count > 0)
             {
-                var eventDocuments = await Collection
-                    .Find(d => d.Status == Status.Pending)
-                    .Limit(20)
-                    .ToListAsync(stoppingToken);
-
-                var idsToUpdate = eventDocuments.Select(d => d.MessageId).ToList();
-                if (idsToUpdate.Count > 0)
-                {
-                    var update = Builders<EventDocument>.Update.Set(x => x.Status, Status.Processing);
-                    await Collection.UpdateManyAsync(
-                        Builders<EventDocument>.Filter.In(x => x.MessageId, idsToUpdate),
-                        update,
-                        cancellationToken: stoppingToken);
-                }
-
-                foreach (var doc in eventDocuments)
-                {
-                    try
-                    {
-                        var @event = doc.Payload;
-                        await publisher.PublishAsync(@event, stoppingToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        await Collection.FindOneAndUpdateAsync(d => d.MessageId == doc.MessageId,
-                            Builders<OutboxMessageDocument<PlayersBalancesChangedEvent>>.Update
-                                .Set(x => x.Status, Status.Pending),
-                            cancellationToken: stoppingToken);
-                        logger.LogError(ex, "Failed to process outbox message {Id}", doc.MessageId);
-                    }
-                }
-
-                await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
+                var update = Builders<EventDocument>.Update.Set(x => x.Status, Status.Processing);
+                await Collection.UpdateManyAsync(
+                    Builders<EventDocument>.Filter.In(x => x.MessageId, idsToUpdate),
+                    update,
+                    cancellationToken: stoppingToken);
             }
+
+            foreach (var doc in eventDocuments)
+            {
+                try
+                {
+                    var @event = doc.Payload;
+                    await publisher.PublishAsync(@event, stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    await Collection.FindOneAndUpdateAsync(d => d.MessageId == doc.MessageId,
+                        Builders<OutboxMessageDocument<PlayersBalancesChangedEvent>>.Update
+                            .Set(x => x.Status, Status.Pending),
+                        cancellationToken: stoppingToken);
+                    logger.LogError(ex, "Failed to process outbox message {Id}", doc.MessageId);
+                }
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
 
         }
     }
