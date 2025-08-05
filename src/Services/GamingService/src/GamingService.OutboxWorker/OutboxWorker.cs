@@ -19,7 +19,7 @@ namespace GamingService.OutboxWorker
         private IMongoCollection<EventDocument> Collection =>
             Database.GetCollection<EventDocument>(options.Value.OutboxCollectionName);
 
-        private List<Guid?> ÑancelledEventIds { get; } = [];
+        private List<Guid?> CancelledEventIds { get; } = [];
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -55,16 +55,16 @@ namespace GamingService.OutboxWorker
                 }
             }
 
-            if (ÑancelledEventIds.Count > 0)
+            if (CancelledEventIds.Count > 0)
             {
                 var update = Builders<EventDocument>.Update.Set(x => x.Status, Status.Pending);
                 await Collection.UpdateManyAsync(
-                    Builders<EventDocument>.Filter.In(x => x.MessageId, ÑancelledEventIds),
+                    Builders<EventDocument>.Filter.In(x => x.MessageId, CancelledEventIds),
                     update,
                     cancellationToken: stoppingToken);
-            }
 
-            ÑancelledEventIds.Clear();
+                CancelledEventIds.Clear();
+            }
 
             await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
         }
