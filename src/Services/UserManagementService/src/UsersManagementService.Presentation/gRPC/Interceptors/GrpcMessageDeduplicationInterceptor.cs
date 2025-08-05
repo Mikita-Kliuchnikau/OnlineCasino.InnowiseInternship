@@ -2,6 +2,7 @@
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using UsersManagementService.BLL.Interfaces.Services;
+using UsersManagementService.Presentation.gRPC.Models;
 using static UsersManagementService.Presentation.Constants.GrpcExceptionsMessages;
 
 namespace UsersManagementService.Presentation.gRPC.Interceptors;
@@ -23,7 +24,11 @@ public class GrpcMessageDeduplicationInterceptor(IMessageDeduplicationService de
         if (await deduplicationService.IsMessageProcessedAsync(messageId, context.CancellationToken))
         {
             var result = await deduplicationService.GetResultAsync<TResponse>(messageId, context.CancellationToken);
-            if (result is not null)
+            if (result is RpcExceptionInfo ex)
+            {
+                throw new RpcException(new Status((StatusCode)ex.StatusCode, ex.Details));
+            }
+            else if (result is not null)
             {
                 return result;
             }
@@ -33,18 +38,27 @@ public class GrpcMessageDeduplicationInterceptor(IMessageDeduplicationService de
             }
         }
 
-        var response = await continuation(request, context);
-
-        if (response is Empty)
+        try
         {
-            await deduplicationService.MarkMessageAsProcessedAsync<TResponse>(messageId, null, context.CancellationToken);
-        }
-        else
-        {
-            await deduplicationService.MarkMessageAsProcessedAsync<TResponse>(messageId, response, context.CancellationToken);
-        }
+            var response = await continuation(request, context);
 
-        return response;
+            if (response is Empty)
+            {
+                await deduplicationService.MarkMessageAsProcessedAsync<TResponse>(messageId, null, context.CancellationToken);
+            }
+            else
+            {
+                await deduplicationService.MarkMessageAsProcessedAsync<TResponse>(messageId, response, context.CancellationToken);
+            }
+
+            return response;
+        }
+        catch (RpcException ex)
+        {
+            var exceptionInfo = new RpcExceptionInfo((int)StatusCode.Internal, ex.Status.Detail);
+            await deduplicationService.MarkMessageAsProcessedAsync<RpcExceptionInfo>(messageId, exceptionInfo, context.CancellationToken);
+            throw;
+        }
     }
 
     private static string? GetMessageId<TRequest>(TRequest request)
