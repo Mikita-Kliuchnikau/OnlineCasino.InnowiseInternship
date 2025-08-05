@@ -64,6 +64,8 @@ namespace GamingService.OutboxWorker
                     cancellationToken: stoppingToken);
             }
 
+            ÑancelledEventIds.Clear();
+
             await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
         }
     }
