@@ -19,6 +19,7 @@ public static class DependencyInjection
         services.AddGrpc(opt =>
         {
             opt.Interceptors.Add<GrpcLoggingInterceptor>();
+            opt.Interceptors.Add<GrpcMessageDeduplicationInterceptor>();
             opt.Interceptors.Add<GrpcAuthenticationInterceptor>();
         });
 

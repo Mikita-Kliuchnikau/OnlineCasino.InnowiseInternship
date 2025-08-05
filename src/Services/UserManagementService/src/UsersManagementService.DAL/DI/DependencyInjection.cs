@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using StackExchange.Redis;
 using UsersManagementService.DAL.Context;
 using UsersManagementService.DAL.Interceptors;
 using UsersManagementService.DAL.Interfaces.Repositories;
@@ -18,6 +19,7 @@ public static class DependencyInjection
     {
         services.ConfigureOptions<DatabaseOptionsSetup>();
         services.ConfigureOptions<BlobStorageOptionsSetup>();
+        services.ConfigureOptions<RedisOptionsSetup>();
 
         services.AddDbContext<UsersDbContext>((serviceProvider ,options) =>
         {
@@ -31,8 +33,16 @@ public static class DependencyInjection
             options.AddInterceptors(new TimestampInterceptor());
             options.AddInterceptors(new SoftDeleteInterceptor());
         });
+
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            var redisOptions = sp.GetService<IOptions<RedisOptions>>()!.Value;
+            return ConnectionMultiplexer.Connect(redisOptions.ConnectionString);
+        });
+
         services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddScoped<IImagesRepository, ImagesRepository>();
+        services.AddSingleton<IRedisMessageDeduplicationService, RedisMessageDeduplicationService>();
         services.AddSingleton<IAzureBlobService, AzureBlobService>();
         return services;
     }
