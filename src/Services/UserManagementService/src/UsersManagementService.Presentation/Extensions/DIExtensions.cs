@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using UsersManagementService.Common.Constants;
 using UsersManagementService.Presentation.AuthScopes;
+using UsersManagementService.Presentation.Middleware;
 using UsersManagementService.Presentation.Options;
 using static UsersManagementService.Presentation.Constants.AuthConstants;
 
@@ -46,7 +49,7 @@ public static class DIExtensions
     {
         var authOptions = services
             .BuildServiceProvider()
-            .GetRequiredService<IOptions<Auth0Options>>();
+            .GetRequiredService<IOptions<Auth0Options>>().Value;
 
         services.AddAuthentication(options =>
         {
@@ -55,8 +58,8 @@ public static class DIExtensions
         })
         .AddJwtBearer(options =>
         {
-            options.Authority = $"https://{authOptions.Value.Domain}";
-            options.Audience = authOptions.Value.Audience;
+            options.Authority = $"https://{authOptions.Domain}";
+            options.Audience = authOptions.Audience;
             options.RequireHttpsMetadata = false;
         });
         return services;
@@ -67,11 +70,26 @@ public static class DIExtensions
     {
         var authOptions = services
             .BuildServiceProvider()
-            .GetRequiredService<IOptions<Auth0Options>>();
+            .GetRequiredService<IOptions<Auth0Options>>().Value;
 
         services.AddAuthorizationBuilder()
             .AddPolicy(BanUserPolicy, policy =>
-                policy.Requirements.Add(new HasScopeRequirement(BanUserPolicy, authOptions.Value.Domain)));
+                policy.Requirements.Add(new HasScopeRequirement(BanUserPolicy, authOptions.Domain)));
         return services;
+    }
+
+    public static IApplicationBuilder UseMiddleware(this IApplicationBuilder app)
+    {
+        app.UseWhen(
+            context => !context.Request.ContentType?.StartsWith(MediaTypeConstants.Grpc) ?? false,
+            appBuilder =>
+            {
+                appBuilder.UseExceptionMiddleware();
+                appBuilder.UseRequestLogContextMiddleware();
+                appBuilder.UseSerilogRequestLogging();
+                appBuilder.UseAuthentication();
+                appBuilder.UseAuthorization();
+            });
+        return app;
     }
 }

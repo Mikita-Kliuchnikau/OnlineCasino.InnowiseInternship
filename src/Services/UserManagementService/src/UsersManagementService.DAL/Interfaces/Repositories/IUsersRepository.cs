@@ -13,6 +13,11 @@ public interface IUsersRepository
 
     Task<Guid> UpdateAsync(UserEntity user, CancellationToken cancellationToken = default);
 
+    Task<bool> TryChangeBalance(
+        Guid id,
+        decimal newBalance,
+        CancellationToken cancellationToken = default);
+
     Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<Guid> BanAsync(Guid id, bool isBanned, CancellationToken cancellationToken = default);
@@ -23,5 +28,5 @@ public interface IUsersRepository
         string email,
         CancellationToken cancellationToken = default);
 
-    Task<bool> DoesExistAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default);
 }

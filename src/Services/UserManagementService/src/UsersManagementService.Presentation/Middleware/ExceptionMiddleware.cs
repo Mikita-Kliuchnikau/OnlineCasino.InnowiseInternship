@@ -4,6 +4,7 @@ using Npgsql;
 using Serilog.Context;
 using System.Net;
 using static UsersManagementService.Common.Constants.MediaTypeConstants;
+using static UsersManagementService.Presentation.Constants.PostgresExceptionMessages;
 
 namespace UsersManagementService.Presentation.Middleware;
 
@@ -36,8 +37,8 @@ public class ExceptionMiddleware(
         var (statusCode, message) = ex switch
         {
             DbUpdateException => (HttpStatusCode.InternalServerError, 
-                ex.InnerException is NpgsqlException exception && exception.SqlState == "23503" 
-                    ? "User not found" 
+                ex.InnerException is NpgsqlException exception && exception.SqlState == UserNotFoundSqlState
+                    ? UserNotFound
                     : ex.Message),
             _ => (HttpStatusCode.InternalServerError, ex.Message)
         };
