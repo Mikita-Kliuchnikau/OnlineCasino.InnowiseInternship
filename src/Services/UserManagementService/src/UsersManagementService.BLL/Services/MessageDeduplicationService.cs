@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Text.Json;
 using UsersManagementService.BLL.Interfaces.Services;
+using UsersManagementService.BLL.Models.Exception;
 using UsersManagementService.DAL.Interfaces.Services;
 using UsersManagementService.DAL.Options;
 
@@ -24,13 +25,21 @@ public class MessageDeduplicationService(IRedisMessageDeduplicationService dedup
         await deduplicationService.MarkMessageAsProcessedAsync(messageId, serializedResponse, expiry, cancellationToken);
     }
 
-    public async Task<TResponse?> GetResultAsync<TResponse>(string messageId, CancellationToken cancellationToken = default)
+    public async Task<object?> GetResultAsync<TResponse>(string messageId, CancellationToken cancellationToken = default)
     {
         var result = await deduplicationService.GetResultAsync(messageId, cancellationToken);
         if (string.IsNullOrEmpty(result))
         {
             return default;
         }
-        return JsonSerializer.Deserialize<TResponse>(result);
+
+        try
+        {
+            return JsonSerializer.Deserialize<TResponse>(result);
+        }
+        catch (Exception)
+        {
+            return JsonSerializer.Deserialize<RpcExceptionInfo>(result);
+        }
     }
 }

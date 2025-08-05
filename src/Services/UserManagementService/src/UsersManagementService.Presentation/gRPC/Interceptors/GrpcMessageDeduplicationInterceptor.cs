@@ -2,7 +2,7 @@
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using UsersManagementService.BLL.Interfaces.Services;
-using UsersManagementService.Presentation.gRPC.Models;
+using UsersManagementService.BLL.Models.Exception;
 using static UsersManagementService.Presentation.Constants.GrpcExceptionsMessages;
 
 namespace UsersManagementService.Presentation.gRPC.Interceptors;
@@ -24,13 +24,14 @@ public class GrpcMessageDeduplicationInterceptor(IMessageDeduplicationService de
         if (await deduplicationService.IsMessageProcessedAsync(messageId, context.CancellationToken))
         {
             var result = await deduplicationService.GetResultAsync<TResponse>(messageId, context.CancellationToken);
+
             if (result is RpcExceptionInfo ex)
             {
                 throw new RpcException(new Status((StatusCode)ex.StatusCode, ex.Details));
             }
-            else if (result is not null)
+            else if (result is TResponse response)
             {
-                return result;
+                return response;
             }
             else
             {

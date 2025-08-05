@@ -9,5 +9,5 @@ public interface IMessageDeduplicationService
         TResponse? response,
         CancellationToken cancellationToken = default);
 
-    Task<TResponse?> GetResultAsync<TResponse>(string messageId, CancellationToken cancellationToken = default);
+    Task<object?> GetResultAsync<TResponse>(string messageId, CancellationToken cancellationToken = default);
 }
