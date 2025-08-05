@@ -29,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<ValidationInterceptor>();
         services.AddScopedProxyServer<UsersService, IUsersService>();
         services.AddScopedProxyServer<ImagesService, IImagesService>();
+        services.AddSingleton<IMessageDeduplicationService, MessageDeduplicationService>();
         return services;
     }
 }
