@@ -19,6 +19,8 @@ namespace GamingService.OutboxWorker
         private IMongoCollection<EventDocument> Collection =>
             Database.GetCollection<EventDocument>(options.Value.OutboxCollectionName);
 
+        private List<Guid?> ÑancelledEventIds { get; } = [];
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             using var scope = serviceProvider.CreateScope();
@@ -49,16 +51,20 @@ namespace GamingService.OutboxWorker
                 }
                 catch (Exception ex)
                 {
-                    await Collection.FindOneAndUpdateAsync(d => d.MessageId == doc.MessageId,
-                        Builders<OutboxMessageDocument<PlayersBalancesChangedEvent>>.Update
-                            .Set(x => x.Status, Status.Pending),
-                        cancellationToken: stoppingToken);
                     logger.LogError(ex, "Failed to process outbox message {Id}", doc.MessageId);
                 }
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
+            if (ÑancelledEventIds.Count > 0)
+            {
+                var update = Builders<EventDocument>.Update.Set(x => x.Status, Status.Pending);
+                await Collection.UpdateManyAsync(
+                    Builders<EventDocument>.Filter.In(x => x.MessageId, ÑancelledEventIds),
+                    update,
+                    cancellationToken: stoppingToken);
+            }
 
+            await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
         }
     }
 }
