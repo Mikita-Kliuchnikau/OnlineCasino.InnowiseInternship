@@ -7,9 +7,6 @@ using UsersManagementService.BLL.Models.User;
 using Microsoft.Extensions.Logging;
 using UsersManagementService.BLL.Attributes;
 using UsersManagementService.BLL.Validators.UsersValidators;
-using Grpc.Core;
-using Azure.Core;
-using UsersManagementService.Common.Exceptions;
 
 namespace UsersManagementService.BLL.Services;
 
@@ -138,11 +135,13 @@ public class UsersService(IUsersRepository usersRepository, ILogger<UsersService
             nameof(UpdateUserAsync),
         id);
 
-        var userExists = await usersRepository.ExistsAsync(id, cancellationToken);
+        var user = await usersRepository.GetByIdAsync(id, cancellationToken);
+        
+        var newBalance = user.Balance + amount;
 
-        if (!userExists)
+        if (newBalance < 0)
         {
-            throw new NotFoundException();
+            return false;
         }
 
         var result = await usersRepository.TryChangeBalance(id, amount, cancellationToken);

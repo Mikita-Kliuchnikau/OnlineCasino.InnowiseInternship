@@ -104,30 +104,16 @@ public class UsersRepository(UsersDbContext context) : IUsersRepository
 
     public async Task<bool> TryChangeBalance(
         Guid id,
-        decimal amount,
+        decimal newBalance,
         CancellationToken cancellationToken = default)
     {
-        try
-        {
-            var user = await GetByIdAsync(id, cancellationToken);
-            var newBalance = user.Balance + amount;
+        var result = await context.Users
+            .Where(u => u.Id == id)
+            .ExecuteUpdateAsync(u => u
+                .SetProperty(u => u.Balance, newBalance),
+                cancellationToken: cancellationToken);
 
-            if (newBalance < 0)
-            {
-                return false;
-            }
-
-            await context.Users
-                .Where(u => u.Id == id)
-                .ExecuteUpdateAsync(u => u
-                    .SetProperty(u => u.Balance, newBalance),
-                    cancellationToken: cancellationToken);
-            return true;
-        }
-        catch (NotFoundException)
-        {
-            return false;
-        }
+        return result != 0;
     }
 
     public async Task<Guid> BanAsync(

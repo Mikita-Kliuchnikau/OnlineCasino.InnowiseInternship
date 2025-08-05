@@ -15,7 +15,7 @@ public interface IUsersRepository
 
     Task<bool> TryChangeBalance(
         Guid id,
-        decimal amount,
+        decimal newBalance,
         CancellationToken cancellationToken = default);
 
     Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
