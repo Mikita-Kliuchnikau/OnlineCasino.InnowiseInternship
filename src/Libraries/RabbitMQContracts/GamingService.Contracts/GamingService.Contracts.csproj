@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>OnlineCasinoGamingServiceEvents</Title>
+    <Authors>Mikita-Kliuchnikau</Authors>
+    <Version>1.0.4</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="*\*.cs" Pack="true" Visible="true" PackagePath="protos\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="3.4.0" />
+  </ItemGroup>
+
+</Project>

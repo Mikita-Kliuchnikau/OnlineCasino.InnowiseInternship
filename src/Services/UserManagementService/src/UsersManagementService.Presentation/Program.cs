@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
+using System.Net;
 using System.Text.Json.Serialization;
 using UsersManagementService.Common.Constants;
 using UsersManagementService.Presentation.AuthScopes;
@@ -9,6 +11,19 @@ using UsersManagementService.Presentation.gRPC.Services;
 using UsersManagementService.Presentation.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5010, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1;
+    });
+
+    options.ListenAnyIP(5015, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
+});
 
 builder.Services.AddDependencies(builder.Configuration);
 
@@ -36,11 +51,8 @@ app.UseMiddleware();
 app.MapControllers();
 app.MapGrpcService<UsersGrpcService>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 await app.RunAsync();
 public partial class Program { }
