@@ -1,0 +1,13 @@
+﻿using Microsoft.Extensions.Options;
+using static UsersManagementService.Presentation.Constants.RabbitMqConstants;
+
+namespace UsersManagementService.Presentation.Options;
+
+public class RabbitMqOptionsSetup(IConfiguration configuration)
+    : IConfigureOptions<RabbitMqOptions>
+{
+    public void Configure(RabbitMqOptions options)
+    {
+        configuration.GetSection(ConfigurationSectionName).Bind(options);
+    }
+}
