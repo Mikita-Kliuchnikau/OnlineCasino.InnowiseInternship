@@ -10,11 +10,11 @@ COPY ["src/Services/AuthService/src/AuthService.Api/AuthService.Api.csproj", "sr
 RUN dotnet restore "./src/Services/AuthService/src/AuthService.Api/AuthService.Api.csproj"
 COPY . .
 WORKDIR "/src/src/Services/AuthService/src/AuthService.Api"
-RUN dotnet build "./AuthService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./AuthService.Api.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./AuthService.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./AuthService.Api.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

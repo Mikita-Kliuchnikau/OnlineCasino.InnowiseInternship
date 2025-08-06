@@ -11,11 +11,11 @@ COPY ["src/Services/GamingService/src/GamingService.OutboxWorker/appsettings.Dev
 RUN dotnet restore "./src/Services/GamingService/src/GamingService.OutboxWorker/GamingService.OutboxWorker.csproj"
 COPY . .
 WORKDIR "/src/src/Services/GamingService/src/GamingService.OutboxWorker"
-RUN dotnet build "./GamingService.OutboxWorker.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./GamingService.OutboxWorker.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GamingService.OutboxWorker.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./GamingService.OutboxWorker.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

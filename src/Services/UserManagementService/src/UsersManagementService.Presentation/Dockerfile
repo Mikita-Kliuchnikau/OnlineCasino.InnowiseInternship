@@ -14,11 +14,11 @@ COPY ["src/Services/UserManagementService/src/UsersManagementService.Presentatio
 RUN dotnet restore "./src/Services/UserManagementService/src/UsersManagementService.Presentation/UsersManagementService.Presentation.csproj"
 COPY . .
 WORKDIR "/src/src/Services/UserManagementService/src/UsersManagementService.Presentation"
-RUN dotnet build "./UsersManagementService.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./UsersManagementService.Presentation.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./UsersManagementService.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./UsersManagementService.Presentation.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

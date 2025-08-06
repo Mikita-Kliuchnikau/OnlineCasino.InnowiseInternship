@@ -12,11 +12,11 @@ COPY ["src/Services/GamingService/src/GamingService.Core/GamingService.Core.cspr
 RUN dotnet restore "./src/Services/GamingService/src/GamingService.Presentation/GamingService.Presentation.csproj"
 COPY . .
 WORKDIR "/src/src/Services/GamingService/src/GamingService.Presentation"
-RUN dotnet build "./GamingService.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./GamingService.Presentation.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GamingService.Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./GamingService.Presentation.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
