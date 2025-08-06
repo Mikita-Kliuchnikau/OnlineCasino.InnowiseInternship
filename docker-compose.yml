@@ -17,10 +17,14 @@ services:
     ports:
       - "5020:5020"
     depends_on:
-      - mongo
-      - redis
-      - rabbitmq
-      - usersmanagement
+      mongo:
+        condition: service_started
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      usersmanagement:
+        condition: service_started
 
   gamingoutboxworker:
     build:
@@ -29,9 +33,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
-      - mongo
-      - rabbitmq
-      - usersmanagement
+      mongo:
+       condition: service_started
+      rabbitmq:
+       condition: service_started
+      usersmanagement:
+       condition: service_started
 
   usersmanagement:
     build:
@@ -43,9 +50,12 @@ services:
       - "5010:5010"
       - "5015:5015"
     depends_on:
-      - postgres
-      - redis
-      - rabbitmq
+      postgres:
+        condition: service_started
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
 
   postgres:
     image: postgres:latest
