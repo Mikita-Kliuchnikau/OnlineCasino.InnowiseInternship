@@ -15,16 +15,10 @@ public class RouletteConfigurationsController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<RouletteConfigurationListViewModel>> Get(
-        [FromQuery] int page,
-        [FromQuery] int pageSize, 
+        [FromQuery] GetRouletteConfigurationListQuery configurationListQuery,
         CancellationToken cancellationToken = default)
     {
-        var query = new GetRouletteConfigurationListQuery
-        {
-            PageNumber = page,
-            PageSize = pageSize
-        };
-        return await Mediator?.Send(query, cancellationToken)!;
+        return await Mediator?.Send(configurationListQuery, cancellationToken)!;
     }
 
     [HttpGet("{id}")]

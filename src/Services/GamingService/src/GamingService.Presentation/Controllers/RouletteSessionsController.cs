@@ -15,23 +15,17 @@ public class RouletteSessionsController : ControllerBase
 
     [HttpGet]
     public async Task<RouletteSessionListViewModel> Get(
-        [FromQuery] int page,
-        [FromQuery] int pageSize,
+        [FromQuery] GetRouletteSessionListQuery sessionListQuery,
         CancellationToken cancellationToken = default)
     {
-        var configurationQuery = new GetRouletteSessionListQuery
-        {
-            PageNumber = page,
-            PageSize = pageSize
-        };
-        return await Mediator?.Send(configurationQuery, cancellationToken)!;
+        return await Mediator?.Send(sessionListQuery, cancellationToken)!;
     }
 
     [HttpGet("{id}")]
     public async Task<RouletteSessionResultViewModel> GetById(Guid id, CancellationToken cancellationToken = default)
     {
-        var configurationQuery = new GetRouletteSessionDetailsQuery(id);
-        return await Mediator?.Send(configurationQuery, cancellationToken)!;
+        var sessionDetailsQuery = new GetRouletteSessionDetailsQuery(id);
+        return await Mediator?.Send(sessionDetailsQuery, cancellationToken)!;
     }
 
     [HttpPost]
