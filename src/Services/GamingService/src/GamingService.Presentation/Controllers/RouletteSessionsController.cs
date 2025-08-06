@@ -9,29 +9,27 @@ namespace GamingService.Presentation.Controllers;
 
 [Produces("application/json")]
 [Route("api/[controller]")]
-public class RouletteSessionsController : ControllerBase
+public class RouletteSessionsController(IMediator mediator) : ControllerBase
 {
-    private IMediator? Mediator => HttpContext.RequestServices.GetService<IMediator>();
-
     [HttpGet]
     public async Task<RouletteSessionListViewModel> Get(
         [FromQuery] GetRouletteSessionListQuery sessionListQuery,
         CancellationToken cancellationToken = default)
     {
-        return await Mediator?.Send(sessionListQuery, cancellationToken)!;
+        return await mediator?.Send(sessionListQuery, cancellationToken)!;
     }
 
     [HttpGet("{id}")]
     public async Task<RouletteSessionResultViewModel> GetById(Guid id, CancellationToken cancellationToken = default)
     {
         var sessionDetailsQuery = new GetRouletteSessionDetailsQuery(id);
-        return await Mediator?.Send(sessionDetailsQuery, cancellationToken)!;
+        return await mediator?.Send(sessionDetailsQuery, cancellationToken)!;
     }
 
     [HttpPost]
     public async Task<RouletteSessionSummaryViewModel> Create([FromBody] CreateRouletteSessionCommand session, CancellationToken cancellationToken = default)
     {
-        return await Mediator?.Send(session, cancellationToken)!;
+        return await mediator?.Send(session, cancellationToken)!;
     }
 
     [HttpPost("{id}")]
@@ -42,6 +40,6 @@ public class RouletteSessionsController : ControllerBase
             SessionId = id,
             Bets = Bets
         };
-        return await Mediator?.Send(command, cancellationToken)!;
+        return await mediator?.Send(command, cancellationToken)!;
     }
 }
