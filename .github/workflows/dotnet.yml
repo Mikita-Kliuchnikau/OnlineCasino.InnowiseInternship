@@ -48,10 +48,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           .sonar/scanner/dotnet-sonarscanner begin /k:"Mikita-Kliuchnikau_OnlineCasino.InnowiseInternship" /o:"mikita-kliuchnikau" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet build --configuration Release
+          dotnet build ./OnlineCasino.InnowiseInternship.sln --configuration Release
+      
       - name: Test
         env:
           AUTH0_TEST_CLIENT_SECRET: ${{ secrets.AUTH0_TEST_CLIENT_SECRET }}
         run: |
-          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+          dotnet-coverage collect "dotnet test ./OnlineCasino.InnowiseInternship.sln" -f xml -o "coverage.xml"
           .sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

@@ -10,13 +10,13 @@ public static class DIExtension
     {
         var authOptions = services
             .BuildServiceProvider()
-            .GetRequiredService<IOptions<Auth0Options>>();
+            .GetRequiredService<IOptions<Auth0Options>>().Value;
 
         services.AddAuth0WebAppAuthentication(options =>
         {
-            options.Domain = authOptions.Value.Domain;
-            options.ClientId = authOptions.Value.ClientId;
-            options.ClientSecret = authOptions.Value.ClientSecret;
+            options.Domain = authOptions.Domain;
+            options.ClientId = authOptions.ClientId;
+            options.ClientSecret = authOptions.ClientSecret;
         });
         return services;
     }
