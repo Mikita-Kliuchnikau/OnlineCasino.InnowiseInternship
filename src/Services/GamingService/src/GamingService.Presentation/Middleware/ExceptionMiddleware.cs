@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog.Context;
 using System.Net;
 
 namespace GamingService.Presentation.Middleware;
 
-public class ExceptionMiddleware(RequestDelegate next)
+public class ExceptionMiddleware(
+    RequestDelegate next,
+    ILogger<ExceptionMiddleware> logger)
 {
     public async Task InvokeAsync(HttpContext context)
     {
@@ -13,6 +16,14 @@ public class ExceptionMiddleware(RequestDelegate next)
         }
         catch (Exception ex)
         {
+            using (LogContext.PushProperty("Error", ex.Message, true))
+            {
+                logger.LogError(
+                    ex,
+                    "Request {@Request} complited with error",
+                    context.Request.Path);
+            }
+
             await HandleExceptionAsync(context, ex);
         }
     }
