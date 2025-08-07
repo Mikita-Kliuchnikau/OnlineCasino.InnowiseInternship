@@ -3,6 +3,7 @@ using GamingService.Application.Models.Sessions.Commands.CreateSession;
 using GamingService.Application.Models.Sessions.Queries.GetSessionDetails;
 using GamingService.Application.Models.Sessions.Queries.GetSessionList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamingService.Presentation.Controllers;
@@ -12,6 +13,7 @@ namespace GamingService.Presentation.Controllers;
 public class RouletteSessionsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [Authorize]
     public async Task<RouletteSessionListViewModel> Get(
         [FromQuery] GetRouletteSessionListQuery sessionListQuery,
         CancellationToken cancellationToken = default)
@@ -20,6 +22,7 @@ public class RouletteSessionsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<RouletteSessionResultViewModel> GetById(Guid id, CancellationToken cancellationToken = default)
     {
         var sessionDetailsQuery = new GetRouletteSessionDetailsQuery(id);
@@ -27,12 +30,14 @@ public class RouletteSessionsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<RouletteSessionSummaryViewModel> Create([FromBody] CreateRouletteSessionCommand session, CancellationToken cancellationToken = default)
     {
         return await mediator?.Send(session, cancellationToken)!;
     }
 
     [HttpPost("{id}")]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<RouletteSessionResultViewModel> Close(Guid id, [FromBody] IEnumerable<BetsPayload> Bets, CancellationToken cancellationToken = default)
     {
         var command = new CloseRouletteSessionCommand

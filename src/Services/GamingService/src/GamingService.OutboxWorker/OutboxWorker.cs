@@ -26,11 +26,12 @@ namespace GamingService.OutboxWorker
             using var scope = serviceProvider.CreateScope();
             var publisher = scope.ServiceProvider.GetRequiredService<IIntegrationEventPublisher>();
 
-
             var eventDocuments = await Collection
                 .Find(d => d.Status == Status.Pending)
                 .Limit(20)
                 .ToListAsync(stoppingToken);
+
+            logger.LogInformation("Fetched {Count} pending messages", eventDocuments.Count);
 
             var idsToUpdate = eventDocuments.Select(d => d.MessageId).ToList();
             if (idsToUpdate.Count > 0)

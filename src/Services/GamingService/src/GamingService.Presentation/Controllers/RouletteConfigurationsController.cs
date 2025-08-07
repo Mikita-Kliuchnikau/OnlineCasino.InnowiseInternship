@@ -3,6 +3,7 @@ using GamingService.Application.Models.Configurations.Commands.DeleteConfigurati
 using GamingService.Application.Models.Configurations.Queries.GetConfigurationDetails;
 using GamingService.Application.Models.Configurations.Queries.GetConfigurationList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamingService.Presentation.Controllers;
@@ -12,6 +13,7 @@ namespace GamingService.Presentation.Controllers;
 public class RouletteConfigurationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<RouletteConfigurationListViewModel>> Get(
         [FromQuery] GetRouletteConfigurationListQuery configurationListQuery,
         CancellationToken cancellationToken = default)
@@ -20,6 +22,7 @@ public class RouletteConfigurationsController(IMediator mediator) : ControllerBa
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<RouletteConfigurationViewModel> GetById(Guid id, CancellationToken cancellationToken = default)
     {
         var configurationQuery = new GetRouletteConfigurationDetailsQuery(id);
@@ -27,12 +30,14 @@ public class RouletteConfigurationsController(IMediator mediator) : ControllerBa
     }
 
     [HttpPost]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<RouletteConfigurationViewModel> Create([FromBody] CreateRouletteConfigurationCommand configuration, CancellationToken cancellationToken = default)
     {
         return await mediator?.Send(configuration, cancellationToken)!;
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<Guid> Delete(Guid id, CancellationToken cancellationToken = default)
     {
         var deleteConfigurationCommand = new DeleteRouletteConfigurationCommand(id);

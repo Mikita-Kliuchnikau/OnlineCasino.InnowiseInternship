@@ -25,6 +25,8 @@ services:
         condition: service_started
       usersmanagement:
         condition: service_started
+      seq: 
+        condition: service_started
 
   gamingoutboxworker:
     build:
@@ -38,6 +40,8 @@ services:
       rabbitmq:
        condition: service_started
       usersmanagement:
+       condition: service_started
+      seq:
        condition: service_started
 
   usersmanagement:
@@ -55,6 +59,8 @@ services:
       redis:
         condition: service_started
       rabbitmq:
+        condition: service_started
+      seq:
         condition: service_started
 
   postgres:
